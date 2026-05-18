@@ -6,12 +6,16 @@
     "orientation": "portrait",
     "scheme": "betania",
     "userInterfaceStyle": "light",
+    "icon": "./assets/images/church.webp",
     "splash": {
-      "backgroundColor": "#41B2FF"
+      "image": "./assets/images/church.webp",
+      "resizeMode": "cover",
+      "backgroundColor": "#1A472A"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#41B2FF"
+        "foregroundImage": "./assets/images/church.webp",
+        "backgroundColor": "#1A472A"
       },
       "package": "com.bisbetania",
       "softwareKeyboardLayoutMode": "pan"
