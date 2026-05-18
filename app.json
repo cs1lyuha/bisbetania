@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "name": "BisBetania",
+    "slug": "bisbetania",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "betania",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#41B2FF"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#41B2FF"
+      },
+      "package": "com.bisbetania",
+      "softwareKeyboardLayoutMode": "pan"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-web-browser",
+        {}
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "a6e103a7-7dd9-4f7d-b589-98a7a7c95807"
+      }
+    },
+    "owner": "bisbetania"
+  }
+}
