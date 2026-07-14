@@ -95,4 +95,4 @@ docs/
 
 ## Автор
 
-Проект подготовлен для GitHub профиля [cs1lyuha](https://github.com/cs1lyuha).
+[cs1lyuha](https://github.com/cs1lyuha).
