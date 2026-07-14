@@ -32,7 +32,7 @@ export default function ThankYouScreen() {
 
       <View className="flex-1 items-center justify-center px-8">
         <Animated.View style={{ transform: [{ scale }], opacity }}>
-          <View className="items-center">
+          <View className="items-center" style={{ alignSelf: 'stretch' }}>
             <View className="w-28 h-28 rounded-full bg-primary-light items-center justify-center mb-6">
               <Text style={{ fontSize: 56 }}>❤️</Text>
             </View>
@@ -47,11 +47,11 @@ export default function ThankYouScreen() {
 
             <TouchableOpacity
               onPress={() => router.back()}
-              className="bg-primary rounded-2xl px-10 py-4"
+              className="bg-primary rounded-2xl py-4 w-full items-center"
               style={{ elevation: 3 }}
               activeOpacity={0.85}
             >
-              <Text className="text-white font-bold text-base tracking-wide">
+              <Text className="text-white font-bold text-base tracking-wide text-center">
                 {t('backButton')}
               </Text>
             </TouchableOpacity>

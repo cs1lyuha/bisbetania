@@ -7,9 +7,10 @@ import {
   TextInput,
   Alert,
   StatusBar,
-  Image,
   ImageBackground,
 } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
+import * as Clipboard from 'expo-clipboard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as WebBrowser from 'expo-web-browser';
 import { useRouter } from 'expo-router';
@@ -25,6 +26,7 @@ export default function HomeScreen() {
   const [customAmount, setCustomAmount] = useState('');
   const [isCustom, setIsCustom] = useState(false);
   const [showQr, setShowQr] = useState(true);
+  const [copied, setCopied] = useState(false);
 
   const getAmount = (): number => {
     if (isCustom) return Number(customAmount) || 0;
@@ -37,6 +39,9 @@ export default function HomeScreen() {
       Alert.alert(t('errorTitle'), t('selectAmount'));
       return;
     }
+    await Clipboard.setStringAsync(String(amount));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
     try {
       await WebBrowser.openBrowserAsync(`${DONATION_LINKS.mia}?amount=${amount}`, {
         presentationStyle: WebBrowser.WebBrowserPresentationStyle.FULL_SCREEN,
@@ -60,7 +65,7 @@ export default function HomeScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <ImageBackground
-          source={require('../assets/images/church.webp')}
+          source={require('../assets/images/church.png')}
           style={{ borderBottomLeftRadius: 36, borderBottomRightRadius: 36, overflow: 'hidden', marginTop: -50 }}
           resizeMode="cover"
         >
@@ -189,6 +194,19 @@ export default function HomeScreen() {
           </View>
 
           <TouchableOpacity
+            onPress={handleDonate}
+            className="rounded-2xl py-4 items-center mt-4"
+            style={{ elevation: 4, backgroundColor: copied ? '#2d6a4f' : '#1A472A' }}
+            activeOpacity={0.85}
+          >
+            <Text className="text-white text-lg font-bold tracking-wide">
+              {copied
+                ? `✓  ${getAmount()} ${t('currency')} скопировано`
+                : `${t('donateButton')}${getAmount() > 0 ? `  ·  ${getAmount()} ${t('currency')}` : ''}`}
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
             onPress={() => setShowQr(v => !v)}
             activeOpacity={0.8}
             className="bg-white rounded-2xl border border-stone-100 mt-4 overflow-hidden"
@@ -205,14 +223,24 @@ export default function HomeScreen() {
 
             {showQr && (
               <View className="items-center pb-5 px-5">
-                <View className="rounded-2xl overflow-hidden border border-stone-100" style={{ elevation: 1 }}>
-                  <Image
-                    source={require('../assets/images/qr-code.png')}
-                    style={{ width: 220, height: 220 }}
-                    resizeMode="contain"
+                <View className="rounded-2xl overflow-hidden border border-stone-100 p-3 bg-white" style={{ elevation: 1 }}>
+                  <QRCode
+                    value={
+                      getAmount() > 0
+                        ? `${DONATION_LINKS.mia}?amount=${getAmount()}`
+                        : DONATION_LINKS.mia
+                    }
+                    size={200}
+                    color="#1A472A"
+                    backgroundColor="white"
                   />
                 </View>
-                <Text className="text-gray-500 text-sm text-center mt-4 leading-5">
+                {getAmount() > 0 && (
+                  <Text className="text-primary font-bold text-base mt-3">
+                    {getAmount()} {t('currency')}
+                  </Text>
+                )}
+                <Text className="text-gray-500 text-sm text-center mt-1 leading-5">
                   {t('qrDescription')}
                 </Text>
               </View>
@@ -220,15 +248,20 @@ export default function HomeScreen() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={handleDonate}
-            className="bg-primary rounded-2xl py-4 items-center mt-4"
-            style={{ elevation: 4 }}
+            onPress={() => router.push('/istoria')}
             activeOpacity={0.85}
+            className="bg-white rounded-2xl border border-stone-100 mt-4 flex-row items-center px-5 py-4"
+            style={{ elevation: 2 }}
           >
-            <Text className="text-white text-lg font-bold tracking-wide">
-              {t('donateButton')}
-              {getAmount() > 0 ? `  ·  ${getAmount()} ${t('currency')}` : ''}
+            <View
+              className="w-10 h-10 rounded-full bg-primary/10 items-center justify-center mr-4"
+            >
+              <Text style={{ fontSize: 18 }}>🎬</Text>
+            </View>
+            <Text className="flex-1 text-gray-800 font-semibold text-base">
+              {t('historyButton')}
             </Text>
+            <Text className="text-primary text-lg font-bold">›</Text>
           </TouchableOpacity>
 
           <Text className="text-center text-gray-400 text-xs mt-5 leading-5 px-4">
