@@ -1,0 +1,31 @@
+{
+  "_info": "Acest fișier se poate edita direct pe GitHub: aplicația îl descarcă la pornire, fără să fie nevoie de o versiune nouă. day: 0 = duminică … 6 = sâmbătă. ATENȚIE: programul și contactele de mai jos sunt EXEMPLE — înlocuiește-le cu cele reale.",
+  "services": [
+    { "day": 0, "time": "10:00", "durationMin": 120, "title": { "ro": "Serviciu divin", "ru": "Богослужение" } },
+    { "day": 0, "time": "17:00", "durationMin": 90, "title": { "ro": "Serviciu de seară", "ru": "Вечернее служение" } },
+    { "day": 3, "time": "18:30", "durationMin": 90, "title": { "ro": "Studiu biblic", "ru": "Изучение Библии" } },
+    { "day": 5, "time": "18:30", "durationMin": 90, "title": { "ro": "Seară de rugăciune", "ru": "Молитвенный вечер" } },
+    { "day": 6, "time": "17:00", "durationMin": 120, "title": { "ro": "Întâlnirea tinerilor", "ru": "Молодёжное служение" } }
+  ],
+  "announcements": [
+    {
+      "id": "app-1-1",
+      "date": "2026-10-26",
+      "title": { "ro": "Aplicația are acum Biblia!", "ru": "В приложении теперь есть Библия!" },
+      "text": {
+        "ro": "Citiți Biblia offline, salvați versetele preferate, urmați un plan de citire și primiți versetul zilei.",
+        "ru": "Читайте Библию без интернета, сохраняйте любимые стихи, следуйте плану чтения и получайте стих дня."
+      }
+    }
+  ],
+  "contacts": {
+    "address": { "ro": "", "ru": "" },
+    "mapsQuery": "",
+    "phone": "",
+    "email": "",
+    "youtube": "https://www.youtube.com/@BETANIAMOLDOVA",
+    "facebook": "",
+    "instagram": "",
+    "telegram": ""
+  }
+}

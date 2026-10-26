@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --primary: 26 71 42;
+  --primary-light: 234 244 236;
+  --bg: 245 241 235;
+  --card: 255 255 255;
+  --ink: 31 41 55;
+  --muted: 120 126 135;
+  --line: 236 231 224;
+}

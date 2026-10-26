@@ -1,13 +1,48 @@
 import '../global.css';
+import { useEffect } from 'react';
 import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { LanguageProvider } from '../i18n';
+import { LanguageProvider, useLanguage } from '../i18n';
+import { ThemeProvider, useTheme } from '../lib/theme';
+import { UserDataProvider } from '../lib/user-data';
+import { ChurchProvider } from '../lib/church';
+import { scheduleDailyVerse } from '../lib/notifications';
+
+function AppStack() {
+  const { colors, settings, loaded } = useTheme();
+  const { language } = useLanguage();
+
+  // Reîmprospătează notificările programate (zilele trecute s-au consumat, limba se poate schimba).
+  useEffect(() => {
+    if (loaded && settings.notify) scheduleDailyVerse(language, settings.notifyHour, false).catch(() => {});
+  }, [loaded, settings.notify, settings.notifyHour, language]);
+
+  return (
+    <>
+      <StatusBar style="light" />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          animation: 'slide_from_right',
+          contentStyle: { backgroundColor: colors.bg },
+        }}
+      />
+    </>
+  );
+}
 
 export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <LanguageProvider>
-        <Stack screenOptions={{ headerShown: false, animation: 'slide_from_right' }} />
+        <ThemeProvider>
+          <UserDataProvider>
+            <ChurchProvider>
+              <AppStack />
+            </ChurchProvider>
+          </UserDataProvider>
+        </ThemeProvider>
       </LanguageProvider>
     </SafeAreaProvider>
   );
