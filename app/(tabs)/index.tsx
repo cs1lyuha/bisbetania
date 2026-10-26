@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, ImageBackground, Share, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, Share, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Clipboard from 'expo-clipboard';
 import * as WebBrowser from 'expo-web-browser';
@@ -8,7 +8,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLanguage } from '../../i18n';
 import { useTheme } from '../../lib/theme';
 import { useUserData, planDayIndex } from '../../lib/user-data';
-import { useChurch, nextService } from '../../lib/church';
+import { useChurch } from '../../lib/church';
+import { formatTime, nextOccurrence } from '../../lib/calendar';
 import { getDailyVerse } from '../../lib/daily';
 import { formatRef, verseKey } from '../../lib/bible';
 import { PLANS, planDays, formatReading } from '../../lib/plans';
@@ -17,6 +18,7 @@ import { success, tap } from '../../lib/haptics';
 import { YOUTUBE_LIVE } from '../../config/links';
 import LanguageToggle from '../../components/LanguageToggle';
 import StatusBarScrim from '../../components/StatusBarScrim';
+import Hero from '../../components/Hero';
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
@@ -43,6 +45,7 @@ export default function HomeScreen() {
   const verseFavKey = verseKey(language, verse.ref.b, verse.ref.c, verse.ref.v);
   const isFavorite = !!highlightOf(verseFavKey);
 
+  const scrollY = useRef(new Animated.Value(0)).current;
   const fade = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     fade.setValue(0);
@@ -52,7 +55,7 @@ export default function HomeScreen() {
   const hour = now.getHours();
   const greeting = hour < 12 ? t('goodMorning') : hour < 18 ? t('goodAfternoon') : t('goodEvening');
 
-  const upcoming = nextService(church.services, now);
+  const upcoming = nextOccurrence(church.services, church.events, language, now);
 
   const plan = activePlan ? PLANS.find((p) => p.id === activePlan) : undefined;
   const progress = activePlan ? plans[activePlan] : undefined;
@@ -92,15 +95,21 @@ export default function HomeScreen() {
       label: t('live'),
       onPress: () => WebBrowser.openBrowserAsync(YOUTUBE_LIVE, { toolbarColor: colors.primaryDeep }),
     },
-    { icon: 'calendar-outline', label: t('scheduleShort'), onPress: () => router.push('/program') },
+    { icon: 'calendar-outline', label: t('calendarTitle'), onPress: () => router.push('/calendar') },
     { icon: 'bookmark-outline', label: t('favoritesShort'), onPress: () => router.push('/favorite') },
   ];
 
   return (
     <View className="flex-1 bg-cream">
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 32 }}>
-        <ImageBackground source={require('../../assets/images/church.png')} resizeMode="cover">
-          <View style={{ backgroundColor: colors.heroOverlay, paddingTop: insets.top + 12, paddingBottom: 72 }} className="px-5">
+      <Animated.ScrollView
+        style={{ flex: 1 }}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 32 }}
+        scrollEventThrottle={16}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })}
+      >
+        <Hero scrollY={scrollY} fadeHeight={140}>
+          <View style={{ paddingTop: insets.top + 12, paddingBottom: 92 }} className="px-5">
             <View className="flex-row items-center justify-between">
               <TouchableOpacity
                 onPress={() => router.push('/setari')}
@@ -122,10 +131,10 @@ export default function HomeScreen() {
             </Text>
             <Text className="text-white/80 text-sm mt-1">{t('homeTagline')}</Text>
           </View>
-        </ImageBackground>
+        </Hero>
   
         {/* Versetul zilei */}
-        <View className="px-4" style={{ marginTop: -52 }}>
+        <View className="px-4" style={{ marginTop: -64 }}>
           <Animated.View
             style={{ opacity: fade, transform: [{ translateY: fade.interpolate({ inputRange: [0, 1], outputRange: [12, 0] }) }], elevation: 6 }}
             className="bg-card rounded-3xl p-5 border border-line"
@@ -183,33 +192,39 @@ export default function HomeScreen() {
           ))}
         </View>
   
-        {/* Următorul serviciu */}
+        {/* Următoarea întâlnire */}
         {upcoming && (
           <TouchableOpacity
-            onPress={() => router.push('/program')}
+            onPress={() => router.push({ pathname: '/calendar', params: { date: upcoming.occurrence.start.toISOString() } })}
             activeOpacity={0.85}
             className="mx-4 mt-4 rounded-3xl p-5 overflow-hidden"
             style={{ backgroundColor: colors.primaryDeep }}
           >
             <View className="flex-row items-center">
               <Ionicons name="time-outline" size={16} color="rgba(255,255,255,0.75)" />
-              <Text className="text-white/75 text-[11px] font-bold uppercase tracking-widest ml-1.5">{t('nextService')}</Text>
+              <Text className="flex-1 text-white/75 text-[11px] font-bold uppercase tracking-widest ml-1.5">{t('nextService')}</Text>
+              <Ionicons name="calendar-outline" size={16} color="rgba(255,255,255,0.75)" />
             </View>
-            <Text className="text-white text-xl font-bold mt-2">{upcoming.service.title[language]}</Text>
-            <View className="flex-row items-center justify-between mt-1">
+            <Text className="text-white text-xl font-bold mt-2">{upcoming.occurrence.title}</Text>
+            {!!upcoming.occurrence.subtitle && (
+              <Text className="text-white/85 text-sm mt-1 leading-5" numberOfLines={2}>
+                {upcoming.occurrence.subtitle}
+              </Text>
+            )}
+            <View className="flex-row items-center justify-between mt-3">
               <Text className="text-white/80 text-sm">
-                {DAY_NAMES[language][upcoming.start.getDay()]}, {upcoming.service.time}
+                {DAY_NAMES[language][upcoming.occurrence.start.getDay()]}, {formatTime(upcoming.occurrence.start)}
               </Text>
               <View className="bg-white/20 rounded-full px-3 py-1 flex-row items-center">
                 {upcoming.live && <View className="w-2 h-2 rounded-full bg-red-400 mr-1.5" />}
                 <Text className="text-white text-xs font-bold">
-                  {upcoming.live ? t('happeningNow') : timeUntil(language, upcoming.start, now)}
+                  {upcoming.live ? t('happeningNow') : timeUntil(language, upcoming.occurrence.start, now)}
                 </Text>
               </View>
             </View>
           </TouchableOpacity>
         )}
-  
+
         {/* Planul de citire */}
         <View className="mx-4 mt-4 bg-card rounded-3xl p-5 border border-line">
           {plan && todayReading ? (
@@ -295,7 +310,7 @@ export default function HomeScreen() {
         )}
   
         <Text className="text-center text-muted text-xs mt-4 px-8 leading-5">{t('subtitle')}</Text>
-      </ScrollView>
+      </Animated.ScrollView>
       <StatusBarScrim />
     </View>
   );

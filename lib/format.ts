@@ -31,3 +31,20 @@ export function formatDate(lang: Language, date: Date | number) {
 export function countLabel(lang: Language, n: number, ro: [string, string], ru: [string, string, string]) {
   return plural(lang, n, ro, ru);
 }
+
+export const MONTH_NAMES: Record<Language, string[]> = {
+  ro: ['Ianuarie', 'Februarie', 'Martie', 'Aprilie', 'Mai', 'Iunie', 'Iulie', 'August', 'Septembrie', 'Octombrie', 'Noiembrie', 'Decembrie'],
+  ru: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+};
+
+/** Zilele săptămânii, începând cu luni. */
+export const WEEKDAY_SHORT: Record<Language, string[]> = {
+  ro: ['Lu', 'Ma', 'Mi', 'Jo', 'Vi', 'Sâ', 'Du'],
+  ru: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
+};
+
+/** „Miercuri, 28 octombrie” / „Среда, 28 октября” */
+export function formatDayTitle(lang: Language, date: Date) {
+  const dayMonth = date.toLocaleDateString(lang === 'ro' ? 'ro-RO' : 'ru-RU', { day: 'numeric', month: 'long' });
+  return `${DAY_NAMES[lang][date.getDay()]}, ${dayMonth}`;
+}

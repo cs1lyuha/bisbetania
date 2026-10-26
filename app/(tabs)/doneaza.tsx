@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   View,
   Text,
-  ScrollView,
   TouchableOpacity,
   TextInput,
   Alert,
-  ImageBackground,
+  Animated,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
@@ -22,12 +21,14 @@ import { tap } from '../../lib/haptics';
 import { DONATION_LINKS, PRESET_AMOUNTS } from '../../config/links';
 import LanguageToggle from '../../components/LanguageToggle';
 import StatusBarScrim from '../../components/StatusBarScrim';
+import Hero from '../../components/Hero';
 
 export default function DonateScreen() {
   const { t } = useLanguage();
   const { colors } = useTheme();
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   const [selectedAmount, setSelectedAmount] = useState<number>(100);
   const [customAmount, setCustomAmount] = useState('');
@@ -63,18 +64,16 @@ export default function DonateScreen() {
 
   return (
     <KeyboardAvoidingView className="flex-1 bg-cream" behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView
-        className="flex-1"
+      <Animated.ScrollView
+        style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 32 }}
         keyboardShouldPersistTaps="handled"
+        scrollEventThrottle={16}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })}
       >
-        <ImageBackground
-          source={require('../../assets/images/church.png')}
-          style={{ borderBottomLeftRadius: 32, borderBottomRightRadius: 32, overflow: 'hidden' }}
-          resizeMode="cover"
-        >
-          <View style={{ backgroundColor: colors.heroOverlay, paddingTop: insets.top + 12 }} className="px-5 pb-8">
+        <Hero scrollY={scrollY} fadeHeight={90}>
+          <View style={{ paddingTop: insets.top + 12 }} className="px-5 pb-14">
             <LanguageToggle />
 
             <View className="items-center mt-4">
@@ -90,9 +89,9 @@ export default function DonateScreen() {
               <Text className="text-white/85 text-base mt-1.5 text-center">{t('tagline')}</Text>
             </View>
           </View>
-        </ImageBackground>
+        </Hero>
 
-        <View className="px-5 mt-5">
+        <View className="px-5 -mt-6">
           <View className="bg-card rounded-2xl p-5 border border-line" style={{ elevation: 2 }}>
             <Text className="text-[11px] font-semibold text-muted uppercase tracking-widest mb-4">{t('amountLabel')}</Text>
 
@@ -206,7 +205,7 @@ export default function DonateScreen() {
 
           <Text className="text-center text-muted text-xs mt-5 leading-5 px-4">{t('subtitle')}</Text>
         </View>
-      </ScrollView>
+      </Animated.ScrollView>
       <StatusBarScrim />
     </KeyboardAvoidingView>
   );

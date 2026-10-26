@@ -1,0 +1,765 @@
+{
+ "updated": "2026-10-26T19:46:49.539Z",
+ "events": [
+  {
+   "id": "1fvvg919mqsj2c3p97b0ju0bk8@google.com@1788537600000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "Prezentarea sezonului și a viziunii",
+   "location": "",
+   "start": "2026-09-04T16:00:00.000Z",
+   "end": "2026-09-04T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "h3jpa81e0tkpj1g8rjbbnprgp8@google.com@1789142400000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "Cum să înveți să iubești? — Oleg Liubarkiy",
+   "location": "",
+   "start": "2026-09-11T16:00:00.000Z",
+   "end": "2026-09-11T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "5ev518b3commf8abo3qv5psbic@google.com@1789196400000",
+   "calendar": "tineret",
+   "title": "Subotnik",
+   "description": "",
+   "location": "",
+   "start": "2026-09-12T07:00:00.000Z",
+   "end": "2026-09-12T10:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "vs075ogfupsh0hejiqg8ao1ims@google.com@1789747200000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "Ghenadii Holodkov\nТема вечера: «Действительно ли я люблю Бога?»",
+   "location": "",
+   "start": "2026-09-18T16:00:00.000Z",
+   "end": "2026-09-18T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "33h9n6k3v9et2hfo1j10m9ihtr@google.com@1790352000000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "",
+   "location": "",
+   "start": "2026-09-25T16:00:00.000Z",
+   "end": "2026-09-25T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "nibbb3rc6guu82akpfbf4ob3o4@google.com@1790956800000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "Pot să slujesc fără dragoste? — Ghenadie Curbet",
+   "location": "",
+   "start": "2026-10-02T16:00:00.000Z",
+   "end": "2026-10-02T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "id4bghaigf3rs2rtlleopvovbk@google.com@1791388800000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 1 · Ioan 1 — Dumnezeu vine aproape de noi (întruparea Dragostei)\nDragostea lui Dumnezeu se vede în faptul că El a venit în lumea noastră și S-a făcut cunoscut prin Isus.",
+   "location": "",
+   "start": "2026-10-07T16:00:00.000Z",
+   "end": "2026-10-07T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "mdhq2cm1ltajb0prb1aui98k9s@google.com@1791561600000",
+   "calendar": "tineret",
+   "title": "Seara de marturii",
+   "description": "Seara de marturii",
+   "location": "",
+   "start": "2026-10-09T16:00:00.000Z",
+   "end": "2026-10-09T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "61ulb9igkleea3v0g5rp15t48u@google.com@1791612000000",
+   "calendar": "tineret",
+   "title": "Rugaciunea cu fratii",
+   "description": "",
+   "location": "",
+   "start": "2026-10-10T06:00:00.000Z",
+   "end": "2026-10-10T07:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "tetv7rkgfn51j1ti6c4iufjak0@google.com@1791993600000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 2 · Ioan 2 — O iubire care transformă\nDragostea lui Isus cheamă ca oamenii să-și îndrepte inima și închinarea spre Dumnezeu.",
+   "location": "",
+   "start": "2026-10-14T16:00:00.000Z",
+   "end": "2026-10-14T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "gv5lm2rspg6clajo9i7dsligc4@google.com@1792166400000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "Dragoste, curte, căsătorie — Nicolae Vozian",
+   "location": "",
+   "start": "2026-10-16T16:00:00.000Z",
+   "end": "2026-10-16T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "3t1hhhii42rse7h0aguhp3ia51@google.com@1792305000000",
+   "calendar": "tineret",
+   "title": "Tineretul conduce serviciul de dimineață",
+   "description": "„Ce mă împiedică să iubesc?”Obstacole în calea dragostei, a slujirii și a unității în biserică, pornind de la exemple din Biblie.",
+   "location": "",
+   "start": "2026-10-18T06:30:00.000Z",
+   "end": "2026-10-18T09:30:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "ha7edi7rrg09ecfo7s81dpkmsc@google.com@1792598400000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 3 · Ioan 3 — Atât de mult a iubit Dumnezeu\nDragostea lui Dumnezeu este atât de mare încât L-a dat pe Fiul Său pentru ca noi să avem viață.",
+   "location": "",
+   "start": "2026-10-21T16:00:00.000Z",
+   "end": "2026-10-21T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "jjdkfc0nmuhe5fj77k6l222o48@google.com@1792771200000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "Conflictologia - Rezolvarea conflictelor cu dragoste, atunci când pare imposibil — Veniamin Culeac",
+   "location": "",
+   "start": "2026-10-23T16:00:00.000Z",
+   "end": "2026-10-23T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "58vkpsuf9b9346u55plddroca4@google.com@1793206800000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 4 · Ioan 4 — Iubirea trece peste bariere\nDumnezeu caută și iubește pe orice om, chiar și pe cei, pe care societatea îi respinge sau îi consideră diferiți.",
+   "location": "",
+   "start": "2026-10-28T17:00:00.000Z",
+   "end": "2026-10-28T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "sdit4ur12c9tfrg0k678klvjbs@google.com@1793379600000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "Cum vorbesc despre Isus fără să par ciudat? — Vlad Chicus",
+   "location": "",
+   "start": "2026-10-30T17:00:00.000Z",
+   "end": "2026-10-30T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "gjqs0pkhgn9c84b5ua9pkl31q8@google.com@1793811600000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 5 · Ioan 5 — Dragostea care caută și vindecă\nIsus vede omul în neputința lui și vine în întâmpinarea lui cu har și vindecare.",
+   "location": "",
+   "start": "2026-11-04T17:00:00.000Z",
+   "end": "2026-11-04T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "e37b1hdsljl6uavfqdh0mphj5k@google.com@1793984400000",
+   "calendar": "tineret",
+   "title": "Seară de rugăciune",
+   "description": "",
+   "location": "",
+   "start": "2026-11-06T17:00:00.000Z",
+   "end": "2026-11-06T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "oi7nr6qfl3m3jdh4bi19b9ron8@google.com@1794416400000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 6 · Ioan 6:1–21 — Dragostea, care se îngrijește de toate nevoile pământești\nPutem avea încredere în Isus chiar și atunci când ne confruntăm cu nevoi și situații care par imposibile.",
+   "location": "",
+   "start": "2026-11-11T17:00:00.000Z",
+   "end": "2026-11-11T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "h5nuqgb03abihi9qrco8a592m0@google.com@1794520800000",
+   "calendar": "tineret",
+   "title": "Tabără de casă",
+   "description": "",
+   "location": "",
+   "start": "2026-11-12T22:00:00.000Z",
+   "end": "2026-11-14T22:00:00.000Z",
+   "allDay": true
+  },
+  {
+   "id": "3vpv26rl39kngn6f96prbdrkr0@google.com@1795021200000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 7 · Ioan 6:22–71 — Dragostea, care se îngrijește de salvarea sufletului nostru\nAdevărata nevoie a omului nu este doar ceea ce Isus ne poate oferi, ci Isus Însuși și viața veșnică prin credință în El.",
+   "location": "",
+   "start": "2026-11-18T17:00:00.000Z",
+   "end": "2026-11-18T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "u3cf6k0ltmdtfokv015ri7ium8@google.com@1795194000000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "",
+   "location": "",
+   "start": "2026-11-20T17:00:00.000Z",
+   "end": "2026-11-20T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "ajtovo3mki7nqbi593ha19j488@google.com@1795626000000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 8 · Ioan 7:1–36 — Să-L cunosc cu adevărat pe Isus\nIsus ne cheamă să căutăm și să cunoaștem adevărul despre El, nu să ne lăsăm conduși de părerile și așteptările celor din jur.",
+   "location": "",
+   "start": "2026-11-25T17:00:00.000Z",
+   "end": "2026-11-25T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "nd9hlspej31mhl50dl7mn59850@google.com@1795798800000",
+   "calendar": "tineret",
+   "title": "Malcishnik & Devishnik",
+   "description": "",
+   "location": "",
+   "start": "2026-11-27T17:00:00.000Z",
+   "end": "2026-11-27T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "5vj3ge1eu7e3fl5ck3e6bev0s0@google.com@1796230800000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 9 · Ioan 7:37–53 — Satisfacerea setei în El\nFericirea adevărată nu vine din lucrurile pe care le căutăm, ci din relația cu Isus, care ne împlinește sufletul.",
+   "location": "",
+   "start": "2026-12-02T17:00:00.000Z",
+   "end": "2026-12-02T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "1hstqnlbie3ha2f6roc5mu96t4@google.com@1796403600000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "",
+   "location": "",
+   "start": "2026-12-04T17:00:00.000Z",
+   "end": "2026-12-04T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "ku8pe4l6ls45vv4csuh1rdhmj0@google.com@1796835600000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 10 · Ioan 8:1–30 — Umblarea în lumină\nA umbla în lumină înseamnă să căutăm sfințenia, renunțând la voia firii și alegând să trăim după voia lui Isus.",
+   "location": "",
+   "start": "2026-12-09T17:00:00.000Z",
+   "end": "2026-12-09T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "roomlbcmemmd4v0b673asdm1uk@google.com@1797008400000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "",
+   "location": "",
+   "start": "2026-12-11T17:00:00.000Z",
+   "end": "2026-12-11T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "forhrtbghoctv8puf8knfsi8dc@google.com@1797440400000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 11 · Ioan 8:31–59 — A trăi pentru gloria lui Isus - Dumnezeul nostru\nIsus nu este doar un învățător, ci Însuși Dumnezeu; de aceea suntem chemați să-I recunoaștem gloria și să-I acordăm cinstea care I se cuvine.",
+   "location": "",
+   "start": "2026-12-16T17:00:00.000Z",
+   "end": "2026-12-16T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "kps3aeec1dushu692d481g2eg8@google.com@1797613200000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "",
+   "location": "",
+   "start": "2026-12-18T17:00:00.000Z",
+   "end": "2026-12-18T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "q9j8dmssj0mouaope4jergeprs@google.com@1798045200000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Rezervă — fără lecție nouă\nSeară lăsată liberă în plan: recuperăm o lecție amânată, dacă e cazul.",
+   "location": "",
+   "start": "2026-12-23T17:00:00.000Z",
+   "end": "2026-12-23T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "q5cuspp6s7g01o7irdao09f430@google.com@1798063200000",
+   "calendar": "tineret",
+   "title": "La Colindat",
+   "description": "",
+   "location": "",
+   "start": "2026-12-23T22:00:00.000Z",
+   "end": "2026-12-24T22:00:00.000Z",
+   "allDay": true
+  },
+  {
+   "id": "4c8lqcci7dadvru3g64ukoc6is@google.com@1798149600000",
+   "calendar": "tineret",
+   "title": "Crăciun",
+   "description": "",
+   "location": "",
+   "start": "2026-12-24T22:00:00.000Z",
+   "end": "2026-12-25T22:00:00.000Z",
+   "allDay": true
+  },
+  {
+   "id": "uaia6iml9h9d2nnvbb8negk11k@google.com@1799859600000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 12 · Ioan 9 — Să observăm nevoile oamenilor din jur\nIsus vede persoana dincolo de problema ei și ne învață să privim oamenii cu compasiune.",
+   "location": "",
+   "start": "2027-01-13T17:00:00.000Z",
+   "end": "2027-01-13T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "bmt0bcm235h3ltv5rs0tfcs3u0@google.com@1799964000000",
+   "calendar": "tineret",
+   "title": "Tabără de casă",
+   "description": "",
+   "location": "",
+   "start": "2027-01-14T22:00:00.000Z",
+   "end": "2027-01-16T22:00:00.000Z",
+   "allDay": true
+  },
+  {
+   "id": "6ccogmnvs8k7gl0he1l6bk9gog@google.com@1800464400000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 13 · Ioan 10 — Urmarea Păstorului cel Bun\nIsus ne cunoaște, ne protejează și Își dă viața pentru noi; de aceea putem să ne încredem în El.",
+   "location": "",
+   "start": "2027-01-20T17:00:00.000Z",
+   "end": "2027-01-20T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "ik6ft6uft955un7b2pp1qs2umo@google.com@1800637200000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "",
+   "location": "",
+   "start": "2027-01-22T17:00:00.000Z",
+   "end": "2027-01-22T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "ob9s67oktvgrattlb9v60h2p7g@google.com@1801069200000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 14 · Ioan 11 — A trăi cu speranța vieții veșnice\nIsus este învierea și viața, iar credința în El ne ajută să privim dincolo de moarte și să trăim cu speranța vieții veșnice.",
+   "location": "",
+   "start": "2027-01-27T17:00:00.000Z",
+   "end": "2027-01-27T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "fje4181jkn6cag7fq53gnbcut8@google.com@1801242000000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "",
+   "location": "",
+   "start": "2027-01-29T17:00:00.000Z",
+   "end": "2027-01-29T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "u5gkiv3ed5h9uq5h24sgos0hfk@google.com@1801674000000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 15 · Ioan 12 — Să ne dăruim lui Isus pe deplin\nA-L iubi pe Isus înseamnă să fim gata să-I oferim ceea ce avem mai de preț și să ne predăm Lui.",
+   "location": "",
+   "start": "2027-02-03T17:00:00.000Z",
+   "end": "2027-02-03T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "fms80esehe3427rn7lvlsgip9o@google.com@1801846800000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "",
+   "location": "",
+   "start": "2027-02-05T17:00:00.000Z",
+   "end": "2027-02-05T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "2dkuoibbs54eskikfblv2qnigo@google.com@1802278800000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 16 · Ioan 13 — Slujirea ca expresie a iubirii\nDragostea adevărată se vede prin smerenie și disponibilitatea de a-i sluji pe ceilalți.",
+   "location": "",
+   "start": "2027-02-10T17:00:00.000Z",
+   "end": "2027-02-10T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "gcfaej0lck1krtvs7b2apsr1s0@google.com@1802451600000",
+   "calendar": "tineret",
+   "title": "Seară de rugăciune",
+   "description": "",
+   "location": "",
+   "start": "2027-02-12T17:00:00.000Z",
+   "end": "2027-02-12T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "8hnptv6sfu00nvsmjmp165d4mo@google.com@1802590200000",
+   "calendar": "tineret",
+   "title": "Tineretul conduce serviciul de dimineață",
+   "description": "",
+   "location": "",
+   "start": "2027-02-14T07:30:00.000Z",
+   "end": "2027-02-14T10:30:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "ootejliuhm7jsrnooscblom2ck@google.com@1802883600000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 17 · Ioan 14 — Dacă Mă iubiți, păziți poruncile Mele\nDragostea pentru Isus nu este doar un sentiment, ci se exprimă prin ascultare.",
+   "location": "",
+   "start": "2027-02-17T17:00:00.000Z",
+   "end": "2027-02-17T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "vtu8qe0v34iimo6ugei5n0s8cg@google.com@1803056400000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "",
+   "location": "",
+   "start": "2027-02-19T17:00:00.000Z",
+   "end": "2027-02-19T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "uptela6otjj9rgt760vab5nh3c@google.com@1803488400000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 18 · Ioan 15 — Rămâneți în Mine și iubiți-vă unii pe alții\nPutem aduce rod și îi putem iubi pe ceilalți atunci când rămânem conectați la Hristos.",
+   "location": "",
+   "start": "2027-02-24T17:00:00.000Z",
+   "end": "2027-02-24T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "4naeimpmmr110kvninbdjh5700@google.com@1803661200000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "",
+   "location": "",
+   "start": "2027-02-26T17:00:00.000Z",
+   "end": "2027-02-26T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "a12amso565bdur41am88vhun4c@google.com@1804093200000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 19 · Ioan 16 — Iubirea care rămâne în încercare\nChiar în perioadele de teamă, tristețe și confuzie, Isus ne cheamă să avem încredere în El.",
+   "location": "",
+   "start": "2027-03-03T17:00:00.000Z",
+   "end": "2027-03-03T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "l8ba2gj3d2htk9od9i0hhemr48@google.com@1804266000000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "",
+   "location": "",
+   "start": "2027-03-05T17:00:00.000Z",
+   "end": "2027-03-05T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "jresi0d5k6omthssi9ghnupaq4@google.com@1804698000000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 20 · Ioan 17 — Iubirea și unitatea ucenicilor\nDragostea și unitatea dintre credincioși sunt parte din mărturia noastră înaintea lumii.",
+   "location": "",
+   "start": "2027-03-10T17:00:00.000Z",
+   "end": "2027-03-10T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "ocut2sr05d0na5t9hbg06d4rfk@google.com@1804870800000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "",
+   "location": "",
+   "start": "2027-03-12T17:00:00.000Z",
+   "end": "2027-03-12T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "2akh73vn92tif14b879u6ekp8s@google.com@1805302800000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 21 · Ioan 18 — Iubirea care nu fuge de sacrificiu\nIsus rămâne ascultător de Tatăl chiar atunci când ascultarea Îl duce spre suferință și cruce.",
+   "location": "",
+   "start": "2027-03-17T17:00:00.000Z",
+   "end": "2027-03-17T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "50fboje8n4f6pgtqfrb5uaqk5o@google.com@1805475600000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "",
+   "location": "",
+   "start": "2027-03-19T17:00:00.000Z",
+   "end": "2027-03-19T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "ofoncpiiajmoi1p0cafnveig0o@google.com@1805907600000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 22 · Ioan 19 — Dragostea dusă până la capăt\nCrucea ne arată profunzimea dragostei lui Hristos și prețul plătit pentru mântuirea noastră.",
+   "location": "",
+   "start": "2027-03-24T17:00:00.000Z",
+   "end": "2027-03-24T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "odpnse4c42pbmn0gsd69rf96hg@google.com@1806080400000",
+   "calendar": "tineret",
+   "title": "Malcishnik & Devishnik",
+   "description": "",
+   "location": "",
+   "start": "2027-03-26T17:00:00.000Z",
+   "end": "2027-03-26T19:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "ulof5nes0o4sm36q05u3jvares@google.com@1806508800000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 23 · Ioan 20 — Iubirea care învinge moartea\nÎnvierea lui Isus ne oferă speranță și transformă modul în care privim viața și misiunea noastră.",
+   "location": "",
+   "start": "2027-03-31T16:00:00.000Z",
+   "end": "2027-03-31T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "q5nn9cklfgf01t71ata7hjgppk@google.com@1806681600000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "",
+   "location": "",
+   "start": "2027-04-02T16:00:00.000Z",
+   "end": "2027-04-02T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "1f4og986l1jj8062a6d0u9b9q4@google.com@1807113600000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 24 · Ioan 21 — „Mă iubești?” — Iubește și păstorește\nIsus leagă direct dragostea pentru El de responsabilitatea de a-i iubi, îngriji și sluji pe ceilalți.",
+   "location": "",
+   "start": "2027-04-07T16:00:00.000Z",
+   "end": "2027-04-07T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "j82mpfmhgme66ccrn19a582a5c@google.com@1807286400000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "",
+   "location": "",
+   "start": "2027-04-09T16:00:00.000Z",
+   "end": "2027-04-09T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "dftdtp9uh0tba03vvk2s3h8oco@google.com@1807718400000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 25 · 1 Ioan 1 — Umblând în lumină\nO relație autentică cu Dumnezeu se vede printr-o viață trăită în lumină, adevăr și părtășie cu El.",
+   "location": "",
+   "start": "2027-04-14T16:00:00.000Z",
+   "end": "2027-04-14T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "jjealrh1i9aaaqp9rtgehc7eok@google.com@1807891200000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "",
+   "location": "",
+   "start": "2027-04-16T16:00:00.000Z",
+   "end": "2027-04-16T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "dfq4d7cl7gdlbfofv1gd4rru08@google.com@1808323200000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 26 · 1 Ioan 2 — Dragostea pentru Dumnezeu vs. dragostea pentru lume\nNu putem lăsa lucrurile lumii să ocupe locul care Îi aparține lui Dumnezeu în inima noastră.",
+   "location": "",
+   "start": "2027-04-21T16:00:00.000Z",
+   "end": "2027-04-21T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "4fvhi35nhdbj63p746ksmjq02o@google.com@1808496000000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "",
+   "location": "",
+   "start": "2027-04-23T16:00:00.000Z",
+   "end": "2027-04-23T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "cv2v1ju5fnpg938ehcifo60snc@google.com@1808928000000",
+   "calendar": "tineret",
+   "title": "Seară de rugăciune",
+   "description": "",
+   "location": "",
+   "start": "2027-04-28T16:00:00.000Z",
+   "end": "2027-04-28T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "4gqt40kdfkcf6hrmtujk10tli0@google.com@1808946000000",
+   "calendar": "tineret",
+   "title": "Joia Mare",
+   "description": "",
+   "location": "",
+   "start": "2027-04-28T21:00:00.000Z",
+   "end": "2027-04-29T21:00:00.000Z",
+   "allDay": true
+  },
+  {
+   "id": "f0ss3pnqsbpu68gc91d27uecbg@google.com@1809205200000",
+   "calendar": "tineret",
+   "title": "Paștele",
+   "description": "",
+   "location": "",
+   "start": "2027-05-01T21:00:00.000Z",
+   "end": "2027-05-02T21:00:00.000Z",
+   "allDay": true
+  },
+  {
+   "id": "dg03252i36mcgefjpaev8u78hk@google.com@1809532800000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 27 · 1 Ioan 3 — Iubirea în fapte, nu doar în cuvinte\nDragostea creștină trebuie să fie practică și vizibilă în felul în care ne purtăm față de frații noștri.",
+   "location": "",
+   "start": "2027-05-05T16:00:00.000Z",
+   "end": "2027-05-05T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "3ticnk7qn70f5qmaijenr74at4@google.com@1809705600000",
+   "calendar": "tineret",
+   "title": "Tineret*",
+   "description": "Marcat cu * în planul sezonului — de confirmat specificul.",
+   "location": "",
+   "start": "2027-05-07T16:00:00.000Z",
+   "end": "2027-05-07T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "coi9uenmiev8m20e220eqc2o10@google.com@1810137600000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 28 · 1 Ioan 4 — Dumnezeu este dragoste\nÎl putem iubi pe Dumnezeu și pe oameni pentru că Dumnezeu ne-a iubit primul; dragostea își are originea în El.",
+   "location": "",
+   "start": "2027-05-12T16:00:00.000Z",
+   "end": "2027-05-12T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "ea13mil9209tns3q95h7udsk4k@google.com@1810242000000",
+   "calendar": "tineret",
+   "title": "Tabăra de tineret",
+   "description": "",
+   "location": "",
+   "start": "2027-05-13T21:00:00.000Z",
+   "end": "2027-05-16T21:00:00.000Z",
+   "allDay": true
+  },
+  {
+   "id": "ociluflrb4otsfdki81s4gr1ck@google.com@1810742400000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Lecția 29 · 1 Ioan 5 — Credință, ascultare și viață\nDragostea pentru Dumnezeu, credința în Hristos și ascultarea de poruncile Lui sunt strâns legate.",
+   "location": "",
+   "start": "2027-05-19T16:00:00.000Z",
+   "end": "2027-05-19T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "31dikmphmk74bps0un1v3tk780@google.com@1810915200000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "",
+   "location": "",
+   "start": "2027-05-21T16:00:00.000Z",
+   "end": "2027-05-21T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "48hb66momt9fckpfdr5q4pg2ph@google.com@1811019600000",
+   "calendar": "tineret",
+   "title": "Picnic BETANIA",
+   "description": "",
+   "location": "",
+   "start": "2027-05-22T21:00:00.000Z",
+   "end": "2027-05-23T21:00:00.000Z",
+   "allDay": true
+  },
+  {
+   "id": "9jim4glhidno2k2tgv4up8lmik@google.com@1811347200000",
+   "calendar": "tineret",
+   "title": "Grup mic",
+   "description": "Încheierea sezonului la grupele de casă\nFără lecție nouă: ultima întâlnire a grupelor din acest sezon.",
+   "location": "",
+   "start": "2027-05-26T16:00:00.000Z",
+   "end": "2027-05-26T18:00:00.000Z",
+   "allDay": false
+  },
+  {
+   "id": "trheeqeg3nmb21k2da58hffoqo@google.com@1811520000000",
+   "calendar": "tineret",
+   "title": "Tineret",
+   "description": "",
+   "location": "",
+   "start": "2027-05-28T16:00:00.000Z",
+   "end": "2027-05-28T18:00:00.000Z",
+   "allDay": false
+  }
+ ]
+}
