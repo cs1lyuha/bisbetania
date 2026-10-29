@@ -40,7 +40,9 @@ Lucrezi la aplicația bisericii „Betania” din `~/bisbetania` (GitHub cs1lyuh
 - **Etichetele de secțiune:** componenta `SectionLabel` (11, `font-ui-bold`, majuscule, spațiere largă, `muted`).
 - **Fonturile** (`lib/fonts.ts`): Inter cu `font-ui`, `font-ui-medium`, `font-ui-semibold`, `font-ui-bold`; Source Serif 4 cu `font-display` (versete), `font-display-italic`, `font-display-semibold` (titluri, nume, cifre). Greutatea e în familie: **nu** pune `font-bold`/`fontWeight` peste ele (pe Android revine fontul sistemului). Mărimile: text 15–16, secundar 12–13, etichete 11 (vezi `docs/design/REDESIGN-P2-P4-NOTE.md`).
 - **Componente existente:**
-  - antetul paginilor: `ScreenHeader`
+  - antetul paginilor: `ScreenHeader`; pe ecranele cu antet mare (poză), `CollapsedBar` la derulare
+  - butoanele rotunde de pe antete: `GlassButton` (sticlă Apple interactivă pe iOS 26+, cerc translucid în rest)
+  - taburile: pe iOS 26+ bara sistemului (`NativeTabs`, Liquid Glass), în rest `GlassTabBar`; jos, în taburi, lasă `useTabBarSpace()`
   - membri: `MemberRow`, `Avatar`, `FriendButton`
 - **Iconițele:** `components/Icon.tsx` (SVG în stilul Lucide; adaugă acolo ce lipsește). Ionicons doar în ecranele încă nerefăcute; verifică numele în glyphmap.
 - **Vibrațiile:** `tap()` la atingere, `success()` la reușită (din `lib/haptics`).

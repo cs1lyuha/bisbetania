@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Pressable, Animated, Platform, StyleSheet } from 'react-native';
 import type { BottomTabBarProps } from 'expo-router/tabs';
 import { BlurView } from 'expo-blur';
-import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
+import { LIQUID_GLASS } from '../lib/glass';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../lib/theme';
 import { tap } from '../lib/haptics';
@@ -16,13 +16,15 @@ const lift = (insetBottom: number) => (insetBottom > 0 ? insetBottom - 6 : 12);
 /** Spațiul de lăsat sub conținutul unui tab, ca ultimul card să nu rămână sub bara plutitoare. */
 export function useTabBarSpace() {
   const insets = useSafeAreaInsets();
+  if (LIQUID_GLASS) {
+    // Bara sistemului (iOS 26+): marginea de jos raportată în tab include deja bara (49 pt + bara de acasă).
+    // Dacă ar fi doar bara de acasă, adăugăm noi înălțimea barei.
+    return (insets.bottom >= 49 ? insets.bottom : insets.bottom + 49) + 16;
+  }
   return HEIGHT + lift(insets.bottom) + 16;
 }
 
-// Sticla adevărată (Liquid Glass) există din iOS 26; mai vechi și pe web, un strat estompat; pe Android, unul translucid.
-const LIQUID_GLASS = Platform.OS === 'ios' && isLiquidGlassAvailable();
-
-/** Bara de taburi plutitoare, ca o bulă de sticlă, cu o pastilă care alunecă spre tabul ales. */
+/** Bara de taburi plutitoare (imitația de sticlă, unde nu e Liquid Glass), cu o pastilă care alunecă spre tabul ales. */
 export default function GlassTabBar({ state, descriptors, emitter, navigateToTab }: BottomTabBarProps) {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
@@ -48,9 +50,8 @@ export default function GlassTabBar({ state, descriptors, emitter, navigateToTab
         ]}
       >
         <View style={[StyleSheet.absoluteFill, styles.clip]}>
-          {LIQUID_GLASS ? (
-            <GlassView style={StyleSheet.absoluteFill} glassEffectStyle="regular" colorScheme={colors.isDark ? 'dark' : 'light'} />
-          ) : Platform.OS === 'android' ? (
+          {/* Pe iOS 26+ e bara sistemului (vezi app/(tabs)/_layout.tsx); aici: estompare pe iOS vechi și web, translucid pe Android. */}
+          {Platform.OS === 'android' ? (
             <View style={[StyleSheet.absoluteFill, { backgroundColor: `${colors.card}F2` }]} />
           ) : (
             <>

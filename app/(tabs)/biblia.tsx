@@ -8,6 +8,7 @@ import { useUserData } from '../../lib/user-data';
 import { NEW_TESTAMENT, OLD_TESTAMENT, TRANSLATION_NAME, formatRef } from '../../lib/bible';
 import { tap } from '../../lib/haptics';
 import ScreenHeader from '../../components/ScreenHeader';
+import GlassButton from '../../components/GlassButton';
 import { useTabBarSpace } from '../../components/GlassTabBar';
 
 export default function BibleScreen() {
@@ -36,8 +37,8 @@ export default function BibleScreen() {
         back={false}
         right={
           <View className="flex-row" style={{ gap: 8 }}>
-            <HeaderIcon icon="bookmark-outline" onPress={() => router.push('/favorite')} />
-            <HeaderIcon icon="search" onPress={() => router.push('/cautare')} />
+            <HeaderIcon icon="bookmark-outline" label={t('favoritesTitle')} onPress={() => router.push('/favorite')} />
+            <HeaderIcon icon="search" label={t('searchTitle')} onPress={() => router.push('/cautare')} />
           </View>
         }
       />
@@ -113,10 +114,10 @@ export default function BibleScreen() {
   );
 }
 
-function HeaderIcon({ icon, onPress }: { icon: keyof typeof Ionicons.glyphMap; onPress: () => void }) {
+function HeaderIcon({ icon, label, onPress }: { icon: keyof typeof Ionicons.glyphMap; label: string; onPress: () => void }) {
   return (
-    <TouchableOpacity onPress={onPress} hitSlop={8} activeOpacity={0.7} className="w-9 h-9 rounded-full bg-white/15 items-center justify-center">
+    <GlassButton onPress={onPress} size={36} accessibilityLabel={label}>
       <Ionicons name={icon} size={19} color="white" />
-    </TouchableOpacity>
+    </GlassButton>
   );
 }

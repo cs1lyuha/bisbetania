@@ -1,11 +1,13 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../lib/theme';
+import { useLanguage } from '../i18n';
 import { tap } from '../lib/haptics';
 import Icon from './Icon';
 import HeaderBackground from './HeaderBackground';
+import GlassButton from './GlassButton';
 
 interface Props {
   title: string;
@@ -21,6 +23,7 @@ export default function ScreenHeader({ title, subtitle, back = true, right, chil
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
+  const { t } = useLanguage();
 
   return (
     <View
@@ -37,18 +40,17 @@ export default function ScreenHeader({ title, subtitle, back = true, right, chil
       <HeaderBackground />
       <View className="flex-row items-center" style={{ minHeight: 42 }}>
         {back && (
-          <TouchableOpacity
+          <GlassButton
             onPress={() => {
               tap();
               if (router.canGoBack()) router.back();
               else router.replace('/');
             }}
-            activeOpacity={0.7}
-            hitSlop={8}
-            className="w-10 h-10 rounded-full bg-white/15 border border-white/20 items-center justify-center mr-3"
+            accessibilityLabel={t('back')}
+            style={{ marginRight: 12 }}
           >
             <Icon name="chevron-left" size={22} color="white" />
-          </TouchableOpacity>
+          </GlassButton>
         )}
         <View className="flex-1">
           {/* Titlurile lungi (sau în rusă) se micșorează puțin în loc să fie tăiate. */}

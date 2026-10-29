@@ -7,7 +7,8 @@ Capturi ale aplicației actuale, pentru designer. Merg împreună cu [`../DESIGN
 > **Runda 2 (1.3.0):**
 > - neutrele (fundal, text, linii) sunt nuanțate după culoarea de accent, în luminos și în întunecat
 > - antetele au un gradient diagonal cu colțuri rotunjite
-> - bara de jos plutește, ca o bulă de sticlă: Liquid Glass pe iOS 26+, estompare pe iOS mai vechi și pe web, translucidă pe Android
+> - bara de jos: pe iOS 26+ e chiar bara sistemului, cu Liquid Glass (lentila se mărește și urmează degetul); pe iOS mai vechi și pe web plutește cu estompare, pe Android e translucidă. Butoanele rotunde din antete sunt sticlă interactivă pe iOS 26+
+> - Acasă, Donează și Profil: la derulare apare o bară îngustă cu gradient și titlu (în capturi se vede imitația web, nu sticla)
 > - pe Acasă, Biblia a ieșit din scurtături (e în bară), iar memorarea a devenit cardul „Provocarea săptămânii”, în culoarea temei, cu steluțe care se aprind pe margini
 > - cardurile principale se strâng elastic la atingere
 

@@ -24,6 +24,8 @@ import PressableScale from '../../components/PressableScale';
 import WeeklyChallengeCard from '../../components/WeeklyChallengeCard';
 import HeaderBackground from '../../components/HeaderBackground';
 import Avatar from '../../components/Avatar';
+import GlassButton from '../../components/GlassButton';
+import { LIQUID_GLASS } from '../../lib/glass';
 import { useAuth } from '../../lib/auth';
 import { useCommunity } from '../../lib/community';
 import { fullName } from '../../lib/supabase';
@@ -131,37 +133,29 @@ export default function HomeScreen() {
         <Hero scrollY={scrollY} fadeHeight={140} onHeight={setHeroHeight}>
           <View style={{ paddingTop: insets.top + 12, paddingBottom: 92 }} className="px-5">
             <View className="flex-row items-center justify-between">
-              <TouchableOpacity
-                onPress={() => router.push('/setari')}
-                hitSlop={10}
-                className="w-10 h-10 rounded-full bg-white/15 items-center justify-center"
-                activeOpacity={0.7}
-              >
+              <GlassButton onPress={() => router.push('/setari')} hitSlop={10} accessibilityLabel={t('settingsTitle')}>
                 <Ionicons name="color-palette-outline" size={20} color="white" />
-              </TouchableOpacity>
+              </GlassButton>
               {auth.enabled && (
-                <TouchableOpacity
+                <GlassButton
                   onPress={() => router.push(auth.session ? '/profil' : '/cont')}
                   hitSlop={10}
-                  activeOpacity={0.7}
-                  className="ml-2 w-10 h-10 rounded-full bg-white/15 items-center justify-center overflow-hidden"
+                  accessibilityLabel={t('profileTitle')}
+                  style={{ marginLeft: 8 }}
                 >
                   {auth.profile ? (
-                    <Avatar url={auth.profile.avatar_url} name={fullName(auth.profile)} size={40} />
+                    // Pe sticlă poza stă într-un inel; altfel umple cercul.
+                    <Avatar url={auth.profile.avatar_url} name={fullName(auth.profile)} size={LIQUID_GLASS ? 34 : 40} />
                   ) : (
                     <Ionicons name="person-outline" size={19} color="white" />
                   )}
-                </TouchableOpacity>
+                </GlassButton>
               )}
               {myStreak > 0 && (
-                <TouchableOpacity
-                  onPress={() => router.push('/membri')}
-                  activeOpacity={0.8}
-                  className="ml-2 h-10 px-3 rounded-full bg-white/15 flex-row items-center"
-                >
+                <GlassButton onPress={() => router.push('/membri')} pill accessibilityLabel={`${t('streak')}: ${myStreak}`} style={{ marginLeft: 8 }}>
                   <Ionicons name="flame" size={17} color="#FFB347" />
                   <Text className="text-white font-bold ml-1">{myStreak}</Text>
-                </TouchableOpacity>
+                </GlassButton>
               )}
               <View className="flex-1" />
               <LanguageToggle />

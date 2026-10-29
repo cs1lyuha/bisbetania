@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLanguage } from '../i18n';
 import { useTheme } from '../lib/theme';
 import { tap } from '../lib/haptics';
 import HeaderBackground from './HeaderBackground';
 import Icon from './Icon';
+import GlassButton from './GlassButton';
 
 const BAR = 44;
 const RADIUS = 22;
@@ -84,18 +85,16 @@ export default function CollapsedBar({ scrollY, showAt, title, onBack }: Props) 
       </View>
       <Animated.View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, marginTop: insets.top, height: BAR, opacity: titleOpacity }}>
         {onBack && shown ? (
-          <TouchableOpacity
+          <GlassButton
             onPress={() => {
               tap();
               onBack();
             }}
-            hitSlop={8}
-            accessibilityRole="button"
+            size={36}
             accessibilityLabel={t('back')}
-            className="w-9 h-9 rounded-full bg-white/15 border border-white/20 items-center justify-center"
           >
             <Icon name="chevron-left" size={20} color="white" />
-          </TouchableOpacity>
+          </GlassButton>
         ) : (
           <View className="w-9" />
         )}

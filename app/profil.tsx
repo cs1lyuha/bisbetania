@@ -20,6 +20,9 @@ import AchievementsGrid from '../components/AchievementsGrid';
 import Icon, { IconName } from '../components/Icon';
 import ProgressBar from '../components/ProgressBar';
 import HeaderBackground from '../components/HeaderBackground';
+import GlassButton from '../components/GlassButton';
+import { GlassView } from 'expo-glass-effect';
+import { LIQUID_GLASS } from '../lib/glass';
 import SectionLabel from '../components/SectionLabel';
 import CollapsedBar, { useCollapsedBarHeight } from '../components/CollapsedBar';
 import { useCommunity } from '../lib/community';
@@ -110,7 +113,7 @@ export default function ProfileScreen() {
           />
         }
       >
-        <ProfileHeader title={t('profileTitle')} scrollY={scrollY} onBack={goBack} />
+        <ProfileHeader title={t('profileTitle')} backLabel={t('back')} scrollY={scrollY} onBack={goBack} />
 
         <View className="items-center px-4" style={{ marginTop: -(AVATAR / 2 + AVATAR_RING) }}>
           <View style={{ borderRadius: AVATAR / 2 + AVATAR_RING, borderWidth: AVATAR_RING, borderColor: colors.bg }}>
@@ -176,9 +179,15 @@ function PullSpinner({ scrollY, refreshing }: { scrollY: Animated.Value; refresh
         transform: [{ scale: refreshing ? 1 : scale }],
       }}
     >
-      <View className="w-9 h-9 rounded-full bg-white/20 border border-white/25 items-center justify-center">
-        <ActivityIndicator size="small" color="white" />
-      </View>
+      {LIQUID_GLASS ? (
+        <GlassView glassEffectStyle="regular" colorScheme="dark" style={{ width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' }}>
+          <ActivityIndicator size="small" color="white" />
+        </GlassView>
+      ) : (
+        <View className="w-9 h-9 rounded-full bg-white/20 border border-white/25 items-center justify-center">
+          <ActivityIndicator size="small" color="white" />
+        </View>
+      )}
     </Animated.View>
   );
 }
@@ -187,7 +196,7 @@ function PullSpinner({ scrollY, refreshing }: { scrollY: Animated.Value; refresh
  * Antetul profilului: accentul închis, cu arcuri concentrice în jurul pozei (care stă pe jumătate peste el).
  * La tras în jos fundalul se întinde în sus (marginea de jos rămâne pe loc), ca să nu se vadă un gol.
  */
-function ProfileHeader({ title, scrollY, onBack }: { title: string; scrollY: Animated.Value; onBack: () => void }) {
+function ProfileHeader({ title, backLabel, scrollY, onBack }: { title: string; backLabel: string; scrollY: Animated.Value; onBack: () => void }) {
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const { colors } = useTheme();
@@ -220,17 +229,15 @@ function ProfileHeader({ title, scrollY, onBack }: { title: string; scrollY: Ani
         </Svg>
       </Animated.View>
       <View className="flex-row items-center px-4" style={{ paddingTop: insets.top + 8 }}>
-        <TouchableOpacity
+        <GlassButton
           onPress={() => {
             tap();
             onBack();
           }}
-          activeOpacity={0.7}
-          hitSlop={8}
-          className="w-10 h-10 rounded-full bg-white/15 border border-white/20 items-center justify-center"
+          accessibilityLabel={backLabel}
         >
           <Icon name="chevron-left" size={22} color="white" />
-        </TouchableOpacity>
+        </GlassButton>
         <Text className="flex-1 text-white font-ui-semibold text-[18px] text-center" numberOfLines={1}>
           {title}
         </Text>
