@@ -1,6 +1,6 @@
 # Redesign P2 + P4: notițe pentru implementare
 
-Sursa: `~/Downloads/BisBetania · Redesign P2 + P4.pdf` (16 pagini). Fiecare pagină e un ecran lung, iar 1pt de telefon = 2,25px la 216 dpi.
+Sursa: [`BisBetania-Redesign-P2-P4.pdf`](BisBetania-Redesign-P2-P4.pdf) (16 pagini). Fiecare pagină e un ecran lung, iar 1pt de telefon = 2,25px la 216 dpi.
 
 | Pagini | Ecran | Variante |
 |---|---|---|
@@ -55,3 +55,12 @@ Par să fie din setul **Lucide** (`lucide-react-native`, care folosește `react-
 - Rândul „Următoarea: Foc viu 15/30” are bară de progres.
 - Dedesubt: butonul „Slavă Domnului!”, linkul „Vezi realizările” și „1 din 2”.
 - **În modul întunecat**, textul de pe butoanele pline e închis la culoare (`bg`).
+
+## Cum s-a implementat (diferențe față de notițele de mai sus)
+- **Inter** vine din `@expo-google-fonts/inter`, doar greutățile 400, 500, 600 și 700.
+- **Source Serif 4** nu vine din `@expo-google-fonts/source-serif-4`: fișierele din Google Fonts sunt la o mărime optică mică (mai late și mai grele decât în planșe). Sunt fișierele oficiale Adobe, în `assets/fonts/` (licența OFL alături), în mărimile optice potrivite: *Subhead Semibold* pentru titluri, nume și cifre, *Text Regular* și *Text Italic* pentru versete și cererile răspunse.
+- **Iconițele** sunt SVG proprii în `components/Icon.tsx`, cu traseele din Lucide (licența ISC e în fișier), nu pachetul `lucide-react-native` (ar fi adus ~1500 de iconițe în aplicație). Ce nu există în Lucide e desenat în același stil: mâinile în rugăciune, rugul aprins, inima cu Cuvântul, trei persoane, podiumul.
+- **Token nou `onPrimary`** (clasa `text-on-primary`): alb pe accent în modul luminos, `bg` în cel întunecat.
+- **Mărimile textului** sunt măsurate din planșe (lățimea acelorași cuvinte în PDF și în aplicație): text 15–16, secundar 12–13, etichete 11, titlul antetului 24, numele din profil 30, cifra seriei 46.
+- **Antetul nou** (`ScreenHeader`: titlu serif, butonul „înapoi” de 44pt) se vede pe toate ecranele, nu doar pe cele din planșe.
+- **Capturile de comparație:** `HEIGHT=1720 node tools/capturi/shoot.mjs …` face capturi lungi, cât paginile din PDF; variantele din planșe (clasament auriu, perete vișiniu întunecat, felicitare smarald întunecat) sunt în `shoot.mjs`.
