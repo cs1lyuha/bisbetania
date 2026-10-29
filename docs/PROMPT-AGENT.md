@@ -27,7 +27,8 @@ Lucrezi la aplicația bisericii „Betania” din `~/bisbetania` (GitHub cs1lyuh
 - Ca să preiei stilul, cel puțin un ecran întreg: `app/membri.tsx` sau `app/memorare.tsx`.
 
 ## Stilul și designul (obligatoriu)
-- Expo SDK 55, expo-router (rutele sunt fișiere în `app/`), React Native 0.83, TypeScript strict, NativeWind v4, Supabase JS.
+- Expo SDK 58, expo-router (rutele sunt fișiere în `app/`), React Native 0.88 (Node ≥ 22.13), TypeScript strict, NativeWind v4, Supabase JS.
+- Ref-urile spre componente React Native au tipurile instanței (de exemplu `useRef<ScrollViewInstance>(null)`, importat ca tip din `react-native`).
 - **Culorile se dau doar prin token-uri**, ca să meargă toate temele (6 culori, mod luminos și întunecat):
   - fundal `bg-cream`, carduri `bg-card` cu `border border-line`
   - text `text-ink` / `text-muted`
@@ -72,7 +73,7 @@ Lucrezi la aplicația bisericii „Betania” din `~/bisbetania` (GitHub cs1lyuh
 ## Pornirea variantei web
 ```
 cd ~/bisbetania
-npm i --no-save react-native-web@0.21.2 react-dom@19.2.0 @expo/metro-runtime react-native-web-webview
+npm i --no-save react-native-web@~0.21.4 react-dom@19.3.0 @expo/metro-runtime@~58.0.15 react-native-web-webview
 systemd-run --user --unit=bisexpo --collect -p WorkingDirectory=$HOME/bisbetania -E CI=1 npx expo start --web --port 8081 --clear
 ```
 - **Overlay-ul „Cannot manually set color scheme”:** apare doar pe web și se închide din X (aproximativ x=413, y=98).

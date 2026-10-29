@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Share } from 'react-native';
+import type { ScrollViewInstance } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Clipboard from 'expo-clipboard';
 import { useLocalSearchParams } from 'expo-router';
@@ -31,7 +32,7 @@ export default function ReaderScreen() {
   const [selected, setSelected] = useState<number[]>([]);
   const [showFont, setShowFont] = useState(false);
 
-  const scrollRef = useRef<ScrollView>(null);
+  const scrollRef = useRef<ScrollViewInstance>(null);
 
   const book = BOOKS[pos.b - 1];
   const verses = data?.[pos.b - 1]?.[pos.c - 1] ?? [];

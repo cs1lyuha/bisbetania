@@ -1,6 +1,6 @@
 // Capturi ale aplicației (build web) în Chrome fără interfață, la mărime de iPhone, cu Supabase simulat.
 // Pași:
-//   npm i --no-save react-native-web@0.21.2 react-dom@19.2.0 @expo/metro-runtime react-native-web-webview
+//   npm i --no-save react-native-web@~0.21.4 react-dom@19.3.0 @expo/metro-runtime@~58.0.15 react-native-web-webview
 //   npx expo export --platform web --output-dir /tmp/bisbetania-web
 //   node tools/capturi/shoot.mjs /tmp/bisbetania-web docs/design/screens [filtru, ex. „perete” sau „special”]
 //   npm prune   (scoate pachetele web temporare)

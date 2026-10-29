@@ -42,7 +42,8 @@ export default function TabsLayout() {
           options={{
             title: t(tab.titleKey),
             tabBarIcon: ({ color, focused, size }) => (
-              <Ionicons name={focused ? tab.icon : (`${tab.icon}-outline` as IconName)} size={size - 2} color={color} />
+              // Culorile taburilor sunt șiruri din temă (tabBarActiveTintColor), deci color e mereu un șir.
+              <Ionicons name={focused ? tab.icon : (`${tab.icon}-outline` as IconName)} size={size - 2} color={color as string} />
             ),
           }}
         />
