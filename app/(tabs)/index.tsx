@@ -17,7 +17,7 @@ import { DAY_NAMES, timeUntil } from '../../lib/format';
 import { success, tap } from '../../lib/haptics';
 import { YOUTUBE_LIVE } from '../../config/links';
 import LanguageToggle from '../../components/LanguageToggle';
-import StatusBarScrim from '../../components/StatusBarScrim';
+import CollapsedBar, { useCollapsedBarHeight } from '../../components/CollapsedBar';
 import Hero from '../../components/Hero';
 import LessonCard from '../../components/LessonCard';
 import PressableScale from '../../components/PressableScale';
@@ -61,6 +61,8 @@ export default function HomeScreen() {
   const isFavorite = !!highlightOf(verseFavKey);
 
   const scrollY = useRef(new Animated.Value(0)).current;
+  const [heroHeight, setHeroHeight] = useState(0);
+  const barHeight = useCollapsedBarHeight();
   const fade = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     fade.setValue(0);
@@ -126,7 +128,7 @@ export default function HomeScreen() {
         scrollEventThrottle={16}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })}
       >
-        <Hero scrollY={scrollY} fadeHeight={140}>
+        <Hero scrollY={scrollY} fadeHeight={140} onHeight={setHeroHeight}>
           <View style={{ paddingTop: insets.top + 12, paddingBottom: 92 }} className="px-5">
             <View className="flex-row items-center justify-between">
               <TouchableOpacity
@@ -369,7 +371,8 @@ export default function HomeScreen() {
   
         <Text className="text-center text-muted text-xs mt-4 px-8 leading-5">{t('subtitle')}</Text>
       </Animated.ScrollView>
-      <StatusBarScrim />
+      {/* Bara apare când poza bisericii a trecut pe sub bara de stare. */}
+      {heroHeight > 0 && <CollapsedBar scrollY={scrollY} showAt={heroHeight - barHeight - 84} title={t('churchName')} />}
     </View>
   );
 }

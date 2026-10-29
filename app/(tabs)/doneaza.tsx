@@ -20,7 +20,7 @@ import { useTheme } from '../../lib/theme';
 import { tap } from '../../lib/haptics';
 import { DONATION_LINKS, PRESET_AMOUNTS } from '../../config/links';
 import LanguageToggle from '../../components/LanguageToggle';
-import StatusBarScrim from '../../components/StatusBarScrim';
+import CollapsedBar, { useCollapsedBarHeight } from '../../components/CollapsedBar';
 import Hero from '../../components/Hero';
 import { useTabBarSpace } from '../../components/GlassTabBar';
 
@@ -32,6 +32,8 @@ export default function DonateScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const scrollY = useRef(new Animated.Value(0)).current;
+  const [heroHeight, setHeroHeight] = useState(0);
+  const barHeight = useCollapsedBarHeight();
 
   const [selectedAmount, setSelectedAmount] = useState<number>(100);
   const [customAmount, setCustomAmount] = useState('');
@@ -75,7 +77,7 @@ export default function DonateScreen() {
         scrollEventThrottle={16}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })}
       >
-        <Hero scrollY={scrollY} fadeHeight={90}>
+        <Hero scrollY={scrollY} fadeHeight={90} onHeight={setHeroHeight}>
           <View style={{ paddingTop: insets.top + 12 }} className="px-5 pb-14">
             <LanguageToggle />
 
@@ -209,7 +211,7 @@ export default function DonateScreen() {
           <Text className="text-center text-muted text-xs mt-5 leading-5 px-4">{t('subtitle')}</Text>
         </View>
       </Animated.ScrollView>
-      <StatusBarScrim />
+      {heroHeight > 0 && <CollapsedBar scrollY={scrollY} showAt={heroHeight - barHeight - 54} title={t('tabDonate')} />}
     </KeyboardAvoidingView>
   );
 }

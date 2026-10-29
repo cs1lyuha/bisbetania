@@ -9,6 +9,8 @@ interface Props {
   /** Cât de jos începe trecerea în culoarea fundalului. */
   fadeHeight?: number;
   style?: StyleProp<ViewStyle>;
+  /** Înălțimea antetului, după ce s-a așezat (pentru bara strânsă). */
+  onHeight?: (height: number) => void;
   children: React.ReactNode;
 }
 
@@ -16,7 +18,7 @@ interface Props {
  * Antetul cu poza bisericii. La tras în jos (bounce pe iOS) poza se mărește și acoperă golul de sus,
  * iar marginea de jos se topește în culoarea fundalului, pentru orice culoare și temă.
  */
-export default function Hero({ scrollY, fadeHeight = 120, style, children }: Props) {
+export default function Hero({ scrollY, fadeHeight = 120, style, onHeight, children }: Props) {
   const { colors } = useTheme();
   const [height, setHeight] = useState(360);
   const gradientId = `heroFade${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
@@ -27,7 +29,14 @@ export default function Hero({ scrollY, fadeHeight = 120, style, children }: Pro
   const translateY = Animated.multiply(pull, 0.5);
 
   return (
-    <View style={style} onLayout={(e) => setHeight(Math.max(1, e.nativeEvent.layout.height))}>
+    <View
+      style={style}
+      onLayout={(e) => {
+        const h = Math.max(1, e.nativeEvent.layout.height);
+        setHeight(h);
+        onHeight?.(h);
+      }}
+    >
       <Animated.View
         pointerEvents="none"
         style={{ position: 'absolute', top: 0, left: 0, right: 0, height, transform: [{ translateY }, { scale }] }}

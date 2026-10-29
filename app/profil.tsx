@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, RefreshControl, useWindowDimensions } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { View, Text, Animated, Platform, TouchableOpacity, ActivityIndicator, RefreshControl, useWindowDimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -20,9 +20,8 @@ import AchievementsGrid from '../components/AchievementsGrid';
 import Icon, { IconName } from '../components/Icon';
 import ProgressBar from '../components/ProgressBar';
 import HeaderBackground from '../components/HeaderBackground';
-import { mix } from '../lib/color';
 import SectionLabel from '../components/SectionLabel';
-import StatusBarScrim from '../components/StatusBarScrim';
+import CollapsedBar, { useCollapsedBarHeight } from '../components/CollapsedBar';
 import { useCommunity } from '../lib/community';
 
 const AVATAR = 120;
@@ -43,6 +42,14 @@ export default function ProfileScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [missing, setMissing] = useState<'notFound' | 'error' | null>(null);
   const profile = isMe ? me : other;
+  const insets = useSafeAreaInsets();
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const barHeight = useCollapsedBarHeight();
+
+  const goBack = () => {
+    if (router.canGoBack()) router.back();
+    else router.replace('/');
+  };
 
   const load = useCallback(async () => {
     if (!id || !session) return;
@@ -83,15 +90,18 @@ export default function ProfileScreen() {
 
   return (
     <View className="flex-1 bg-cream">
-      <ScrollView
+      <Animated.ScrollView
         contentContainerStyle={{ paddingBottom: 48 }}
+        scrollEventThrottle={16}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
-            tintColor="white"
+            // Pe iOS spinner-ul nativ ar sta sub insula din vârf; îl ascundem și arătăm unul propriu, sub bara de stare.
+            tintColor="transparent"
             colors={[colors.primary]}
-            // Pe iOS spinner-ul stă în spatele conținutului, iar antetul are un fundal verde peste el.
-            style={{ zIndex: 1 }}
+            progressBackgroundColor={colors.card}
+            progressViewOffset={insets.top + 8}
             onRefresh={async () => {
               setRefreshing(true);
               await load();
@@ -100,7 +110,7 @@ export default function ProfileScreen() {
           />
         }
       >
-        <ProfileHeader title={t('profileTitle')} />
+        <ProfileHeader title={t('profileTitle')} scrollY={scrollY} onBack={goBack} />
 
         <View className="items-center px-4" style={{ marginTop: -(AVATAR / 2 + AVATAR_RING) }}>
           <View style={{ borderRadius: AVATAR / 2 + AVATAR_RING, borderWidth: AVATAR_RING, borderColor: colors.bg }}>
@@ -143,37 +153,77 @@ export default function ProfileScreen() {
             {t('memberSince')} {formatDate(language, new Date(profile.created_at))}
           </Text>
         </View>
-      </ScrollView>
-      <StatusBarScrim />
+      </Animated.ScrollView>
+      {Platform.OS === 'ios' && <PullSpinner scrollY={scrollY} refreshing={refreshing} />}
+      <CollapsedBar scrollY={scrollY} showAt={188 - (barHeight - insets.top) - 24} title={fullName(profile)} onBack={goBack} />
     </View>
   );
 }
 
-/** Antetul profilului: accentul închis, cu arcuri concentrice în jurul pozei (care stă pe jumătate peste el). */
-function ProfileHeader({ title }: { title: string }) {
-  const router = useRouter();
+/** Spinner-ul de reîmprospătare pe iOS: apare sub bara de stare cât tragi în jos și stă acolo până se încarcă. */
+function PullSpinner({ scrollY, refreshing }: { scrollY: Animated.Value; refreshing: boolean }) {
+  const insets = useSafeAreaInsets();
+  const pulled = scrollY.interpolate({ inputRange: [-90, -30], outputRange: [1, 0], extrapolate: 'clamp' });
+  const scale = pulled.interpolate({ inputRange: [0, 1], outputRange: [0.6, 1] });
+  return (
+    <Animated.View
+      pointerEvents="none"
+      style={{
+        position: 'absolute',
+        top: insets.top + 6,
+        alignSelf: 'center',
+        opacity: refreshing ? 1 : pulled,
+        transform: [{ scale: refreshing ? 1 : scale }],
+      }}
+    >
+      <View className="w-9 h-9 rounded-full bg-white/20 border border-white/25 items-center justify-center">
+        <ActivityIndicator size="small" color="white" />
+      </View>
+    </Animated.View>
+  );
+}
+
+/**
+ * Antetul profilului: accentul închis, cu arcuri concentrice în jurul pozei (care stă pe jumătate peste el).
+ * La tras în jos fundalul se întinde în sus (marginea de jos rămâne pe loc), ca să nu se vadă un gol.
+ */
+function ProfileHeader({ title, scrollY, onBack }: { title: string; scrollY: Animated.Value; onBack: () => void }) {
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const { colors } = useTheme();
   const height = insets.top + 188;
+  const pull = scrollY.interpolate({ inputRange: [-height, 0], outputRange: [-height, 0], extrapolateRight: 'clamp' });
+  const scale = pull.interpolate({ inputRange: [-height, 0], outputRange: [2, 1] });
+  // Mărirea pornește din centru: mutăm cu jumătate din tras, ca marginea de sus să rămână lipită de ecran.
+  const translateY = Animated.multiply(pull, 0.5);
   return (
     <View style={{ height }}>
-      {/* La tras în jos (iOS) se vede tot accentul, nu fundalul (în afara părții rotunjite, ca să nu fie tăiat). */}
-      <View style={{ position: 'absolute', top: -600, left: 0, right: 0, height: 640, backgroundColor: mix(colors.primaryDeep, '#000000', 0.14) }} />
-      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderBottomLeftRadius: 32, borderBottomRightRadius: 32, overflow: 'hidden', backgroundColor: colors.primaryDeep }}>
+      <Animated.View
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          borderBottomLeftRadius: 32,
+          borderBottomRightRadius: 32,
+          overflow: 'hidden',
+          backgroundColor: colors.primaryDeep,
+          transform: [{ translateY }, { scale }],
+        }}
+      >
         <HeaderBackground />
         <Svg width={width} height={height} style={{ position: 'absolute' }}>
           {[90, 128, 166, 204, 242, 280, 318].map((r) => (
             <Circle key={r} cx={width / 2} cy={height} r={r} stroke="white" strokeOpacity={0.1} strokeWidth={1.5} fill="none" />
           ))}
         </Svg>
-      </View>
+      </Animated.View>
       <View className="flex-row items-center px-4" style={{ paddingTop: insets.top + 8 }}>
         <TouchableOpacity
           onPress={() => {
             tap();
-            if (router.canGoBack()) router.back();
-            else router.replace('/');
+            onBack();
           }}
           activeOpacity={0.7}
           hitSlop={8}
