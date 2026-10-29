@@ -4,6 +4,7 @@
 //   npx expo export --platform web --output-dir /tmp/bisbetania-web
 //   node tools/capturi/shoot.mjs /tmp/bisbetania-web docs/design/screens [filtru, ex. „perete” sau „special”]
 //   npm prune   (scoate pachetele web temporare)
+// Opțional: CHROME=/cale/spre/chrome (dacă nu e „google-chrome”), HEIGHT=1720 (capturi lungi, cât paginile planșelor).
 // Datele comunității sunt inventate (mock.mjs); cererile către Supabase nu pleacă din browser.
 import http from 'node:http';
 import { tmpdir } from 'node:os';
@@ -30,7 +31,9 @@ const server = http.createServer((req, res) => {
 // ---------- Chrome + CDP ----------
 const profileDir = join(tmpdir(), 'bisbetania-capturi-chrome');
 rmSync(profileDir, { recursive: true, force: true });
-const chrome = spawn('google-chrome', ['--headless=new', `--remote-debugging-port=${DEBUG}`, `--user-data-dir=${profileDir}`, '--no-first-run', '--hide-scrollbars', '--force-color-profile=srgb', 'about:blank'], { stdio: 'ignore' });
+// CHROME=/cale/spre/chrome dacă nu e instalat ca „google-chrome” (de exemplu Chromium).
+// Ca root (de exemplu într-un container) Chrome pornește doar fără sandbox.
+const chrome = spawn(process.env.CHROME ?? 'google-chrome', [...(process.getuid?.() === 0 ? ['--no-sandbox'] : []), '--headless=new', `--remote-debugging-port=${DEBUG}`, `--user-data-dir=${profileDir}`, '--no-first-run', '--hide-scrollbars', '--force-color-profile=srgb', 'about:blank'], { stdio: 'ignore' });
 let targets;
 for (let i = 0; i < 40; i++) {
   try { targets = await (await fetch(`http://127.0.0.1:${DEBUG}/json`)).json(); if (targets.some((t) => t.type === 'page')) break; } catch {}
@@ -108,7 +111,8 @@ const cors = () => [
 await send('Page.enable');
 await send('Runtime.enable');
 await send('Fetch.enable', { patterns: [{ urlPattern: '*' }] });
-await send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
+// HEIGHT=1720 face capturi lungi (tot ecranul derulat), pentru comparația cu planșele designerului.
+await send('Emulation.setDeviceMetricsOverride', { width: 390, height: Number(process.env.HEIGHT ?? 844), deviceScaleFactor: 2, mobile: true });
 await send('Emulation.setTimezoneOverride', { timezoneId: 'Europe/Chisinau' });
 // Zonele sigure ale unui iPhone (notch sus, bara de jos), ca antetul și bara de taburi să arate ca pe telefon.
 try {
@@ -187,7 +191,8 @@ async function typeInto(placeholderPart, text) {
     const el = [...document.querySelectorAll('input, textarea')].find((e) => (e.placeholder || '').includes(${JSON.stringify(placeholderPart)}));
     if (!el) return false;
     const setter = Object.getOwnPropertyDescriptor(el.tagName === 'INPUT' ? HTMLInputElement.prototype : HTMLTextAreaElement.prototype, 'value').set;
-    el.focus(); setter.call(el, ${JSON.stringify(text)}); el.dispatchEvent(new Event('input', { bubbles: true })); return true;
+    // Fără conturul de focus pe care îl desenează versiunile noi de Chrome (pe telefon nu există).
+    el.focus(); el.style.outline = 'none'; setter.call(el, ${JSON.stringify(text)}); el.dispatchEvent(new Event('input', { bubbles: true })); return true;
   })()`);
   await sleep(1500);
 }
@@ -248,6 +253,9 @@ const VARIANTS = [
   ['burgundy-luminos', { mode: 'light', accent: 'burgundy' }, ['01-acasa']],
   ['amber-intunecat', { mode: 'dark', accent: 'amber' }, ['01-acasa']],
   ['teal-luminos', { mode: 'light', accent: 'teal' }, ['01-acasa']],
+  // Variantele din planșele redesign-ului P2 (docs/design/BisBetania-Redesign-P2-P4.pdf).
+  ['amber-luminos', { mode: 'light', accent: 'amber' }, ['23-clasament']],
+  ['burgundy-intunecat', { mode: 'dark', accent: 'burgundy' }, ['19-perete-rugaciune']],
 ];
 
 for (const [suffix, settings, names] of VARIANTS) {
@@ -264,17 +272,22 @@ for (const [suffix, settings, names] of VARIANTS) {
 }
 
 // Ecrane speciale: contul (neautentificat) și felicitarea pentru o realizare nouă.
-if (!FILTER || 'cont'.includes(FILTER) || FILTER === 'special') {
-  for (const mode of ['light', 'dark']) {
-    await prepare({ mode, loggedIn: false });
-    await open('/cont');
-    await shot(`34-cont-intra--${mode === 'light' ? 'luminos' : 'intunecat'}`);
-    await clickText('Cont nou');
-    await shot(`35-cont-nou--${mode === 'light' ? 'luminos' : 'intunecat'}`);
-    await prepare({ mode, seen: ALL_ACH.filter((x) => x !== 'streak_7') });
-    await open('/profil', 3800);
-    await shot(`36-felicitare-realizare--${mode === 'light' ? 'luminos' : 'intunecat'}`);
-  }
+const wantSpecial = (name) => !FILTER || FILTER === 'special' || name.includes(FILTER);
+for (const mode of ['light', 'dark']) {
+  const suffix = mode === 'light' ? 'luminos' : 'intunecat';
+  if (!wantSpecial(`34-cont-intra--${suffix}`) && !wantSpecial(`35-cont-nou--${suffix}`)) continue;
+  await prepare({ mode, loggedIn: false });
+  await open('/cont');
+  await shot(`34-cont-intra--${suffix}`);
+  await clickText('Cont nou');
+  await shot(`35-cont-nou--${suffix}`);
+}
+// Două realizări noi deodată („1 din 2”): Flacără, apoi Cerere încrezătoare.
+for (const [suffix, settings] of [['luminos', { mode: 'light' }], ['intunecat', { mode: 'dark' }], ['teal-intunecat', { mode: 'dark', accent: 'teal' }]]) {
+  if (!wantSpecial(`36-felicitare-realizare--${suffix}`)) continue;
+  await prepare({ ...settings, seen: ALL_ACH.filter((x) => x !== 'streak_7' && x !== 'prayer_1') });
+  await open('/profil', 3800);
+  await shot(`36-felicitare-realizare--${suffix}`);
 }
 
 console.log(`\n${count} capturi în ${OUT}`);

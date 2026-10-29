@@ -59,6 +59,8 @@ function makeColors(accent: Accent, dark: boolean) {
     primary: dark ? a.dark : a.light,
     primaryDeep: a.light,
     primaryLight: dark ? a.darkTint : a.tint,
+    // Textul de pe primary: alb pe accentul închis; în modul întunecat accentul e deschis și albul n-ar avea contrast.
+    onPrimary: dark ? n.bg : '#FFFFFF',
     heroOverlay: `${a.light}B8`,
     ...n,
   };
@@ -107,6 +109,7 @@ function themeVars(colors: ThemeColors) {
   return vars({
     '--primary': rgb(colors.primary),
     '--primary-light': rgb(colors.primaryLight),
+    '--on-primary': rgb(colors.onPrimary),
     '--bg': rgb(colors.bg),
     '--card': rgb(colors.card),
     '--ink': rgb(colors.ink),

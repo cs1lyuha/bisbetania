@@ -6,11 +6,14 @@ import { useLanguage } from '../i18n';
 import { useTheme } from '../lib/theme';
 import { useAuth } from '../lib/auth';
 import { useCommunity } from '../lib/community';
-import { fullName, supabase } from '../lib/supabase';
+import { Profile, fullName, supabase } from '../lib/supabase';
 import { timeAgo } from '../lib/format';
+import { prayedSentence, supportersSentence } from '../lib/wall';
 import { success, tap } from '../lib/haptics';
 import ScreenHeader from '../components/ScreenHeader';
 import Avatar from '../components/Avatar';
+import AvatarStack from '../components/AvatarStack';
+import Icon from '../components/Icon';
 
 type Visibility = 'all' | 'friends';
 type Filter = 'all' | 'mine';
@@ -29,7 +32,7 @@ export default function PrayerWallScreen() {
   const { t } = useLanguage();
   const { colors } = useTheme();
   const router = useRouter();
-  const { session } = useAuth();
+  const { session, profile: myProfile } = useAuth();
   const { refresh: refreshCommunity } = useCommunity();
   const me = session?.user.id;
 
@@ -39,6 +42,7 @@ export default function PrayerWallScreen() {
   const [filter, setFilter] = useState<Filter>('all');
   const [text, setText] = useState('');
   const [visibility, setVisibility] = useState<Visibility>('all');
+  const [menuOpen, setMenuOpen] = useState(false);
   const [posting, setPosting] = useState(false);
   // Cererile la care o atingere pe 🙏 încă așteaptă serverul (a doua atingere rapidă ar inversa ordinea).
   const pending = useRef(new Set<string>());
@@ -63,10 +67,10 @@ export default function PrayerWallScreen() {
       <View className="flex-1 bg-cream">
         <ScreenHeader title={t('wallTitle')} />
         <View className="m-4 bg-card rounded-3xl border border-line p-6 items-center">
-          <Ionicons name="hand-left-outline" size={36} color={colors.primary} />
-          <Text className="text-ink text-center mt-3 leading-5">{t('loginRequired')}</Text>
+          <Icon name="praying-hands" size={36} color={colors.primary} />
+          <Text className="text-ink font-ui text-center mt-3 leading-5">{t('loginRequired')}</Text>
           <TouchableOpacity onPress={() => router.push('/cont')} className="mt-4 bg-primary rounded-xl px-5 py-3">
-            <Text className="text-white font-bold">{t('joinCommunity')}</Text>
+            <Text className="text-on-primary font-ui-semibold">{t('joinCommunity')}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -130,7 +134,11 @@ export default function PrayerWallScreen() {
       },
     ]);
 
-  const shown = (items ?? []).filter((p) => filter === 'all' || p.user_id === me);
+  const all = items ?? [];
+  const mineCount = all.filter((p) => p.user_id === me).length;
+  const shown = all.filter((p) => filter === 'all' || p.user_id === me);
+  const canPost = !!text.trim() && !posting;
+  const visibilityLabel = (v: Visibility) => (v === 'all' ? t('visibleAll') : t('visibleFriends'));
 
   return (
     <KeyboardAvoidingView className="flex-1 bg-cream" behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -153,59 +161,88 @@ export default function PrayerWallScreen() {
         }
         ListHeaderComponent={
           <>
-            <View className="bg-card rounded-3xl border border-line p-4">
-              <TextInput
-                value={text}
-                onChangeText={setText}
-                placeholder={t('wallPlaceholder')}
-                placeholderTextColor={colors.muted}
-                multiline
-                maxLength={500}
-                className="text-ink text-base"
-                style={{ minHeight: 70, textAlignVertical: 'top' }}
-              />
+            <View className="bg-card rounded-3xl border border-line px-4 pt-4 pb-2.5">
+              <View className="flex-row items-start">
+                {myProfile && <Avatar url={myProfile.avatar_url} name={fullName(myProfile)} size={36} />}
+                <TextInput
+                  value={text}
+                  onChangeText={setText}
+                  placeholder={t('wallPlaceholder')}
+                  placeholderTextColor={colors.muted}
+                  multiline
+                  maxLength={500}
+                  className="flex-1 text-ink font-ui text-[16px] leading-6 ml-3"
+                  style={{ minHeight: 68, textAlignVertical: 'top', paddingTop: 6 }}
+                />
+              </View>
+              <View className="h-px bg-line mt-3" />
               {/* Pe ecrane înguste (sau în rusă) butonul trece pe rândul următor, aliniat la dreapta. */}
               <View className="flex-row flex-wrap items-center mt-3" style={{ gap: 8 }}>
-                {(['all', 'friends'] as Visibility[]).map((v) => (
-                  <TouchableOpacity
-                    key={v}
-                    onPress={() => {
-                      tap();
-                      setVisibility(v);
-                    }}
-                    className={`flex-row items-center px-3 py-1.5 rounded-full border ${visibility === v ? 'border-primary bg-primary-light' : 'border-line'}`}
-                  >
-                    <Ionicons name={v === 'all' ? 'globe-outline' : 'people-outline'} size={14} color={visibility === v ? colors.primary : colors.muted} />
-                    <Text className={`text-xs font-semibold ml-1 ${visibility === v ? 'text-primary' : 'text-muted'}`}>
-                      {v === 'all' ? t('visibleAll') : t('visibleFriends')}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
                 <TouchableOpacity
-                  onPress={post}
-                  disabled={!text.trim() || posting}
-                  className="bg-primary rounded-full px-4 py-2 flex-row items-center ml-auto"
-                  style={{ opacity: !text.trim() || posting ? 0.5 : 1 }}
-                >
-                  {posting ? <ActivityIndicator color="white" size="small" /> : <Ionicons name="send" size={14} color="white" />}
-                  <Text className="text-white font-bold text-sm ml-1.5">{t('postPrayer')}</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            <View className="flex-row mt-5 mb-3" style={{ gap: 8 }}>
-              {(['all', 'mine'] as Filter[]).map((f) => (
-                <TouchableOpacity
-                  key={f}
                   onPress={() => {
                     tap();
-                    setFilter(f);
+                    setMenuOpen((o) => !o);
                   }}
-                  className={`px-4 py-2 rounded-full ${filter === f ? 'bg-primary' : 'bg-card border border-line'}`}
+                  activeOpacity={0.75}
+                  className="flex-row items-center h-10 pl-3.5 pr-3 rounded-full border border-line"
                 >
-                  <Text className={`text-sm font-bold ${filter === f ? 'text-white' : 'text-muted'}`}>{f === 'all' ? t('wallAll') : t('wallMine')}</Text>
+                  <Icon name={visibility === 'all' ? 'globe' : 'users'} size={16} color={colors.ink} />
+                  <Text className="text-ink font-ui-semibold text-[14px] ml-2">{visibilityLabel(visibility)}</Text>
+                  <View className="ml-1.5" style={{ transform: [{ rotate: menuOpen ? '180deg' : '0deg' }] }}>
+                    <Icon name="chevron-down" size={16} color={colors.muted} />
+                  </View>
                 </TouchableOpacity>
-              ))}
+                <TouchableOpacity
+                  onPress={post}
+                  disabled={!canPost}
+                  activeOpacity={0.85}
+                  className="bg-primary rounded-full h-10 px-4 flex-row items-center ml-auto"
+                  style={{ opacity: canPost ? 1 : 0.45 }}
+                >
+                  {posting ? <ActivityIndicator color={colors.onPrimary} size="small" /> : <Icon name="send" size={15} color={colors.onPrimary} />}
+                  <Text className="text-on-primary font-ui-semibold text-[14px] ml-2">{t('postPrayer')}</Text>
+                </TouchableOpacity>
+              </View>
+              {menuOpen && (
+                <View className="mt-3 bg-cream rounded-2xl overflow-hidden">
+                  {(['all', 'friends'] as Visibility[]).map((v, i) => (
+                    <TouchableOpacity
+                      key={v}
+                      onPress={() => {
+                        tap();
+                        setVisibility(v);
+                        setMenuOpen(false);
+                      }}
+                      className={`flex-row items-center px-4 py-3 ${i ? 'border-t border-line' : ''}`}
+                    >
+                      <Icon name={v === 'all' ? 'globe' : 'users'} size={17} color={colors.ink} />
+                      <Text className="flex-1 text-ink font-ui-medium text-[15px] ml-2.5">{visibilityLabel(v)}</Text>
+                      {visibility === v && <Icon name="check" size={17} color={colors.primary} />}
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+            </View>
+
+            <View className="flex-row mt-4 mb-4" style={{ gap: 8 }}>
+              {(['all', 'mine'] as Filter[]).map((f) => {
+                const active = filter === f;
+                return (
+                  <TouchableOpacity
+                    key={f}
+                    onPress={() => {
+                      tap();
+                      setFilter(f);
+                    }}
+                    className={`h-10 px-4 rounded-full flex-row items-center ${active ? 'bg-primary' : 'bg-card border border-line'}`}
+                  >
+                    <Text className={`font-ui-semibold text-[14px] ${active ? 'text-on-primary' : 'text-ink'}`}>{f === 'all' ? t('wallAll') : t('wallMine')}</Text>
+                    {items && (
+                      <Text className={`font-ui text-[14px] ml-2 ${active ? 'text-on-primary/75' : 'text-muted'}`}>{f === 'all' ? all.length : mineCount}</Text>
+                    )}
+                  </TouchableOpacity>
+                );
+              })}
             </View>
           </>
         }
@@ -214,8 +251,8 @@ export default function PrayerWallScreen() {
             <ActivityIndicator color={colors.primary} style={{ marginTop: 24 }} />
           ) : (
             <View className="items-center mt-8 px-8">
-              <Ionicons name={error ? 'cloud-offline-outline' : 'hand-left-outline'} size={40} color={colors.muted} />
-              <Text className="text-muted text-center mt-3 leading-5">{error ? t('auth_error_network') : t('wallEmpty')}</Text>
+              {error ? <Ionicons name="cloud-offline-outline" size={40} color={colors.muted} /> : <Icon name="praying-hands" size={40} color={colors.muted} />}
+              <Text className="text-muted font-ui text-center mt-3 leading-5">{error ? t('auth_error_network') : t('wallEmpty')}</Text>
             </View>
           )
         }
@@ -227,72 +264,151 @@ export default function PrayerWallScreen() {
   );
 }
 
-function PrayerCard({ prayer, me, onSupport, onAnswered, onDelete }: { prayer: WallPrayer; me: string; onSupport: () => void; onAnswered: () => void; onDelete: () => void }) {
+interface CardProps {
+  prayer: WallPrayer;
+  me: string;
+  onSupport: () => void;
+  onAnswered: () => void;
+  onDelete: () => void;
+}
+
+/**
+ * O cerere: autorul, textul și, jos, după caz:
+ * a altcuiva → „Mă voi ruga” / „Mă rog ✓” și cine se mai roagă;
+ * a mea → cine se roagă pentru mine, „Marchează răspunsă”, ștergerea;
+ * răspunsă → pe accent deschis, textul ca un citat și cine s-a rugat.
+ */
+function PrayerCard({ prayer, me, onSupport, onAnswered, onDelete }: CardProps) {
   const { t, language } = useLanguage();
   const { colors } = useTheme();
   const router = useRouter();
   const { byId } = useCommunity();
   const author = byId.get(prayer.user_id);
   const mine = prayer.user_id === me;
+  const answered = !!prayer.answered_at;
   const supported = prayer.prayer_support.some((s) => s.user_id === me);
-  const supporters = prayer.prayer_support.map((s) => byId.get(s.user_id)).filter((p): p is NonNullable<typeof p> => !!p);
+  // Eu primul în șirul de poze, apoi ceilalți în ordinea în care s-au alăturat.
+  const supporters = [...prayer.prayer_support]
+    .sort((a, b) => Number(b.user_id === me) - Number(a.user_id === me))
+    .map((s) => byId.get(s.user_id))
+    .filter((p): p is Profile => !!p);
+  const others = supporters.filter((p) => p.id !== me);
+  const firstName = (p: Profile) => p.first_name || p.nickname;
+  const surface = answered ? colors.primaryLight : colors.card;
+
+  const markButton = (
+    <TouchableOpacity onPress={onAnswered} activeOpacity={0.7} hitSlop={6} className="flex-row items-center py-1 flex-shrink">
+      <Icon name="circle-check" size={18} color={colors.primary} />
+      <Text className="text-primary font-ui-semibold text-[14px] ml-2 flex-shrink" numberOfLines={1}>
+        {answered ? t('wallUnmarkAnswered') : t('wallMarkAnswered')}
+      </Text>
+    </TouchableOpacity>
+  );
+  const deleteButton = (
+    <TouchableOpacity onPress={onDelete} hitSlop={8} className="w-9 h-9 rounded-full items-center justify-center ml-auto">
+      <Icon name="trash" size={18} color={colors.muted} />
+    </TouchableOpacity>
+  );
 
   return (
-    <View className={`bg-card rounded-3xl border p-4 mb-3 ${prayer.answered_at ? 'border-primary' : 'border-line'}`}>
+    <View className={`rounded-3xl px-4 pt-4 pb-3.5 mb-3 border ${answered ? 'bg-primary-light border-primary-light' : 'bg-card border-line'}`}>
       <TouchableOpacity
         onPress={() => router.push({ pathname: '/profil', params: { id: prayer.user_id } })}
         activeOpacity={0.75}
         className="flex-row items-center"
       >
-        <Avatar url={author?.avatar_url} name={author ? fullName(author) : '?'} size={36} />
-        <View className="flex-1 ml-2.5">
-          <Text className="text-ink font-semibold text-sm">{author ? fullName(author) : t('memberFallback')}</Text>
+        <Avatar url={author?.avatar_url} name={author ? fullName(author) : '?'} size={40} />
+        <View className="flex-1 ml-3">
           <View className="flex-row items-center">
-            <Text className="text-muted text-[11px]">{timeAgo(language, new Date(prayer.created_at))}</Text>
-            <Ionicons name={prayer.visibility === 'all' ? 'globe-outline' : 'people-outline'} size={11} color={colors.muted} style={{ marginLeft: 6 }} />
+            <Text className="text-ink font-ui-semibold text-[15px] flex-shrink" numberOfLines={1}>
+              {author ? fullName(author) : t('memberFallback')}
+            </Text>
+            {mine && (
+              <View className={`rounded-full px-2 py-0.5 ml-2 ${answered ? 'bg-card' : 'bg-primary-light'}`}>
+                <Text className="text-ink font-ui-semibold text-[12px]">{t('youBadge')}</Text>
+              </View>
+            )}
+          </View>
+          <View className="flex-row items-center mt-0.5">
+            <Text className="text-muted font-ui text-[12px]">{timeAgo(language, new Date(prayer.created_at))}</Text>
+            {!answered && (
+              <>
+                <Text className="text-muted font-ui text-[12px] mx-1.5">·</Text>
+                <Icon name={prayer.visibility === 'all' ? 'globe' : 'users'} size={12} color={colors.muted} />
+                <Text className="text-muted font-ui text-[12px] ml-1 flex-shrink" numberOfLines={1}>
+                  {prayer.visibility === 'all' ? t('visibleAll') : t('visibleFriends')}
+                </Text>
+              </>
+            )}
           </View>
         </View>
-        {!!prayer.answered_at && (
-          <View className="bg-primary rounded-full px-2.5 py-1 flex-row items-center">
-            <Ionicons name="checkmark-circle" size={12} color="white" />
-            <Text className="text-white text-[11px] font-bold ml-1">{t('answered')}</Text>
+        {answered && (
+          <View className="bg-primary rounded-full h-7 px-3 flex-row items-center ml-2">
+            <Icon name="check" size={13} color={colors.onPrimary} strokeWidth={2.5} />
+            <Text className="text-on-primary font-ui-semibold text-[13px] ml-1.5">{t('answered')}</Text>
           </View>
         )}
       </TouchableOpacity>
 
-      <Text className="text-ink text-[15px] leading-[22px] mt-3">{prayer.text}</Text>
+      {answered ? (
+        <Text className="text-ink font-display text-[18px] leading-[27px] mt-3.5">{prayer.text}</Text>
+      ) : (
+        <Text className="text-ink font-ui text-[16px] leading-6 mt-3.5">{prayer.text}</Text>
+      )}
 
-      <View className="flex-row items-center mt-3 pt-3 border-t border-line">
-        <TouchableOpacity
-          onPress={onSupport}
-          activeOpacity={0.8}
-          className={`flex-row items-center rounded-full px-3 py-1.5 ${supported ? 'bg-primary' : 'bg-primary-light'}`}
-        >
-          <Text style={{ fontSize: 14 }}>🙏</Text>
-          <Text className={`text-xs font-bold ml-1.5 ${supported ? 'text-white' : 'text-primary'}`}>{supported ? t('praying') : t('willPray')}</Text>
-          {prayer.prayer_support.length > 0 && (
-            <Text className={`text-xs font-bold ml-1.5 ${supported ? 'text-white' : 'text-primary'}`}>· {prayer.prayer_support.length}</Text>
-          )}
-        </TouchableOpacity>
-        <View className="flex-row ml-2">
-          {supporters.slice(0, 5).map((p, i) => (
-            <View key={p.id} style={{ marginLeft: i ? -8 : 0, borderRadius: 12, borderWidth: 2, borderColor: colors.card }}>
-              <Avatar url={p.avatar_url} name={fullName(p)} size={20} />
-            </View>
-          ))}
+      {/* Pe cererea mea: cine se roagă pentru mine. */}
+      {mine && !answered && others.length > 0 && (
+        <View className="flex-row items-center mt-3">
+          <AvatarStack people={others} size={20} max={3} ring={surface} />
+          <Text className="text-muted font-ui text-[12.5px] ml-2 flex-1" numberOfLines={2}>
+            {supportersSentence(language, others.map(firstName))}
+          </Text>
         </View>
-        <View className="flex-1" />
-        {mine && (
-          <>
-            <TouchableOpacity onPress={onAnswered} hitSlop={8} className="w-8 h-8 rounded-full items-center justify-center">
-              <Ionicons name={prayer.answered_at ? 'checkmark-circle' : 'checkmark-circle-outline'} size={21} color={colors.primary} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={onDelete} hitSlop={8} className="w-8 h-8 rounded-full items-center justify-center ml-1">
-              <Ionicons name="trash-outline" size={18} color={colors.muted} />
-            </TouchableOpacity>
-          </>
-        )}
-      </View>
+      )}
+
+      <View className="h-px mt-3.5" style={{ backgroundColor: answered ? colors.card : colors.line }} />
+
+      {answered ? (
+        <>
+          {prayer.prayer_support.length > 0 && (
+            <View className="flex-row items-center pt-3.5">
+              <AvatarStack people={supporters} size={20} max={3} ring={surface} hideExtra />
+              <Text className="text-muted font-ui text-[12.5px] ml-2 flex-1" numberOfLines={2}>
+                {prayedSentence(language, prayer.prayer_support.length, supported)}
+              </Text>
+            </View>
+          )}
+          {mine && (
+            <View className="flex-row items-center pt-3">
+              {markButton}
+              {deleteButton}
+            </View>
+          )}
+        </>
+      ) : mine ? (
+        <View className="flex-row items-center pt-3">
+          {markButton}
+          {deleteButton}
+        </View>
+      ) : (
+        <View className="flex-row items-center pt-3">
+          <TouchableOpacity
+            onPress={onSupport}
+            activeOpacity={0.8}
+            className={`flex-row items-center h-[38px] px-4 rounded-full ${supported ? 'bg-primary' : 'bg-primary-light'}`}
+          >
+            <Icon name="praying-hands" size={16} color={supported ? colors.onPrimary : colors.primary} />
+            <Text className={`font-ui-semibold text-[14px] ml-2 ${supported ? 'text-on-primary' : 'text-ink'}`}>{supported ? t('praying') : t('willPray')}</Text>
+            {supported && (
+              <View className="ml-1.5">
+                <Icon name="check" size={14} color={colors.onPrimary} strokeWidth={2.5} />
+              </View>
+            )}
+          </TouchableOpacity>
+          <View className="flex-1" />
+          <AvatarStack people={supporters} size={20} max={3} ring={surface} total={prayer.prayer_support.length} />
+        </View>
+      )}
     </View>
   );
 }

@@ -1,4 +1,4 @@
-import { Language } from '../i18n/translations';
+import type { Language } from '../i18n/translations';
 
 export const DAY_NAMES: Record<Language, string[]> = {
   ro: ['Duminică', 'Luni', 'Marți', 'Miercuri', 'Joi', 'Vineri', 'Sâmbătă'],
@@ -30,6 +30,11 @@ export function formatDate(lang: Language, date: Date | number) {
 
 export function countLabel(lang: Language, n: number, ro: [string, string], ru: [string, string, string]) {
   return plural(lang, n, ro, ru);
+}
+
+/** Doar cuvântul potrivit numărului („zile”, „дня”), pentru când cifra se scrie separat (mare, serif). */
+export function pluralWord(lang: Language, n: number, ro: [string, string], ru: [string, string, string]) {
+  return plural(lang, n, ro, ru).slice(String(n).length + 1);
 }
 
 export const MONTH_NAMES: Record<Language, string[]> = {

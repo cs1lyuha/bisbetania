@@ -243,8 +243,17 @@ const ro = {
 
   // Realizări
   achievements: 'Realizări',
-  newAchievement: 'Realizare nouă!',
+  newAchievement: 'Realizare nouă',
   thanksButton: 'Slavă Domnului!',
+  almost: 'Aproape',
+  outOf: 'din',
+  inTotal: 'în total',
+  streakIsRecord: 'Seria de acum e chiar recordul',
+  nextAchievement: 'Următoarea',
+  seeAchievements: 'Vezi realizările',
+  youBadge: 'Tu',
+  wallMarkAnswered: 'Marchează răspunsă',
+  wallUnmarkAnswered: 'Scoate „Răspunsă”',
 
   // Peretele de rugăciune
   wallTitle: 'Peretele de rugăciune',
@@ -548,8 +557,17 @@ const ru: Record<TranslationKey, string> = {
 
   // Realizări
   achievements: 'Достижения',
-  newAchievement: 'Новое достижение!',
+  newAchievement: 'Новое достижение',
   thanksButton: 'Слава Богу!',
+  almost: 'Почти',
+  outOf: 'из',
+  inTotal: 'всего',
+  streakIsRecord: 'Текущая серия — это и есть рекорд',
+  nextAchievement: 'Следующее',
+  seeAchievements: 'Все достижения',
+  youBadge: 'Ты',
+  wallMarkAnswered: 'Отметить как отвеченную',
+  wallUnmarkAnswered: 'Снять отметку «Отвечено»',
 
   // Peretele de rugăciune
   wallTitle: 'Стена молитвы',

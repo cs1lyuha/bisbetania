@@ -1,6 +1,7 @@
 import '../global.css';
 import { useEffect } from 'react';
-import { Stack } from 'expo-router';
+import { SplashScreen, Stack } from 'expo-router';
+import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { LanguageProvider, useLanguage } from '../i18n';
@@ -12,6 +13,10 @@ import { CommunityProvider } from '../lib/community';
 import AchievementCelebration from '../components/AchievementCelebration';
 import SyncBridge from '../lib/sync';
 import { scheduleDailyVerse } from '../lib/notifications';
+import { FONT_FILES } from '../lib/fonts';
+
+// Ecranul de start rămâne până se încarcă fonturile, ca textul să nu sară de la fontul sistemului la Inter.
+SplashScreen.preventAutoHideAsync().catch(() => {});
 
 function AppStack() {
   const { colors, settings, loaded } = useTheme();
@@ -39,6 +44,16 @@ function AppStack() {
 }
 
 export default function RootLayout() {
+  const [fontsLoaded, fontError] = useFonts(FONT_FILES);
+  const ready = fontsLoaded || !!fontError;
+
+  useEffect(() => {
+    if (ready) SplashScreen.hideAsync().catch(() => {});
+  }, [ready]);
+
+  // Fonturile sunt în aplicație (nu din rețea); dacă totuși nu se încarcă, mergem mai departe cu cele ale sistemului.
+  if (!ready) return null;
+
   return (
     <SafeAreaProvider>
       <LanguageProvider>

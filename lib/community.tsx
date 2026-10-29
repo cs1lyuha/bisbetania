@@ -5,7 +5,7 @@ import { MemberStats, Profile, supabase } from './supabase';
 import { Friendship, Relation, friendIdsOf, relationOf } from './social';
 
 export type { Friendship, Relation } from './social';
-export { streakRanking, suggestionsFor } from './social';
+export { podiumOrder, streakRanking, suggestionsFor } from './social';
 
 interface Community {
   loaded: boolean;

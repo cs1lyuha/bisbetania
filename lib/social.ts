@@ -38,8 +38,9 @@ export function suggestionsFor(me: string, profiles: Profile[], friendships: Fri
     .filter((p) => relationOf(me, p.id, friendships) === 'none')
     .map((p) => {
       const theirs = friendIdsOf(p.id, friendships);
-      const mutual = [...theirs].filter((id) => mine.has(id)).length;
-      return { profile: p, mutual };
+      // Pe cardul sugestiei apar și pozele prietenilor comuni, nu doar numărul lor.
+      const mutualIds = [...theirs].filter((id) => mine.has(id));
+      return { profile: p, mutual: mutualIds.length, mutualIds };
     })
     .sort(
       (a, b) =>
@@ -60,4 +61,11 @@ export function streakRanking(profiles: Profile[], stats: Map<string, MemberStat
         (b.stats?.best_streak ?? 0) - (a.stats?.best_streak ?? 0) ||
         (b.stats?.active_days ?? 0) - (a.stats?.active_days ?? 0),
     );
+}
+
+/** Podiumul arată primii trei în ordinea 2 · 1 · 3 (locul întâi la mijloc); cu mai puțini, doar cei care sunt. */
+export function podiumOrder<T>(top: T[]) {
+  return [top[1], top[0], top[2]]
+    .map((item, i) => ({ item, place: [2, 1, 3][i] }))
+    .filter((x): x is { item: T; place: number } => x.item !== undefined);
 }

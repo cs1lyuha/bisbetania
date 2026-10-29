@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { useLanguage } from '../i18n';
 import { useTheme } from '../lib/theme';
 import { useCommunity } from '../lib/community';
 import { success, tap } from '../lib/haptics';
+import Icon, { IconName } from './Icon';
+
+interface Props {
+  userId: string;
+  /** În liste: mai mic. */
+  compact?: boolean;
+  /** Ocupă toată lățimea (cardul unei sugestii). */
+  stretch?: boolean;
+}
 
 /** Butonul de prietenie, după starea legăturii: Adaugă · Cerere trimisă · Acceptă/Refuză · Prieteni. */
-export default function FriendButton({ userId, compact }: { userId: string; compact?: boolean }) {
+export default function FriendButton({ userId, compact, stretch }: Props) {
   const { t } = useLanguage();
   const { colors } = useTheme();
   const { relation, sendRequest, accept, remove } = useCommunity();
@@ -34,11 +42,12 @@ export default function FriendButton({ userId, compact }: { userId: string; comp
       { text: t('removeFriend'), style: 'destructive', onPress: () => run(() => remove(userId)) },
     ]);
 
-  const size = compact ? 'px-3 py-1.5' : 'px-4 py-3 flex-1';
-  const text = compact ? 'text-xs' : 'text-[15px]';
+  const height = compact ? 40 : 44;
+  const text = compact ? 'text-[14px]' : 'text-[15px]';
+  const icon = compact ? 16 : 18;
   if (busy) {
     return (
-      <View className={`${size} items-center justify-center`}>
+      <View style={{ height, minWidth: height }} className={`items-center justify-center ${stretch ? 'self-stretch' : ''}`}>
         <ActivityIndicator color={colors.primary} size="small" />
       </View>
     );
@@ -46,41 +55,59 @@ export default function FriendButton({ userId, compact }: { userId: string; comp
 
   if (state === 'received') {
     return (
-      <View className={`flex-row ${compact ? '' : 'flex-1'}`} style={{ gap: 8 }}>
-        <TouchableOpacity onPress={() => run(() => accept(userId), true)} className={`${size} rounded-xl bg-primary flex-row items-center justify-center`}>
-          <Ionicons name="checkmark" size={compact ? 14 : 18} color="white" />
-          <Text className={`text-white font-bold ml-1 ${text}`}>{t('acceptRequest')}</Text>
+      <View className="flex-row items-center" style={{ gap: compact ? 4 : 8 }}>
+        <TouchableOpacity
+          onPress={() => run(() => accept(userId), true)}
+          activeOpacity={0.85}
+          style={{ height }}
+          className={`rounded-xl bg-primary flex-row items-center justify-center ${compact ? 'px-3.5' : 'px-5'}`}
+        >
+          <Icon name="check" size={icon} color={colors.onPrimary} strokeWidth={2.5} />
+          <Text className={`text-on-primary font-ui-semibold ml-1.5 ${text}`}>{t('acceptRequest')}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => run(() => remove(userId))} className={`${size} rounded-xl border-2 border-line items-center justify-center`}>
-          <Text className={`text-muted font-bold ${text}`}>{t('declineRequest')}</Text>
+        <TouchableOpacity onPress={() => run(() => remove(userId))} activeOpacity={0.6} style={{ height }} className="px-3 items-center justify-center">
+          <Text className={`text-ink font-ui-semibold ${text}`}>{t('declineRequest')}</Text>
         </TouchableOpacity>
       </View>
     );
   }
 
-  const config = {
-    none: { icon: 'person-add-outline', label: t('addFriend'), filled: true, onPress: () => run(() => sendRequest(userId), true) },
-    sent: {
-      icon: 'time-outline',
-      label: t('requestSent'),
-      filled: false,
-      onPress: () =>
-        Alert.alert(t('cancelRequest'), undefined, [
-          { text: t('cancel'), style: 'cancel' },
-          { text: t('cancelRequest'), style: 'destructive', onPress: () => run(() => remove(userId)) },
-        ]),
-    },
-    friends: { icon: 'people', label: t('friendsLabel'), filled: false, onPress: confirmRemove },
-  }[state];
+  if (state === 'sent') {
+    // Pastilă discretă: cererea e trimisă, atingerea întreabă dacă vrei s-o retragi.
+    return (
+      <TouchableOpacity
+        onPress={() =>
+          Alert.alert(t('cancelRequest'), undefined, [
+            { text: t('cancel'), style: 'cancel' },
+            { text: t('cancelRequest'), style: 'destructive', onPress: () => run(() => remove(userId)) },
+          ])
+        }
+        activeOpacity={0.7}
+        style={{ height: compact ? 30 : height }}
+        className={`rounded-full border border-line flex-row items-center justify-center ${compact ? 'px-3' : 'px-5'} ${stretch ? 'self-stretch' : ''}`}
+      >
+        <Icon name="clock" size={compact ? 12 : 15} color={colors.muted} />
+        <Text className={`text-muted font-ui-medium ml-1.5 ${compact ? 'text-[12px]' : 'text-[14px]'}`}>{t('requestSent')}</Text>
+      </TouchableOpacity>
+    );
+  }
+
+  const config: { icon: IconName; label: string; filled: boolean; onPress: () => void } =
+    state === 'none'
+      ? { icon: 'user-plus', label: t('addFriend'), filled: true, onPress: () => run(() => sendRequest(userId), true) }
+      : { icon: 'users', label: t('friendsLabel'), filled: false, onPress: confirmRemove };
 
   return (
     <TouchableOpacity
       onPress={config.onPress}
       activeOpacity={0.85}
-      className={`${size} rounded-xl flex-row items-center justify-center ${config.filled ? 'bg-primary' : 'border-2 border-primary bg-primary-light'}`}
+      style={{ height }}
+      className={`rounded-xl flex-row items-center justify-center ${compact ? 'px-3.5' : 'px-5'} ${stretch ? 'self-stretch' : ''} ${
+        config.filled ? 'bg-primary' : 'bg-primary-light'
+      }`}
     >
-      <Ionicons name={config.icon as keyof typeof Ionicons.glyphMap} size={compact ? 14 : 18} color={config.filled ? 'white' : colors.primary} />
-      <Text className={`font-bold ml-1.5 ${text} ${config.filled ? 'text-white' : 'text-primary'}`}>{config.label}</Text>
+      <Icon name={config.icon} size={icon} color={config.filled ? colors.onPrimary : colors.primary} />
+      <Text className={`font-ui-semibold ml-1.5 ${text} ${config.filled ? 'text-on-primary' : 'text-primary'}`}>{config.label}</Text>
     </TouchableOpacity>
   );
 }
