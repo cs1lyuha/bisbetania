@@ -272,3 +272,6 @@ grant select, insert, update, delete on public.memory_scores to authenticated;
 grant select, insert, delete on public.lesson_reads to authenticated;
 grant select on public.member_stats to authenticated;
 grant execute on function public.are_friends(uuid, uuid) to authenticated;
+-- Funcțiile cu cont nu sunt pentru vizitatori fără cont.
+revoke execute on function public.check_in() from public, anon;
+revoke execute on function public.delete_my_account() from public, anon;

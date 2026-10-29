@@ -24,7 +24,7 @@ export default function ScreenHeader({ title, subtitle, back = true, right }: Pr
     >
       {back && (
         <TouchableOpacity
-          onPress={() => router.back()}
+          onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))}
           activeOpacity={0.7}
           hitSlop={12}
           className="w-9 h-9 rounded-full bg-white/15 items-center justify-center mr-3"

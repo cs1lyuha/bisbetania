@@ -6,6 +6,9 @@ import { useLanguage } from '../../i18n';
 import { TranslationKey } from '../../i18n/translations';
 import { useTheme } from '../../lib/theme';
 import { useUserData } from '../../lib/user-data';
+import { useAuth } from '../../lib/auth';
+import { fullName } from '../../lib/supabase';
+import Avatar from '../../components/Avatar';
 import { tap } from '../../lib/haptics';
 import ScreenHeader from '../../components/ScreenHeader';
 
@@ -43,6 +46,7 @@ export default function MoreScreen() {
   const { colors } = useTheme();
   const router = useRouter();
   const { favorites, prayers } = useUserData();
+  const auth = useAuth();
 
   const badge = (key: TranslationKey) => {
     if (key === 'favoritesTitle' && favorites.length) return favorites.length;
@@ -56,6 +60,29 @@ export default function MoreScreen() {
     <View className="flex-1 bg-cream">
       <ScreenHeader title={t('tabMore')} back={false} />
       <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 32 }}>
+        {auth.enabled && (
+          <TouchableOpacity
+            onPress={() => {
+              tap();
+              router.push(auth.session ? '/profil' : '/cont');
+            }}
+            activeOpacity={0.8}
+            className="bg-card rounded-2xl border border-line px-4 py-4 flex-row items-center mb-5"
+          >
+            {auth.profile ? (
+              <Avatar url={auth.profile.avatar_url} name={fullName(auth.profile)} size={52} />
+            ) : (
+              <View className="w-[52px] h-[52px] rounded-full bg-primary-light items-center justify-center">
+                <Ionicons name="person-outline" size={24} color={colors.primary} />
+              </View>
+            )}
+            <View className="flex-1 ml-3">
+              <Text className="text-ink font-bold text-base">{auth.profile ? fullName(auth.profile) : t('joinCommunity')}</Text>
+              <Text className="text-muted text-xs mt-0.5">{auth.profile ? `@${auth.profile.nickname}` : t('joinCommunityDesc')}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={colors.muted} />
+          </TouchableOpacity>
+        )}
         {SECTIONS.map((section) => (
           <View key={section.titleKey} className="mb-5">
             <Text className="text-muted text-[11px] font-bold uppercase tracking-widest mb-2 px-1">{t(section.titleKey)}</Text>

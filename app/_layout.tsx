@@ -7,6 +7,7 @@ import { LanguageProvider, useLanguage } from '../i18n';
 import { ThemeProvider, useTheme } from '../lib/theme';
 import { UserDataProvider } from '../lib/user-data';
 import { ChurchProvider } from '../lib/church';
+import { AuthProvider } from '../lib/auth';
 import { scheduleDailyVerse } from '../lib/notifications';
 
 function AppStack() {
@@ -39,7 +40,9 @@ export default function RootLayout() {
         <ThemeProvider>
           <UserDataProvider>
             <ChurchProvider>
-              <AppStack />
+              <AuthProvider>
+                <AppStack />
+              </AuthProvider>
             </ChurchProvider>
           </UserDataProvider>
         </ThemeProvider>

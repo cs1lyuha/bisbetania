@@ -20,6 +20,9 @@ import LanguageToggle from '../../components/LanguageToggle';
 import StatusBarScrim from '../../components/StatusBarScrim';
 import Hero from '../../components/Hero';
 import LessonCard from '../../components/LessonCard';
+import Avatar from '../../components/Avatar';
+import { useAuth } from '../../lib/auth';
+import { fullName } from '../../lib/supabase';
 import { currentLesson, lessonsFrom } from '../../lib/grupmic';
 
 type IconName = keyof typeof Ionicons.glyphMap;
@@ -40,6 +43,7 @@ export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const now = useNow();
   const church = useChurch();
+  const auth = useAuth();
   const { highlightOf, setHighlight, activePlan, plans, toggleDay, lastRead } = useUserData();
   const [copied, setCopied] = useState(false);
 
@@ -125,6 +129,20 @@ export default function HomeScreen() {
               >
                 <Ionicons name="color-palette-outline" size={20} color="white" />
               </TouchableOpacity>
+              {auth.enabled && (
+                <TouchableOpacity
+                  onPress={() => router.push(auth.session ? '/profil' : '/cont')}
+                  hitSlop={10}
+                  activeOpacity={0.7}
+                  className="ml-2 mr-auto w-10 h-10 rounded-full bg-white/15 items-center justify-center overflow-hidden"
+                >
+                  {auth.profile ? (
+                    <Avatar url={auth.profile.avatar_url} name={fullName(auth.profile)} size={40} />
+                  ) : (
+                    <Ionicons name="person-outline" size={19} color="white" />
+                  )}
+                </TouchableOpacity>
+              )}
               <LanguageToggle />
             </View>
   

@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLanguage } from '../i18n';
 import { HIGHLIGHTS, HighlightColor, useTheme } from '../lib/theme';
 import { useUserData } from '../lib/user-data';
+import { useAuth } from '../lib/auth';
 import { BOOKS, TRANSLATION_NAME, bookName, formatRef, useBible, verseKey } from '../lib/bible';
 import { success, tap } from '../lib/haptics';
 import ScreenHeader from '../components/ScreenHeader';
@@ -91,6 +92,18 @@ export default function ReaderScreen() {
     await Clipboard.setStringAsync(`${selection.text}\n— ${selection.reference}`);
     success();
     setSelected([]);
+  };
+
+  const { session, setFavoriteVerse } = useAuth();
+  const [favSaved, setFavSaved] = useState(false);
+  const makeFavorite = async () => {
+    if (selected.length !== 1) return;
+    try {
+      await setFavoriteVerse({ lang: language, b: pos.b, c: pos.c, v: selected[0] });
+      success();
+      setFavSaved(true);
+      setTimeout(() => setFavSaved(false), 2000);
+    } catch {}
   };
 
   const shareSelection = () => {
@@ -193,7 +206,7 @@ export default function ReaderScreen() {
         {selection ? (
           <>
             <Text className="text-muted text-xs mb-2" numberOfLines={1}>
-              {selection.reference}
+              {favSaved ? `⭐ ${t('favoriteVerseSaved')}` : selection.reference}
             </Text>
             <View className="flex-row items-center" style={{ gap: 10 }}>
               {(Object.keys(HIGHLIGHTS) as HighlightColor[]).map((color) => (
@@ -210,6 +223,9 @@ export default function ReaderScreen() {
               <View className="flex-1" />
               <BarIcon icon="copy-outline" onPress={copySelection} color={colors.primary} />
               <BarIcon icon="share-social-outline" onPress={shareSelection} color={colors.primary} />
+              {!!session && selected.length === 1 && (
+                <BarIcon icon={favSaved ? 'star' : 'star-outline'} onPress={makeFavorite} color={colors.primary} />
+              )}
             </View>
           </>
         ) : (
