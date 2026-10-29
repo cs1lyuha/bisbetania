@@ -25,6 +25,7 @@ const SECTIONS: { titleKey: TranslationKey; items: { icon: IconName; key: Transl
     titleKey: 'sectionChurch',
     items: [
       { icon: 'calendar-number-outline', key: 'calendarTitle', descKey: 'calendarMenuDesc', href: '/calendar' },
+      { icon: 'people-outline', key: 'grupMicTitle', descKey: 'grupMicMenuDesc', href: '/grup-mic' },
       { icon: 'time-outline', key: 'scheduleTitle', descKey: 'scheduleMenuDesc', href: '/program' },
       { icon: 'film-outline', key: 'historyButton', descKey: 'historyMenuDesc', href: '/istoria' },
       { icon: 'call-outline', key: 'contactsTitle', descKey: 'contactsMenuDesc', href: '/contacte' },

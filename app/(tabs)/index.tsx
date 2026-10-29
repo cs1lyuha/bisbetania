@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, Share, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Clipboard from 'expo-clipboard';
@@ -19,6 +19,8 @@ import { YOUTUBE_LIVE } from '../../config/links';
 import LanguageToggle from '../../components/LanguageToggle';
 import StatusBarScrim from '../../components/StatusBarScrim';
 import Hero from '../../components/Hero';
+import LessonCard from '../../components/LessonCard';
+import { currentLesson, lessonsFrom } from '../../lib/grupmic';
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
@@ -56,6 +58,10 @@ export default function HomeScreen() {
   const greeting = hour < 12 ? t('goodMorning') : hour < 18 ? t('goodAfternoon') : t('goodEvening');
 
   const upcoming = nextOccurrence(church.services, church.events, language, now);
+  const lessons = useMemo(() => lessonsFrom(church.events), [church.events]);
+  const lesson = currentLesson(lessons, now);
+  // Cardul apare cu o săptămână înainte de întâlnire.
+  const showLesson = lesson && lesson.start.getTime() - now.getTime() < 7 * 86_400_000;
 
   const plan = activePlan ? PLANS.find((p) => p.id === activePlan) : undefined;
   const progress = activePlan ? plans[activePlan] : undefined;
@@ -223,6 +229,16 @@ export default function HomeScreen() {
               </View>
             </View>
           </TouchableOpacity>
+        )}
+
+        {/* Grup mic */}
+        {showLesson && (
+          <View className="mx-4 mt-4">
+            <LessonCard lesson={lesson} now={now} />
+            <TouchableOpacity onPress={() => router.push('/grup-mic')} hitSlop={6} className="self-center mt-2">
+              <Text className="text-primary text-xs font-bold">{t('seasonLessons')} →</Text>
+            </TouchableOpacity>
+          </View>
         )}
 
         {/* Planul de citire */}

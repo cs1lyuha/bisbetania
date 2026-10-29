@@ -43,6 +43,10 @@ interface UserData {
   stopPlan: () => void;
   toggleDay: (id: PlanId, day: number) => void;
 
+  /** Lecțiile de la Grup mic marcate „am citit” (id-urile evenimentelor din calendar). */
+  lessonsRead: string[];
+  toggleLessonRead: (id: string) => void;
+
   prayers: Prayer[];
   addPrayer: (text: string) => void;
   toggleAnswered: (id: string) => void;
@@ -57,6 +61,7 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
   const [activePlan, setActivePlan] = usePersistentState<PlanId | null>('activePlan', null);
   const [plans, setPlans] = usePersistentState<Partial<Record<PlanId, PlanProgress>>>('plans', {});
   const [prayers, setPrayers] = usePersistentState<Prayer[]>('prayers', []);
+  const [lessonsRead, setLessonsRead] = usePersistentState<string[]>('lessonsRead', []);
 
   const value = useMemo<UserData>(() => {
     const byKey = new Map(favorites.map((f) => [f.key, f.color]));
@@ -90,6 +95,9 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
           return { ...prev, [id]: { ...p, done } };
         }),
 
+      lessonsRead,
+      toggleLessonRead: (id) => setLessonsRead((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id])),
+
       prayers,
       addPrayer: (text) =>
         setPrayers((prev) => [{ id: `${Date.now()}`, text: text.trim(), at: Date.now() }, ...prev]),
@@ -99,7 +107,7 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
         ),
       removePrayer: (id) => setPrayers((prev) => prev.filter((p) => p.id !== id)),
     };
-  }, [favorites, lastRead, activePlan, plans, prayers, setFavorites, setLastRead, setActivePlan, setPlans, setPrayers]);
+  }, [favorites, lastRead, activePlan, plans, prayers, lessonsRead, setFavorites, setLastRead, setActivePlan, setPlans, setPrayers, setLessonsRead]);
 
   return <UserDataContext.Provider value={value}>{children}</UserDataContext.Provider>;
 }

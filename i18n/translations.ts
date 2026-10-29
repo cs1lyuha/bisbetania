@@ -124,6 +124,16 @@ const ro = {
   calendarUpdated: 'Actualizat',
   weeklyService: 'Serviciu săptămânal',
 
+  // Grup mic
+  grupMicTitle: 'Grup mic',
+  grupMicSubtitle: 'Pregătește-te lecție cu lecție',
+  grupMicMenuDesc: 'Lecția săptămânii și capitolul de citit',
+  grupMicPrepare: 'Pregătire pentru Grup mic',
+  lesson: 'Lecția',
+  seasonLessons: 'Lecțiile sezonului',
+  lessonsReadLabel: 'citite',
+  noLessons: 'Lecțiile vor apărea aici imediat ce sunt puse în calendarul tineretului.',
+
   // Mai mult
   sectionSpiritual: 'Viața spirituală',
   sectionChurch: 'Biserica',
@@ -282,6 +292,16 @@ const ru: Record<TranslationKey, string> = {
   subscribeCalendar: 'Добавить в Google Календарь',
   calendarUpdated: 'Обновлено',
   weeklyService: 'Еженедельное служение',
+
+  // Grup mic
+  grupMicTitle: 'Малая группа',
+  grupMicSubtitle: 'Готовься урок за уроком',
+  grupMicMenuDesc: 'Урок недели и глава для чтения',
+  grupMicPrepare: 'Подготовка к малой группе',
+  lesson: 'Урок',
+  seasonLessons: 'Уроки сезона',
+  lessonsReadLabel: 'прочитано',
+  noLessons: 'Уроки появятся здесь, как только их добавят в календарь молодёжи.',
 
   sectionSpiritual: 'Духовная жизнь',
   sectionChurch: 'Церковь',
