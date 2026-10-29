@@ -2,7 +2,7 @@
   "expo": {
     "name": "BisBetania",
     "slug": "bisbetania",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "orientation": "portrait",
     "scheme": "betania",
     "userInterfaceStyle": "automatic",
@@ -33,6 +33,14 @@
         {
           "color": "#1A472A"
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Aplicația are nevoie de acces la poze ca să-ți alegi fotografia de profil.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
       ]
     ],
     "experiments": {
@@ -44,6 +52,18 @@
         "projectId": "a6e103a7-7dd9-4f7d-b589-98a7a7c95807"
       }
     },
-    "owner": "bisbetania"
+    "owner": "bisbetania",
+    "ios": {
+      "bundleIdentifier": "app.lavender5893.ocelot8578",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/a6e103a7-7dd9-4f7d-b589-98a7a7c95807"
+    }
   }
 }
