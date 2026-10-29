@@ -173,36 +173,35 @@ export default function HomeScreen() {
   
         {/* Versetul zilei */}
         <View className="px-4" style={{ marginTop: -64 }}>
-          <Animated.View
-            style={{ opacity: fade, transform: [{ translateY: fade.interpolate({ inputRange: [0, 1], outputRange: [12, 0] }) }], elevation: 6 }}
-            className="bg-card rounded-3xl p-5 border border-line"
-          >
-            <View className="flex-row items-center justify-between">
-              <View className="flex-row items-center bg-primary-light rounded-full px-3 py-1">
-                <Ionicons name="sunny-outline" size={14} color={colors.primary} />
-                <Text className="text-primary text-[11px] font-bold uppercase tracking-widest ml-1.5">{t('verseOfDay')}</Text>
+          <Animated.View style={{ opacity: fade, transform: [{ translateY: fade.interpolate({ inputRange: [0, 1], outputRange: [12, 0] }) }] }}>
+            <View className="bg-card rounded-3xl p-5 border border-line" style={{ elevation: 6 }}>
+              <View className="flex-row items-center justify-between">
+                <View className="flex-row items-center bg-primary-light rounded-full px-3 py-1">
+                  <Ionicons name="sunny-outline" size={14} color={colors.primary} />
+                  <Text className="text-primary text-[11px] font-bold uppercase tracking-widest ml-1.5">{t('verseOfDay')}</Text>
+                </View>
+                <Text className="text-muted text-xs">
+                  {now.toLocaleDateString(language === 'ro' ? 'ro-RO' : 'ru-RU', { day: 'numeric', month: 'long' })}
+                </Text>
               </View>
-              <Text className="text-muted text-xs">
-                {now.toLocaleDateString(language === 'ro' ? 'ro-RO' : 'ru-RU', { day: 'numeric', month: 'long' })}
+  
+              <Text className="text-primary text-5xl leading-[48px] mt-2 -mb-4" style={{ fontFamily: serifFont }}>
+                “
               </Text>
-            </View>
+              <Text className="text-ink text-[19px] leading-[29px]" style={{ fontFamily: serifFont }}>
+                {verse.text}
+              </Text>
+              <Text className="text-primary font-bold text-[15px] mt-3">— {verse.reference}</Text>
   
-            <Text className="text-primary text-5xl leading-[48px] mt-2 -mb-4" style={{ fontFamily: serifFont }}>
-              “
-            </Text>
-            <Text className="text-ink text-[19px] leading-[29px]" style={{ fontFamily: serifFont }}>
-              {verse.text}
-            </Text>
-            <Text className="text-primary font-bold text-[15px] mt-3">— {verse.reference}</Text>
-  
-            <View className="flex-row items-center mt-4 pt-4 border-t border-line">
-              <ActionButton icon={isFavorite ? 'heart' : 'heart-outline'} onPress={toggleFavorite} color={colors.primary} />
-              <ActionButton icon={copied ? 'checkmark' : 'copy-outline'} onPress={copyVerse} color={colors.primary} />
-              <ActionButton icon="share-social-outline" onPress={shareVerse} color={colors.primary} />
-              <TouchableOpacity onPress={openChapter} activeOpacity={0.8} className="ml-auto flex-row items-center bg-primary rounded-full px-4 py-2">
-                <Text className="text-white font-semibold text-sm mr-1">{t('readChapter')}</Text>
-                <Ionicons name="arrow-forward" size={15} color="white" />
-              </TouchableOpacity>
+              <View className="flex-row items-center mt-4 pt-4 border-t border-line">
+                <ActionButton icon={isFavorite ? 'heart' : 'heart-outline'} onPress={toggleFavorite} color={colors.primary} />
+                <ActionButton icon={copied ? 'checkmark' : 'copy-outline'} onPress={copyVerse} color={colors.primary} />
+                <ActionButton icon="share-social-outline" onPress={shareVerse} color={colors.primary} />
+                <TouchableOpacity onPress={openChapter} activeOpacity={0.8} className="ml-auto flex-row items-center bg-primary rounded-full px-4 py-2">
+                  <Text className="text-white font-semibold text-sm mr-1">{t('readChapter')}</Text>
+                  <Ionicons name="arrow-forward" size={15} color="white" />
+                </TouchableOpacity>
+              </View>
             </View>
           </Animated.View>
         </View>

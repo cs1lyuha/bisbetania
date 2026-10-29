@@ -95,7 +95,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     [settings, colors, loaded, setSettings],
   );
 
-  const cssVars = vars({
+  return (
+    <ThemeContext.Provider value={value}>
+      <View style={[{ flex: 1, backgroundColor: colors.bg }, themeVars(colors)]}>{children}</View>
+    </ThemeContext.Provider>
+  );
+}
+
+/** Culorile temei ca variabile CSS, pentru clasele NativeWind (bg-card, text-ink…). */
+function themeVars(colors: ThemeColors) {
+  return vars({
     '--primary': rgb(colors.primary),
     '--primary-light': rgb(colors.primaryLight),
     '--bg': rgb(colors.bg),
@@ -104,12 +113,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     '--muted': rgb(colors.muted),
     '--line': rgb(colors.line),
   });
+}
 
-  return (
-    <ThemeContext.Provider value={value}>
-      <View style={[{ flex: 1, backgroundColor: colors.bg }, cssVars]}>{children}</View>
-    </ThemeContext.Provider>
-  );
+/**
+ * Pune din nou variabilele temei. Necesar în ferestrele <Modal>: pe web sunt randate în afara
+ * elementului rădăcină și altfel ar primi culorile implicite (luminoase).
+ */
+export function ThemeScope({ children }: { children: React.ReactNode }) {
+  const { colors } = useTheme();
+  return <View style={[{ flex: 1 }, themeVars(colors)]}>{children}</View>;
 }
 
 export function useTheme() {

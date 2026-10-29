@@ -164,7 +164,8 @@ export default function PrayerWallScreen() {
                 className="text-ink text-base"
                 style={{ minHeight: 70, textAlignVertical: 'top' }}
               />
-              <View className="flex-row items-center mt-3" style={{ gap: 8 }}>
+              {/* Pe ecrane înguste (sau în rusă) butonul trece pe rândul următor, aliniat la dreapta. */}
+              <View className="flex-row flex-wrap items-center mt-3" style={{ gap: 8 }}>
                 {(['all', 'friends'] as Visibility[]).map((v) => (
                   <TouchableOpacity
                     key={v}
@@ -180,11 +181,10 @@ export default function PrayerWallScreen() {
                     </Text>
                   </TouchableOpacity>
                 ))}
-                <View className="flex-1" />
                 <TouchableOpacity
                   onPress={post}
                   disabled={!text.trim() || posting}
-                  className="bg-primary rounded-full px-4 py-2 flex-row items-center"
+                  className="bg-primary rounded-full px-4 py-2 flex-row items-center ml-auto"
                   style={{ opacity: !text.trim() || posting ? 0.5 : 1 }}
                 >
                   {posting ? <ActivityIndicator color="white" size="small" /> : <Ionicons name="send" size={14} color="white" />}

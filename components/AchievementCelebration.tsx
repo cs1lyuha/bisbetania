@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Modal, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLanguage } from '../i18n';
-import { useTheme } from '../lib/theme';
+import { ThemeScope, useTheme } from '../lib/theme';
 import { useAuth } from '../lib/auth';
 import { useCommunity } from '../lib/community';
 import { ACHIEVEMENTS, earnedIds } from '../lib/achievements';
@@ -59,23 +59,25 @@ export default function AchievementCelebration() {
   if (!current) return null;
   return (
     <Modal transparent animationType="fade" visible onRequestClose={close}>
-      <View className="flex-1 items-center justify-center px-8" style={{ backgroundColor: 'rgba(0,0,0,0.55)' }}>
-        <Animated.View style={{ transform: [{ scale }], width: '100%' }}>
-          <View className="bg-card rounded-3xl p-6 items-center border border-line">
-            <Text className="text-primary text-[11px] font-bold uppercase tracking-widest">{t('newAchievement')}</Text>
-            <View className="w-24 h-24 rounded-3xl bg-primary items-center justify-center mt-4">
-              <Ionicons name={current.icon as keyof typeof Ionicons.glyphMap} size={48} color="white" />
+      <ThemeScope>
+        <View className="flex-1 items-center justify-center px-8" style={{ backgroundColor: 'rgba(0,0,0,0.55)' }}>
+          <Animated.View style={{ transform: [{ scale }], width: '100%' }}>
+            <View className="bg-card rounded-3xl p-6 items-center border border-line">
+              <Text className="text-primary text-[11px] font-bold uppercase tracking-widest">{t('newAchievement')}</Text>
+              <View className="w-24 h-24 rounded-3xl bg-primary items-center justify-center mt-4">
+                <Ionicons name={current.icon as keyof typeof Ionicons.glyphMap} size={48} color="white" />
+              </View>
+              <Text className="text-ink text-2xl font-bold mt-4 text-center">{current.title[language]}</Text>
+              <Text className="text-muted text-center mt-1 leading-5">{current.desc[language]}</Text>
+              <TouchableOpacity onPress={close} activeOpacity={0.85} className="bg-primary rounded-2xl py-3.5 mt-6 self-stretch items-center">
+                <Text className="text-white font-bold text-base">{t('thanksButton')}</Text>
+              </TouchableOpacity>
+              {queue.length > 1 && <Text className="text-muted text-xs mt-3">+{queue.length - 1}</Text>}
             </View>
-            <Text className="text-ink text-2xl font-bold mt-4 text-center">{current.title[language]}</Text>
-            <Text className="text-muted text-center mt-1 leading-5">{current.desc[language]}</Text>
-            <TouchableOpacity onPress={close} activeOpacity={0.85} className="bg-primary rounded-2xl py-3.5 mt-6 self-stretch items-center">
-              <Text className="text-white font-bold text-base">{t('thanksButton')}</Text>
-            </TouchableOpacity>
-            {queue.length > 1 && <Text className="text-muted text-xs mt-3">+{queue.length - 1}</Text>}
-          </View>
-        </Animated.View>
-        <Ionicons name="sparkles" size={28} color={colors.primary} style={{ position: 'absolute', top: '22%', right: '18%' }} />
-      </View>
+          </Animated.View>
+          <Ionicons name="sparkles" size={28} color={colors.primary} style={{ position: 'absolute', top: '22%', right: '18%' }} />
+        </View>
+      </ThemeScope>
     </Modal>
   );
 }
