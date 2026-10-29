@@ -207,11 +207,13 @@ function RequestRow({ profile, at }: { profile: Profile; at: string }) {
   const { language } = useLanguage();
   const router = useRouter();
   return (
-    <View className="bg-primary-light rounded-3xl flex-row items-center pl-3.5 pr-1.5 py-3">
+    // Când butoanele nu încap lângă nume (în rusă sau pe ecrane înguste), trec pe rândul următor, la dreapta.
+    <View className="bg-primary-light rounded-3xl flex-row flex-wrap items-center pl-3.5 pr-1.5 py-3" style={{ rowGap: 8 }}>
       <TouchableOpacity
         onPress={() => router.push({ pathname: '/profil', params: { id: profile.id } })}
         activeOpacity={0.75}
-        className="flex-1 flex-row items-center mr-2"
+        className="flex-row items-center mr-2"
+        style={{ flexGrow: 1, flexShrink: 1, flexBasis: 150 }}
       >
         <Avatar url={profile.avatar_url} name={fullName(profile)} size={44} />
         <View className="flex-1 ml-3">
@@ -223,7 +225,9 @@ function RequestRow({ profile, at }: { profile: Profile; at: string }) {
           </Text>
         </View>
       </TouchableOpacity>
-      <FriendButton userId={profile.id} compact />
+      <View className="ml-auto">
+        <FriendButton userId={profile.id} compact />
+      </View>
     </View>
   );
 }

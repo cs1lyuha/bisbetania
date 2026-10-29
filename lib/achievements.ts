@@ -65,8 +65,8 @@ export function closestAchievement(stats?: MemberStats | null) {
   return best;
 }
 
-/** În română, de la 20 în sus numărul cere „de”: „30 de zile”, dar „15 zile”. */
-const roCount = (n: number, word: string) => `${n}${n % 100 >= 20 || (n >= 100 && n % 100 === 0) ? ' de' : ''} ${word}`;
+/** În română, de la 20 în sus numărul cere „de”: „30 de zile”, dar „15 zile” (aceeași regulă ca roNeedsDe din format.ts; fișierele pure nu se importă între ele, ca să meargă direct cu Node). */
+const roCount = (n: number, word: string) => `${n}${n >= 20 && (n % 100 === 0 || n % 100 >= 20) ? ' de' : ''} ${word}`;
 
 const HINTS: Record<Metric, Record<Language, (value: number, goal: number) => string>> = {
   current_streak: { ro: (v, g) => `${v} din ${roCount(g, 'zile la rând')}`, ru: (v, g) => `${v} из ${g} дней подряд` },

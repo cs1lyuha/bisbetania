@@ -21,7 +21,8 @@ export function prayedSentence(lang: Language, total: number, includesMe: boolea
     return ro ? `Tu și încă ${others} v-ați rugat` : `Ты и ещё ${others} молились`;
   }
   if (total === 1) return ro ? 'O persoană s-a rugat' : 'Молился 1 человек';
-  if (ro) return `${total}${total % 100 >= 20 ? ' de' : ''} persoane s-au rugat`;
+  // De la 20 în sus, „de”: „21 de persoane” (regula din format.ts).
+  if (ro) return `${total}${total >= 20 && (total % 100 === 0 || total % 100 >= 20) ? ' de' : ''} persoane s-au rugat`;
   const mod10 = total % 10;
   const mod100 = total % 100;
   const word = mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14) ? 'человека' : 'человек';

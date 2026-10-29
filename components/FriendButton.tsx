@@ -83,11 +83,14 @@ export default function FriendButton({ userId, compact, stretch }: Props) {
           ])
         }
         activeOpacity={0.7}
+        hitSlop={compact ? 6 : 0}
         style={{ height: compact ? 30 : height }}
-        className={`rounded-full border border-line flex-row items-center justify-center ${compact ? 'px-3' : 'px-5'} ${stretch ? 'self-stretch' : ''}`}
+        className={`rounded-full border border-line flex-row items-center justify-center flex-shrink ${compact ? 'px-3' : 'px-5'} ${stretch ? 'self-stretch' : ''}`}
       >
         <Icon name="clock" size={compact ? 12 : 15} color={colors.muted} />
-        <Text className={`text-muted font-ui-medium ml-1.5 ${compact ? 'text-[12px]' : 'text-[14px]'}`}>{t('requestSent')}</Text>
+        <Text className={`text-muted font-ui-medium ml-1.5 flex-shrink ${compact ? 'text-[12px]' : 'text-[14px]'}`} numberOfLines={1}>
+          {t('requestSent')}
+        </Text>
       </TouchableOpacity>
     );
   }

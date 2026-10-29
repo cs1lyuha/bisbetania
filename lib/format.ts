@@ -5,8 +5,13 @@ export const DAY_NAMES: Record<Language, string[]> = {
   ru: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
 };
 
+/** În română, de la 20 în sus (dacă ultimele două cifre fac 0 sau trec de 19) numărul cere „de”: „25 de zile”, dar „15 zile”, „101 zile”. */
+export function roNeedsDe(n: number) {
+  return n >= 20 && (n % 100 === 0 || n % 100 >= 20);
+}
+
 function plural(lang: Language, n: number, ro: [string, string], ru: [string, string, string]) {
-  if (lang === 'ro') return `${n} ${n === 1 ? ro[0] : ro[1]}`;
+  if (lang === 'ro') return `${n} ${roNeedsDe(n) ? 'de ' : ''}${n === 1 ? ro[0] : ro[1]}`;
   const mod10 = n % 10;
   const mod100 = n % 100;
   const form = mod10 === 1 && mod100 !== 11 ? 0 : mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14) ? 1 : 2;

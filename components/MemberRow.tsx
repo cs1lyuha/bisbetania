@@ -38,7 +38,8 @@ export default function MemberRow({ profile, subtitle, streak, first, highlight,
     >
       {left}
       <Avatar url={profile.avatar_url} name={fullName(profile)} size={avatarSize} />
-      <View className="flex-1 ml-3">
+      {/* Numele păstrează măcar atât loc; pastila de alături (mai lungă în rusă) se micșorează ea. */}
+      <View className="flex-1 ml-3" style={{ minWidth: 88 }}>
         <View className="flex-row items-center">
           <Text className="text-ink font-ui-semibold text-[15px] flex-shrink" numberOfLines={1}>
             {fullName(profile)}
@@ -55,7 +56,7 @@ export default function MemberRow({ profile, subtitle, streak, first, highlight,
           <Text className="text-ink font-ui-semibold text-[16px] ml-1.5">{streak}</Text>
         </View>
       )}
-      {!!extra && <View className="ml-2">{extra}</View>}
+      {!!extra && <View className="ml-2 flex-shrink">{extra}</View>}
       {right ? (
         <View className="ml-2">{right}</View>
       ) : (

@@ -366,7 +366,10 @@ function PrayerCard({ prayer, me, onSupport, onAnswered, onDelete }: CardProps) 
         </View>
       )}
 
-      <View className="h-px mt-3.5" style={{ backgroundColor: answered ? colors.card : colors.line }} />
+      {/* Cererea răspunsă a altcuiva, pentru care nu s-a rugat nimeni, nu mai are nimic dedesubt. */}
+      {(!answered || mine || prayer.prayer_support.length > 0) && (
+        <View className="h-px mt-3.5" style={{ backgroundColor: answered ? colors.card : colors.line }} />
+      )}
 
       {answered ? (
         <>
@@ -395,6 +398,7 @@ function PrayerCard({ prayer, me, onSupport, onAnswered, onDelete }: CardProps) 
           <TouchableOpacity
             onPress={onSupport}
             activeOpacity={0.8}
+            hitSlop={4}
             className={`flex-row items-center h-[38px] px-4 rounded-full ${supported ? 'bg-primary' : 'bg-primary-light'}`}
           >
             <Icon name="praying-hands" size={16} color={supported ? colors.onPrimary : colors.primary} />

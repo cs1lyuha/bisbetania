@@ -32,14 +32,16 @@ Lucrezi la aplicația bisericii „Betania” din `~/bisbetania` (GitHub cs1lyuh
   - fundal `bg-cream`, carduri `bg-card` cu `border border-line`
   - text `text-ink` / `text-muted`
   - accent `bg-primary` / `text-primary` / `bg-primary-light`
+  - textul de pe accent: `text-on-primary` / `colors.onPrimary` (alb ziua, închis noaptea), nu `text-white`
   - în stiluri inline folosește `colors.*` din `useTheme()`
-  - **Nicio culoare hardcodată**, cu excepția textului alb pe `bg-primary` și a flăcării seriei (`#F59E0B` / `#FFB347`).
+  - **Nicio culoare hardcodată**, cu excepția textului alb pe antetul `primaryDeep` și a flăcării seriei (`#F59E0B` / `#FFB347`).
 - **Cardurile:** `rounded-2xl`/`rounded-3xl`, `p-4`/`p-5`.
-- **Etichetele de secțiune:** `text-muted text-[11px] font-bold uppercase tracking-widest`.
+- **Etichetele de secțiune:** componenta `SectionLabel` (11, `font-ui-bold`, majuscule, spațiere largă, `muted`).
+- **Fonturile** (`lib/fonts.ts`): Inter cu `font-ui`, `font-ui-medium`, `font-ui-semibold`, `font-ui-bold`; Source Serif 4 cu `font-display` (versete), `font-display-italic`, `font-display-semibold` (titluri, nume, cifre). Greutatea e în familie: **nu** pune `font-bold`/`fontWeight` peste ele (pe Android revine fontul sistemului). Mărimile: text 15–16, secundar 12–13, etichete 11 (vezi `docs/design/REDESIGN-P2-P4-NOTE.md`).
 - **Componente existente:**
   - antetul paginilor: `ScreenHeader`
   - membri: `MemberRow`, `Avatar`, `FriendButton`
-- **Iconițele:** Ionicons. Verifică numele în glyphmap înainte să le folosești.
+- **Iconițele:** `components/Icon.tsx` (SVG în stilul Lucide; adaugă acolo ce lipsește). Ionicons doar în ecranele încă nerefăcute; verifică numele în glyphmap.
 - **Vibrațiile:** `tap()` la atingere, `success()` la reușită (din `lib/haptics`).
 - **Orice text din interfață** trece prin `t('cheie')`, cu `ro` și `ru` în `i18n/translations.ts`. Rusa trebuie să fie naturală; pentru plurale folosește `countLabel`.
 - **Comentariile din cod** sunt în română, scurte, și explică *de ce*.

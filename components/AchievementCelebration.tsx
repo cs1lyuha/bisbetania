@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, Animated, useWindowDimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, Animated, ScrollView, useWindowDimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -81,7 +81,7 @@ export default function AchievementCelebration() {
     markSeen(queue);
     setQueue([]);
     setClosed(0);
-    router.push('/profil');
+    router.navigate('/profil');
   };
 
   if (!current) return null;
@@ -92,7 +92,17 @@ export default function AchievementCelebration() {
   return (
     <Modal transparent animationType="fade" visible onRequestClose={close}>
       <ThemeScope>
-        <View className="flex-1 items-center px-6" style={{ backgroundColor: 'rgba(0,0,0,0.55)', paddingTop: Math.max(insets.top + 24, height * 0.2) }}>
+        {/* Pe ecranele înalte cardul stă sus (ca în planșe); pe cele mici sau cu text mărit se derulează, ca butonul să rămână la îndemână. */}
+        <ScrollView
+          style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.55)' }}
+          contentContainerStyle={{
+            flexGrow: 1,
+            alignItems: 'center',
+            paddingHorizontal: 24,
+            paddingTop: height >= 740 ? Math.max(insets.top + 24, height * 0.2) : insets.top + 24,
+            paddingBottom: insets.bottom + 24,
+          }}
+        >
           <Animated.View style={{ transform: [{ scale }], width: '100%', maxWidth: 400 }}>
             <View className="bg-card rounded-[32px] px-6 pt-7 pb-4 items-center">
               <Text className="text-muted font-ui-bold text-[11px] uppercase tracking-widest">{t('newAchievement')}</Text>
@@ -143,7 +153,7 @@ export default function AchievementCelebration() {
               )}
             </View>
           </Animated.View>
-        </View>
+        </ScrollView>
       </ThemeScope>
     </Modal>
   );

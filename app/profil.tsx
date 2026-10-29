@@ -88,6 +88,8 @@ export default function ProfileScreen() {
             refreshing={refreshing}
             tintColor="white"
             colors={[colors.primary]}
+            // Pe iOS spinner-ul stă în spatele conținutului, iar antetul are un fundal verde peste el.
+            style={{ zIndex: 1 }}
             onRefresh={async () => {
               setRefreshing(true);
               await load();
@@ -103,7 +105,7 @@ export default function ProfileScreen() {
             <Avatar url={profile.avatar_url} name={fullName(profile)} size={AVATAR} tone="soft" />
           </View>
           <Text className="text-ink font-display-semibold text-[30px] leading-[38px] mt-2 text-center">{fullName(profile)}</Text>
-          <View className="flex-row items-center mt-1">
+          <View className="flex-row flex-wrap justify-center items-center mt-1 px-4">
             <Text className="text-primary font-ui-semibold text-[15px]">@{profile.nickname}</Text>
             <Text className="text-muted font-ui text-[15px] mx-2">·</Text>
             <Text className="text-muted font-ui text-[15px]">

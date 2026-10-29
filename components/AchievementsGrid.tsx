@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, useWindowDimensions } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 import { useLanguage } from '../i18n';
 import { useTheme } from '../lib/theme';
@@ -19,6 +19,9 @@ export default function AchievementsGrid({ stats, showClosest }: { stats?: Membe
   const items = ACHIEVEMENTS.map((a) => ({ a, p: progressOf(a, stats) }));
   const earned = items.filter((x) => x.p.earned).length;
   const closest = showClosest ? closestAchievement(stats) : null;
+  // Pe telefoanele înguste (360dp) 4 coloane ar rupe titluri ca „Неопалимая” la mijlocul cuvântului.
+  const { width } = useWindowDimensions();
+  const column = width < 370 ? '33.33%' : '25%';
 
   return (
     <View className="bg-card rounded-3xl border border-line p-5 mt-4">
@@ -53,9 +56,9 @@ export default function AchievementsGrid({ stats, showClosest }: { stats?: Membe
 
       <View className="flex-row flex-wrap mt-5 -mx-2" style={{ rowGap: 12 }}>
         {items.map(({ a, p }) => (
-          <View key={a.id} className="items-center px-0.5" style={{ width: '25%' }}>
+          <View key={a.id} className="items-center px-0.5" style={{ width: column }}>
             <Badge achievement={a} ratio={p.ratio} earned={p.earned} />
-            <Text className="text-ink font-ui-semibold text-[12px] leading-[15px] text-center mt-1.5" numberOfLines={2}>
+            <Text className="text-ink font-ui-semibold text-[12px] leading-[15px] text-center mt-1.5" numberOfLines={2} adjustsFontSizeToFit minimumFontScale={0.8}>
               {a.title[language]}
             </Text>
             {!p.earned && (

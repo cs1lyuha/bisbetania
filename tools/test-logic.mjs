@@ -2,7 +2,7 @@
 // Rulare: node --experimental-strip-types --no-warnings tools/test-logic.mjs
 const { relationOf, friendIdsOf, suggestionsFor, streakRanking, podiumOrder } = await import('../lib/social.ts');
 const { ACHIEVEMENTS, progressOf, earnedIds, nextInFamily, closestAchievement, progressHint, streakToRecord, recordNote } = await import('../lib/achievements.ts');
-const { pluralWord } = await import('../lib/format.ts');
+const { pluralWord, countLabel } = await import('../lib/format.ts');
 const { supportersSentence, prayedSentence } = await import('../lib/wall.ts');
 
 let failed = 0;
@@ -73,6 +73,8 @@ check('nota recordului RO, o zi', recordNote('ro', 1), 'Încă 1 zi până la un
 check('nota recordului RO, 21', recordNote('ro', 21), 'Încă 21 de zile până la un record nou');
 check('nota recordului RU', [1, 3, 5, 11, 22].map((n) => recordNote('ru', n)), ['Ещё 1 день до нового рекорда', 'Ещё 3 дня до нового рекорда', 'Ещё 5 дней до нового рекорда', 'Ещё 11 дней до нового рекорда', 'Ещё 22 дня до нового рекорда']);
 check('doar cuvântul (RO)', [1, 12].map((n) => pluralWord('ro', n, ['zi', 'zile'], ['день', 'дня', 'дней'])), ['zi', 'zile']);
+check('doar cuvântul (RO) cu „de”', [25, 100, 101, 119, 120].map((n) => pluralWord('ro', n, ['zi', 'zile'], ['день', 'дня', 'дней'])), ['de zile', 'de zile', 'zile', 'zile', 'de zile']);
+check('countLabel RO cu „de”', [countLabel('ro', 22, ['zi activă', 'zile active'], ['', '', '']), countLabel('ro', 9, ['zi activă', 'zile active'], ['', '', ''])], ['22 de zile active', '9 zile active']);
 check('doar cuvântul (RU)', [1, 3, 12, 21].map((n) => pluralWord('ru', n, ['zi', 'zile'], ['день', 'дня', 'дней'])), ['день', 'дня', 'дней', 'день']);
 
 console.log('Peretele de rugăciune:');
@@ -84,6 +86,7 @@ check('tu și alții', prayedSentence('ro', 6, true), 'Tu și încă 5 v-ați ru
 check('doar tu', prayedSentence('ru', 1, true), 'Ты молился(ась) за эту просьбу');
 check('alții, RO', prayedSentence('ro', 5, false), '5 persoane s-au rugat');
 check('alții, RO de la 20', prayedSentence('ro', 21, false), '21 de persoane s-au rugat');
+check('alții, RO 100', prayedSentence('ro', 100, false), '100 de persoane s-au rugat');
 check('alții, RU 3', prayedSentence('ru', 3, false), 'Молились 3 человека');
 check('alții, RU 12', prayedSentence('ru', 12, false), 'Молились 12 человек');
 check('nimeni s-a rugat', prayedSentence('ro', 0, false), '');

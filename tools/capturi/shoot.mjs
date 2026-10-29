@@ -199,6 +199,8 @@ async function typeInto(placeholderPart, text) {
 
 let count = 0;
 async function shot(name) {
+  // Fereastra modală de pe web pune focusul pe primul buton și Chrome îi desenează un contur (pe telefon nu există).
+  await evaluate('document.activeElement?.blur?.(); true');
   const { data } = await send('Page.captureScreenshot', { format: 'jpeg', quality: 88 });
   writeFileSync(join(OUT, `${name}.jpg`), Buffer.from(data, 'base64'));
   count++;
