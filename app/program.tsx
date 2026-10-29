@@ -8,6 +8,7 @@ import { useChurch } from '../lib/church';
 import { buildOccurrences, nextOccurrence } from '../lib/calendar';
 import { DAY_NAMES, formatDate, formatDayTitle, timeUntil } from '../lib/format';
 import ScreenHeader from '../components/ScreenHeader';
+import HeaderBackground from '../components/HeaderBackground';
 import OccurrenceCard from '../components/OccurrenceCard';
 
 // Săptămâna începe luni.
@@ -33,9 +34,10 @@ export default function ScheduleScreen() {
         <TouchableOpacity
           onPress={() => router.push('/calendar')}
           activeOpacity={0.85}
-          className="rounded-2xl flex-row items-center px-4 py-4 mb-5"
+          className="rounded-2xl flex-row items-center px-4 py-4 mb-5 overflow-hidden"
           style={{ backgroundColor: colors.primaryDeep }}
         >
+          <HeaderBackground />
           <View className="w-11 h-11 rounded-xl bg-white/15 items-center justify-center mr-3">
             <Ionicons name="calendar" size={22} color="white" />
           </View>

@@ -20,11 +20,15 @@ import LanguageToggle from '../../components/LanguageToggle';
 import StatusBarScrim from '../../components/StatusBarScrim';
 import Hero from '../../components/Hero';
 import LessonCard from '../../components/LessonCard';
+import PressableScale from '../../components/PressableScale';
+import WeeklyChallengeCard from '../../components/WeeklyChallengeCard';
+import HeaderBackground from '../../components/HeaderBackground';
 import Avatar from '../../components/Avatar';
 import { useAuth } from '../../lib/auth';
 import { useCommunity } from '../../lib/community';
 import { fullName } from '../../lib/supabase';
 import { currentLesson, lessonsFrom } from '../../lib/grupmic';
+import { useTabBarSpace } from '../../components/GlassTabBar';
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
@@ -38,6 +42,8 @@ function useNow(intervalMs = 60_000) {
 }
 
 export default function HomeScreen() {
+  // Loc sub conținut pentru bara de taburi plutitoare.
+  const tabSpace = useTabBarSpace();
   const { t, language } = useLanguage();
   const { colors, serifFont } = useTheme();
   const router = useRouter();
@@ -99,8 +105,8 @@ export default function HomeScreen() {
   const openChapter = () =>
     router.push({ pathname: '/citire', params: { b: verse.ref.b, c: verse.ref.c, v: verse.ref.v } });
 
+  // Biblia nu mai e aici: e deja în bara de jos. Memorarea are cardul ei, mai jos (provocarea săptămânii).
   const quick: { icon: IconName; label: string; onPress: () => void }[] = [
-    { icon: 'book-outline', label: t('tabBible'), onPress: () => router.push('/biblia') },
     { icon: 'heart-outline', label: t('tabDonate'), onPress: () => router.push('/doneaza') },
     { icon: 'flame-outline', label: t('prayersShort'), onPress: () => router.push('/rugaciuni') },
     {
@@ -109,7 +115,6 @@ export default function HomeScreen() {
       onPress: () => WebBrowser.openBrowserAsync(YOUTUBE_LIVE, { toolbarColor: colors.primaryDeep }),
     },
     { icon: 'calendar-outline', label: t('calendarTitle'), onPress: () => router.push('/calendar') },
-    { icon: 'bulb-outline', label: t('memoryTitle'), onPress: () => router.push('/memorare') },
   ];
 
   return (
@@ -117,7 +122,7 @@ export default function HomeScreen() {
       <Animated.ScrollView
         style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 32 }}
+        contentContainerStyle={{ paddingBottom: tabSpace }}
         scrollEventThrottle={16}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })}
       >
@@ -207,36 +212,42 @@ export default function HomeScreen() {
         </View>
   
         {/* Acțiuni rapide */}
-        <View className="px-4 mt-4 flex-row flex-wrap" style={{ gap: 10 }}>
+        <View className="px-4 mt-4 flex-row" style={{ gap: 10 }}>
           {quick.map((q) => (
-            <TouchableOpacity
+            <PressableScale
               key={q.label}
               onPress={() => {
                 tap();
                 q.onPress();
               }}
-              activeOpacity={0.8}
-              style={{ width: '31.3%' }}
-              className="bg-card rounded-2xl border border-line items-center py-4"
+              accessibilityRole="button"
+              accessibilityLabel={q.label}
+              wrapperStyle={{ flex: 1 }}
+              className="bg-card rounded-2xl border border-line items-center py-3.5 px-1"
             >
               <View className="w-11 h-11 rounded-full bg-primary-light items-center justify-center">
-                <Ionicons name={q.icon} size={22} color={colors.primary} />
+                <Ionicons name={q.icon} size={21} color={colors.primary} />
               </View>
-              <Text className="text-ink text-[13px] font-semibold mt-2" numberOfLines={1}>
+              <Text className="text-ink text-[12px] font-ui-semibold mt-2" numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
                 {q.label}
               </Text>
-            </TouchableOpacity>
+            </PressableScale>
           ))}
         </View>
-  
+
+        {/* Provocarea săptămânii: jocurile de memorare, la vedere. */}
+        <WeeklyChallengeCard />
+
         {/* Următoarea întâlnire */}
         {upcoming && (
-          <TouchableOpacity
+          <PressableScale
             onPress={() => router.push({ pathname: '/calendar', params: { date: upcoming.occurrence.start.toISOString() } })}
-            activeOpacity={0.85}
-            className="mx-4 mt-4 rounded-3xl p-5 overflow-hidden"
+            accessibilityRole="button"
+            wrapperStyle={{ marginHorizontal: 16, marginTop: 16 }}
+            className="rounded-3xl p-5 overflow-hidden"
             style={{ backgroundColor: colors.primaryDeep }}
           >
+            <HeaderBackground />
             <View className="flex-row items-center">
               <Ionicons name="time-outline" size={16} color="rgba(255,255,255,0.75)" />
               <Text className="flex-1 text-white/75 text-[11px] font-bold uppercase tracking-widest ml-1.5">{t('nextService')}</Text>
@@ -259,7 +270,7 @@ export default function HomeScreen() {
                 </Text>
               </View>
             </View>
-          </TouchableOpacity>
+          </PressableScale>
         )}
 
         {/* Grup mic */}

@@ -2,6 +2,7 @@ import React, { createContext, useContext, useMemo } from 'react';
 import { Platform, View, useColorScheme } from 'react-native';
 import { vars } from 'nativewind';
 import { usePersistentState } from './storage';
+import { neutralsFor } from './color';
 
 export const ACCENTS = {
   betania: { light: '#1A472A', dark: '#4C9A6A', tint: '#EAF4EC', darkTint: '#1C2E23' },
@@ -15,9 +16,10 @@ export const ACCENTS = {
 export type Accent = keyof typeof ACCENTS;
 export type ThemeMode = 'system' | 'light' | 'dark';
 
-const NEUTRAL = {
-  light: { bg: '#F5F1EB', card: '#FFFFFF', ink: '#1F2937', muted: '#787E87', line: '#ECE7E0' },
-  dark: { bg: '#0E1311', card: '#18201C', ink: '#E9EEEA', muted: '#97A19B', line: '#26302B' },
+// Auriul jocurilor și al realizărilor: iese în evidență pe oricare dintre cele 6 accente (e și culoarea flăcării seriei).
+const GOLD = {
+  light: { goldFrom: '#FFD27A', goldTo: '#F59E0B', onGold: '#2B1A03' },
+  dark: { goldFrom: '#E3A23C', goldTo: '#B9700C', onGold: '#1A1004' },
 };
 
 export const HIGHLIGHTS = {
@@ -53,15 +55,19 @@ function rgb(hex: string) {
 
 function makeColors(accent: Accent, dark: boolean) {
   const a = ACCENTS[accent];
-  const n = dark ? NEUTRAL.dark : NEUTRAL.light;
+  // Fundalul, cardurile, marginile și textul sunt din nuanța accentului (vezi lib/color.ts).
+  const n = neutralsFor(a.light, dark);
   return {
     isDark: dark,
     primary: dark ? a.dark : a.light,
     primaryDeep: a.light,
+    // Varianta deschisă a accentului, în ambele moduri: capătul luminos al gradientului din antete.
+    primaryBright: a.dark,
     primaryLight: dark ? a.darkTint : a.tint,
     // Textul de pe primary: alb pe accentul închis; în modul întunecat accentul e deschis și albul n-ar avea contrast.
     onPrimary: dark ? n.bg : '#FFFFFF',
     heroOverlay: `${a.light}B8`,
+    ...(dark ? GOLD.dark : GOLD.light),
     ...n,
   };
 }

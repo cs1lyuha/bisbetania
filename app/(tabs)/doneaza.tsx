@@ -22,8 +22,11 @@ import { DONATION_LINKS, PRESET_AMOUNTS } from '../../config/links';
 import LanguageToggle from '../../components/LanguageToggle';
 import StatusBarScrim from '../../components/StatusBarScrim';
 import Hero from '../../components/Hero';
+import { useTabBarSpace } from '../../components/GlassTabBar';
 
 export default function DonateScreen() {
+  // Loc sub conținut pentru bara de taburi plutitoare.
+  const tabSpace = useTabBarSpace();
   const { t } = useLanguage();
   const { colors } = useTheme();
   const router = useRouter();
@@ -67,7 +70,7 @@ export default function DonateScreen() {
       <Animated.ScrollView
         style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 32 }}
+        contentContainerStyle={{ paddingBottom: tabSpace }}
         keyboardShouldPersistTaps="handled"
         scrollEventThrottle={16}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })}

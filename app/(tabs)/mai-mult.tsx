@@ -12,6 +12,9 @@ import { fullName } from '../../lib/supabase';
 import Avatar from '../../components/Avatar';
 import { tap } from '../../lib/haptics';
 import ScreenHeader from '../../components/ScreenHeader';
+import PressableScale from '../../components/PressableScale';
+import { useTabBarSpace } from '../../components/GlassTabBar';
+import Constants from 'expo-constants';
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
@@ -45,6 +48,8 @@ const SECTIONS: { titleKey: TranslationKey; items: { icon: IconName; key: Transl
 ];
 
 export default function MoreScreen() {
+  // Loc sub conținut pentru bara de taburi plutitoare.
+  const tabSpace = useTabBarSpace();
   const { t } = useLanguage();
   const { colors } = useTheme();
   const router = useRouter();
@@ -64,15 +69,16 @@ export default function MoreScreen() {
   return (
     <View className="flex-1 bg-cream">
       <ScreenHeader title={t('tabMore')} back={false} />
-      <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 32 }}>
+      <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: tabSpace }}>
         {auth.enabled && (
-          <TouchableOpacity
+          <PressableScale
             onPress={() => {
               tap();
               router.push(auth.session ? '/profil' : '/cont');
             }}
-            activeOpacity={0.8}
-            className="bg-card rounded-2xl border border-line px-4 py-4 flex-row items-center mb-5"
+            accessibilityRole="button"
+            wrapperStyle={{ marginBottom: 20 }}
+            className="bg-card rounded-2xl border border-line px-4 py-4 flex-row items-center"
           >
             {auth.profile ? (
               <Avatar url={auth.profile.avatar_url} name={fullName(auth.profile)} size={52} />
@@ -86,7 +92,7 @@ export default function MoreScreen() {
               <Text className="text-muted text-xs mt-0.5">{auth.profile ? `@${auth.profile.nickname}` : t('joinCommunityDesc')}</Text>
             </View>
             <Ionicons name="chevron-forward" size={20} color={colors.muted} />
-          </TouchableOpacity>
+          </PressableScale>
         )}
         {SECTIONS.map((section) => (
           <View key={section.titleKey} className="mb-5">
@@ -125,7 +131,7 @@ export default function MoreScreen() {
             </View>
           </View>
         ))}
-        <Text className="text-center text-muted text-xs mt-2">BisBetania 1.1 · {t('madeWithLove')}</Text>
+        <Text className="text-center text-muted text-xs mt-2">BisBetania {Constants.expoConfig?.version} · {t('madeWithLove')}</Text>
       </ScrollView>
     </View>
   );

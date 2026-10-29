@@ -4,6 +4,7 @@ const { relationOf, friendIdsOf, suggestionsFor, streakRanking, podiumOrder } = 
 const { ACHIEVEMENTS, progressOf, earnedIds, nextInFamily, closestAchievement, progressHint, streakToRecord, recordNote } = await import('../lib/achievements.ts');
 const { pluralWord, countLabel } = await import('../lib/format.ts');
 const { supportersSentence, prayedSentence } = await import('../lib/wall.ts');
+const { hexToHsl, hslToHex, mix, contrast, neutralsFor } = await import('../lib/color.ts');
 
 let failed = 0;
 const check = (name, got, want) => {
@@ -90,6 +91,19 @@ check('alții, RO 100', prayedSentence('ro', 100, false), '100 de persoane s-au 
 check('alții, RU 3', prayedSentence('ru', 3, false), 'Молились 3 человека');
 check('alții, RU 12', prayedSentence('ru', 12, false), 'Молились 12 человек');
 check('nimeni s-a rugat', prayedSentence('ro', 0, false), '');
+
+console.log('Culori:');
+check('HSL dus-întors', hslToHex(...Object.values(hexToHsl('#1E4E8C'))), '#1E4E8C');
+check('amestec la jumătate', mix('#000000', '#FFFFFF', 0.5), '#808080');
+check('contrast alb/negru', Math.round(contrast('#FFFFFF', '#000000')), 21);
+const ACC = { betania: ['#1A472A', '#4C9A6A'], ocean: ['#1E4E8C', '#5B8FD6'], burgundy: ['#7A1F3D', '#C7577A'], violet: ['#5B3A8E', '#9A7BD0'], amber: ['#8A5A12', '#D49A3A'], teal: ['#0F5E63', '#3FA7A9'] };
+for (const [name, [light]] of Object.entries(ACC)) {
+  for (const dark of [false, true]) {
+    const n = neutralsFor(light, dark);
+    const ok = contrast(n.ink, n.bg) >= 7 && contrast(n.muted, n.bg) >= 4.5 && contrast(n.muted, n.card) >= 4.5;
+    check(`${name} ${dark ? 'întunecat' : 'luminos'}: textul se citește (AA)`, ok, true);
+  }
+}
 
 console.log(failed ? `\n${failed} TESTE PICATE` : '\nToate testele de logică au trecut.');
 process.exit(failed ? 1 : 0);

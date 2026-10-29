@@ -1,8 +1,8 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLanguage } from '../../i18n';
 import { useTheme } from '../../lib/theme';
+import GlassTabBar from '../../components/GlassTabBar';
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
@@ -16,22 +16,15 @@ const TABS: { name: string; titleKey: 'tabHome' | 'tabBible' | 'tabDonate' | 'ta
 export default function TabsLayout() {
   const { t } = useLanguage();
   const { colors } = useTheme();
-  const insets = useSafeAreaInsets();
 
   return (
     <Tabs
+      // Bara plutitoare, de sticlă; conținutul trece pe sub ea (fiecare tab lasă loc jos cu useTabBarSpace).
+      tabBar={(props) => <GlassTabBar {...props} />}
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.muted,
-        tabBarStyle: {
-          backgroundColor: colors.card,
-          borderTopColor: colors.line,
-          height: 60 + insets.bottom,
-          paddingTop: 6,
-          paddingBottom: Math.max(insets.bottom, 8),
-        },
-        tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
+        // Trecerea între taburi: ecranul alunecă puțin și apare treptat, în loc să sară.
+        animation: 'shift',
         sceneStyle: { backgroundColor: colors.bg },
       }}
     >
@@ -42,7 +35,7 @@ export default function TabsLayout() {
           options={{
             title: t(tab.titleKey),
             tabBarIcon: ({ color, focused, size }) => (
-              // Culorile taburilor sunt șiruri din temă (tabBarActiveTintColor), deci color e mereu un șir.
+              // Culorile vin din GlassTabBar (șiruri din temă).
               <Ionicons name={focused ? tab.icon : (`${tab.icon}-outline` as IconName)} size={size - 2} color={color as string} />
             ),
           }}

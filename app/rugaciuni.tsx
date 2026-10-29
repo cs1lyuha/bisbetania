@@ -8,6 +8,7 @@ import { useUserData } from '../lib/user-data';
 import { formatDate } from '../lib/format';
 import { success, tap } from '../lib/haptics';
 import ScreenHeader from '../components/ScreenHeader';
+import HeaderBackground from '../components/HeaderBackground';
 
 export default function PrayersScreen() {
   const { t, language } = useLanguage();
@@ -36,9 +37,10 @@ export default function PrayersScreen() {
         <TouchableOpacity
           onPress={() => router.push('/perete')}
           activeOpacity={0.85}
-          className="flex-row items-center rounded-2xl px-4 py-3 mb-3"
+          className="flex-row items-center rounded-2xl px-4 py-3 mb-3 overflow-hidden"
           style={{ backgroundColor: colors.primaryDeep }}
         >
+          <HeaderBackground />
           <Ionicons name="hand-left-outline" size={18} color="white" />
           <Text className="flex-1 text-white font-semibold ml-2">{t('openWall')}</Text>
           <Ionicons name="chevron-forward" size={18} color="white" />

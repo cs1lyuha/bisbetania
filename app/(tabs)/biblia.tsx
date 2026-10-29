@@ -8,8 +8,11 @@ import { useUserData } from '../../lib/user-data';
 import { NEW_TESTAMENT, OLD_TESTAMENT, TRANSLATION_NAME, formatRef } from '../../lib/bible';
 import { tap } from '../../lib/haptics';
 import ScreenHeader from '../../components/ScreenHeader';
+import { useTabBarSpace } from '../../components/GlassTabBar';
 
 export default function BibleScreen() {
+  // Loc sub conținut pentru bara de taburi plutitoare.
+  const tabSpace = useTabBarSpace();
   const { t, language } = useLanguage();
   const { colors } = useTheme();
   const router = useRouter();
@@ -39,7 +42,7 @@ export default function BibleScreen() {
         }
       />
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 16, paddingBottom: 32 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 16, paddingBottom: tabSpace }}>
         {lastRead && (
           <TouchableOpacity
             onPress={() => router.push({ pathname: '/citire', params: { b: lastRead.b, c: lastRead.c } })}

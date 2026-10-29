@@ -137,6 +137,11 @@ const ro = {
   // Memorare
   memoryTitle: 'Memorare',
   memorySubtitle: 'Un verset nou în fiecare săptămână',
+  challengeTitle: 'Provocarea săptămânii',
+  challengeDesc: 'Învață versetul în 3 jocuri scurte și urcă în clasament',
+  challengeDone: 'Versetul e memorat! Mai poți aduna stele, până la 9.',
+  challengePlay: 'Joacă',
+  challengeAgain: 'Din nou',
   memoryMenuDesc: 'Jocuri scurte ca să înveți versete pe de rost',
   weeklyVerse: 'Versetul săptămânii',
   hideText: 'Ascunde',
@@ -451,6 +456,11 @@ const ru: Record<TranslationKey, string> = {
   // Memorare
   memoryTitle: 'Заучивание',
   memorySubtitle: 'Новый стих каждую неделю',
+  challengeTitle: 'Вызов недели',
+  challengeDesc: 'Выучи стих в 3 коротких играх и поднимись в рейтинге',
+  challengeDone: 'Стих выучен! Можно собрать ещё звёзд, до 9.',
+  challengePlay: 'Играть',
+  challengeAgain: 'Ещё раз',
   memoryMenuDesc: 'Короткие игры, чтобы выучить стихи наизусть',
   weeklyVerse: 'Стих недели',
   hideText: 'Скрыть',

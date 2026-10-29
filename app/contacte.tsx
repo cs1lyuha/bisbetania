@@ -7,6 +7,7 @@ import { useTheme } from '../lib/theme';
 import { useChurch } from '../lib/church';
 import { YOUTUBE_LIVE } from '../config/links';
 import ScreenHeader from '../components/ScreenHeader';
+import HeaderBackground from '../components/HeaderBackground';
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
@@ -48,9 +49,10 @@ export default function ContactsScreen() {
         <TouchableOpacity
           onPress={() => openWeb(YOUTUBE_LIVE)}
           activeOpacity={0.85}
-          className="rounded-3xl p-5 flex-row items-center mb-4"
+          className="rounded-3xl p-5 flex-row items-center mb-4 overflow-hidden"
           style={{ backgroundColor: colors.primaryDeep }}
         >
+          <HeaderBackground />
           <View className="w-12 h-12 rounded-full bg-white/20 items-center justify-center mr-4">
             <Ionicons name="play" size={24} color="white" />
           </View>

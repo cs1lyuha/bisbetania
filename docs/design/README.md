@@ -4,6 +4,13 @@ Capturi ale aplicației actuale, pentru designer. Merg împreună cu [`../DESIGN
 
 > **Redesign P2 implementat:** profilul, membrii și clasamentul, peretele de rugăciune și felicitarea urmează planșele din [`BisBetania-Redesign-P2-P4.pdf`](BisBetania-Redesign-P2-P4.pdf) (notițele: [`REDESIGN-P2-P4-NOTE.md`](REDESIGN-P2-P4-NOTE.md)). Capturile de mai jos arată noul design; antetul nou e pe toate ecranele.
 
+> **Runda 2 (1.3.0):**
+> - neutrele (fundal, text, linii) sunt nuanțate după culoarea de accent, în luminos și în întunecat
+> - antetele au un gradient diagonal cu colțuri rotunjite
+> - bara de jos plutește, ca o bulă de sticlă: Liquid Glass pe iOS 26+, estompare pe iOS mai vechi și pe web, translucidă pe Android
+> - pe Acasă, Biblia a ieșit din scurtături (e în bară), iar memorarea a devenit cardul auriu „Provocarea săptămânii”
+> - cardurile principale se strâng elastic la atingere
+
 - **Format:** iPhone 390×844 pt, rezoluție 2× (780×1688 px), cu zonele sigure ale unui iPhone (notch și bara de jos).
 - **92 capturi, 36 ecrane:** fiecare în **luminos** și **întunecat** (accentul implicit, verde Betania). Ecranele-cheie sunt și în **rusă**, iar câteva sunt în celelalte **5 culori de accent**, ca dovadă că sistemul ține.
 - **Datele comunității sunt inventate:** membri, cereri de rugăciune, clasamente. Nu sunt oameni reali. Data e 29 octombrie 2026.

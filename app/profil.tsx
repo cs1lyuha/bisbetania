@@ -19,6 +19,8 @@ import FriendButton from '../components/FriendButton';
 import AchievementsGrid from '../components/AchievementsGrid';
 import Icon, { IconName } from '../components/Icon';
 import ProgressBar from '../components/ProgressBar';
+import HeaderBackground from '../components/HeaderBackground';
+import { mix } from '../lib/color';
 import SectionLabel from '../components/SectionLabel';
 import StatusBarScrim from '../components/StatusBarScrim';
 import { useCommunity } from '../lib/community';
@@ -155,27 +157,34 @@ function ProfileHeader({ title }: { title: string }) {
   const { colors } = useTheme();
   const height = insets.top + 188;
   return (
-    <View style={{ height, backgroundColor: colors.primaryDeep }}>
-      {/* La tras în jos (iOS) se vede tot accentul, nu fundalul. */}
-      <View style={{ position: 'absolute', top: -600, left: 0, right: 0, height: 600, backgroundColor: colors.primaryDeep }} />
-      <Svg width={width} height={height} style={{ position: 'absolute' }}>
-        {[90, 128, 166, 204, 242, 280, 318].map((r) => (
-          <Circle key={r} cx={width / 2} cy={height} r={r} stroke="white" strokeOpacity={0.1} strokeWidth={1.5} fill="none" />
-        ))}
-      </Svg>
-      <View className="flex-row items-center px-4" style={{ paddingTop: insets.top + 10 }}>
+    <View style={{ height }}>
+      {/* La tras în jos (iOS) se vede tot accentul, nu fundalul (în afara părții rotunjite, ca să nu fie tăiat). */}
+      <View style={{ position: 'absolute', top: -600, left: 0, right: 0, height: 640, backgroundColor: mix(colors.primaryDeep, '#000000', 0.14) }} />
+      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderBottomLeftRadius: 32, borderBottomRightRadius: 32, overflow: 'hidden', backgroundColor: colors.primaryDeep }}>
+        <HeaderBackground />
+        <Svg width={width} height={height} style={{ position: 'absolute' }}>
+          {[90, 128, 166, 204, 242, 280, 318].map((r) => (
+            <Circle key={r} cx={width / 2} cy={height} r={r} stroke="white" strokeOpacity={0.1} strokeWidth={1.5} fill="none" />
+          ))}
+        </Svg>
+      </View>
+      <View className="flex-row items-center px-4" style={{ paddingTop: insets.top + 8 }}>
         <TouchableOpacity
-          onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))}
+          onPress={() => {
+            tap();
+            if (router.canGoBack()) router.back();
+            else router.replace('/');
+          }}
           activeOpacity={0.7}
           hitSlop={8}
-          className="w-11 h-11 rounded-full bg-white/15 items-center justify-center"
+          className="w-10 h-10 rounded-full bg-white/15 border border-white/20 items-center justify-center"
         >
-          <Icon name="chevron-left" size={24} color="white" />
+          <Icon name="chevron-left" size={22} color="white" />
         </TouchableOpacity>
         <Text className="flex-1 text-white font-ui-semibold text-[18px] text-center" numberOfLines={1}>
           {title}
         </Text>
-        <View className="w-11" />
+        <View className="w-10" />
       </View>
     </View>
   );

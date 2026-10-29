@@ -213,7 +213,7 @@ function RequestRow({ profile, at }: { profile: Profile; at: string }) {
         onPress={() => router.push({ pathname: '/profil', params: { id: profile.id } })}
         activeOpacity={0.75}
         className="flex-row items-center mr-2"
-        style={{ flexGrow: 1, flexShrink: 1, flexBasis: 150 }}
+        style={{ flexGrow: 1, flexShrink: 1, flexBasis: 130 }}
       >
         <Avatar url={profile.avatar_url} name={fullName(profile)} size={44} />
         <View className="flex-1 ml-3">
