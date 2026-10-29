@@ -2,6 +2,8 @@
 
 Aplicația mobilă a bisericii **Betania** (Moldova) pentru tineret și comunitate. Documentul descrie ce există acum, ce limite tehnice sunt și ce așteptăm de la design.
 
+> 📸 **Capturile ecranelor actuale:** [`docs/design/`](design/README.md)
+>
 > **Pe scurt:** design system-ul există și funcționează (6 culori × mod luminos/întunecat). Vrem o identitate vizuală mai matură și mai caldă, ecrane de comunitate mai frumoase și un set propriu de insigne pentru realizări. Totul trebuie să rămână implementabil cu token-urile de mai jos.
 
 ---
@@ -250,4 +252,4 @@ Acum sunt iconițe Ionicons într-un pătrat colorat. Vrem **insigne proprii, co
   - ecranele: `app/`
 - **Textele RO/RU:** `i18n/translations.ts`.
 - **Poza bisericii și iconița actuală:** `assets/images/`.
-- **Capturi de ecran actuale:** le cereți dezvoltatorului; aplicația merge și în browser, pe `localhost:8081`, în modul de dezvoltare.
+- **Capturi de ecran actuale:** [`docs/design/`](design/README.md). Sunt 89 de capturi ale celor 36 de ecrane, în luminos și întunecat, cu cele mai importante și în rusă și în celelalte culori. Două planșe de ansamblu arată totul dintr-o privire, iar datele comunității sunt inventate.
