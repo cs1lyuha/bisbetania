@@ -16,12 +16,6 @@ export const ACCENTS = {
 export type Accent = keyof typeof ACCENTS;
 export type ThemeMode = 'system' | 'light' | 'dark';
 
-// Auriul jocurilor și al realizărilor: iese în evidență pe oricare dintre cele 6 accente (e și culoarea flăcării seriei).
-const GOLD = {
-  light: { goldFrom: '#FFD27A', goldTo: '#F59E0B', onGold: '#2B1A03' },
-  dark: { goldFrom: '#E3A23C', goldTo: '#B9700C', onGold: '#1A1004' },
-};
-
 export const HIGHLIGHTS = {
   yellow: { light: '#FDF0B5', dark: '#5A4B12' },
   green: { light: '#D5F0D9', dark: '#1F4A2B' },
@@ -67,7 +61,6 @@ function makeColors(accent: Accent, dark: boolean) {
     // Textul de pe primary: alb pe accentul închis; în modul întunecat accentul e deschis și albul n-ar avea contrast.
     onPrimary: dark ? n.bg : '#FFFFFF',
     heroOverlay: `${a.light}B8`,
-    ...(dark ? GOLD.dark : GOLD.light),
     ...n,
   };
 }

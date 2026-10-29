@@ -8,7 +8,7 @@ Capturi ale aplicației actuale, pentru designer. Merg împreună cu [`../DESIGN
 > - neutrele (fundal, text, linii) sunt nuanțate după culoarea de accent, în luminos și în întunecat
 > - antetele au un gradient diagonal cu colțuri rotunjite
 > - bara de jos plutește, ca o bulă de sticlă: Liquid Glass pe iOS 26+, estompare pe iOS mai vechi și pe web, translucidă pe Android
-> - pe Acasă, Biblia a ieșit din scurtături (e în bară), iar memorarea a devenit cardul auriu „Provocarea săptămânii”
+> - pe Acasă, Biblia a ieșit din scurtături (e în bară), iar memorarea a devenit cardul „Provocarea săptămânii”, în culoarea temei, cu steluțe care se aprind pe margini
 > - cardurile principale se strâng elastic la atingere
 
 - **Format:** iPhone 390×844 pt, rezoluție 2× (780×1688 px), cu zonele sigure ale unui iPhone (notch și bara de jos).
