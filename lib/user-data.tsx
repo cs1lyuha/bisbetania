@@ -3,6 +3,7 @@ import { Language } from '../i18n/translations';
 import { HighlightColor } from './theme';
 import { PlanId } from './plans';
 import { dateKey, usePersistentState } from './storage';
+import type { GameId, MemoryScore } from './memory';
 
 export interface Favorite {
   key: string; // verseKey(lang, b, c, v)
@@ -47,6 +48,10 @@ interface UserData {
   lessonsRead: string[];
   toggleLessonRead: (id: string) => void;
 
+  /** Stelele de la jocurile de memorare, pe verset (cheia e „carte:capitol:verset”). */
+  memory: Record<string, MemoryScore>;
+  saveGameResult: (verseId: string, game: GameId, stars: number) => void;
+
   prayers: Prayer[];
   addPrayer: (text: string) => void;
   toggleAnswered: (id: string) => void;
@@ -62,6 +67,7 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
   const [plans, setPlans] = usePersistentState<Partial<Record<PlanId, PlanProgress>>>('plans', {});
   const [prayers, setPrayers] = usePersistentState<Prayer[]>('prayers', []);
   const [lessonsRead, setLessonsRead] = usePersistentState<string[]>('lessonsRead', []);
+  const [memory, setMemory] = usePersistentState<Record<string, MemoryScore>>('memory', {});
 
   const value = useMemo<UserData>(() => {
     const byKey = new Map(favorites.map((f) => [f.key, f.color]));
@@ -98,6 +104,14 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
       lessonsRead,
       toggleLessonRead: (id) => setLessonsRead((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id])),
 
+      memory,
+      // Păstrăm cel mai bun rezultat al fiecărui joc.
+      saveGameResult: (verseId, game, stars) =>
+        setMemory((prev) => {
+          const old = prev[verseId] ?? {};
+          return { ...prev, [verseId]: { ...old, [game]: Math.max(old[game] ?? 0, stars), at: Date.now() } };
+        }),
+
       prayers,
       addPrayer: (text) =>
         setPrayers((prev) => [{ id: `${Date.now()}`, text: text.trim(), at: Date.now() }, ...prev]),
@@ -107,7 +121,7 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
         ),
       removePrayer: (id) => setPrayers((prev) => prev.filter((p) => p.id !== id)),
     };
-  }, [favorites, lastRead, activePlan, plans, prayers, lessonsRead, setFavorites, setLastRead, setActivePlan, setPlans, setPrayers, setLessonsRead]);
+  }, [favorites, lastRead, activePlan, plans, prayers, lessonsRead, memory, setFavorites, setLastRead, setActivePlan, setPlans, setPrayers, setLessonsRead, setMemory]);
 
   return <UserDataContext.Provider value={value}>{children}</UserDataContext.Provider>;
 }

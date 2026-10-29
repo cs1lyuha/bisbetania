@@ -102,7 +102,7 @@ export default function HomeScreen() {
       onPress: () => WebBrowser.openBrowserAsync(YOUTUBE_LIVE, { toolbarColor: colors.primaryDeep }),
     },
     { icon: 'calendar-outline', label: t('calendarTitle'), onPress: () => router.push('/calendar') },
-    { icon: 'bookmark-outline', label: t('favoritesShort'), onPress: () => router.push('/favorite') },
+    { icon: 'bulb-outline', label: t('memoryTitle'), onPress: () => router.push('/memorare') },
   ];
 
   return (

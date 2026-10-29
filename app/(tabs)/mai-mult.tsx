@@ -17,6 +17,7 @@ const SECTIONS: { titleKey: TranslationKey; items: { icon: IconName; key: Transl
     items: [
       { icon: 'trail-sign-outline', key: 'plansTitle', descKey: 'plansMenuDesc', href: '/planuri' },
       { icon: 'flame-outline', key: 'prayersTitle', descKey: 'prayersMenuDesc', href: '/rugaciuni' },
+      { icon: 'bulb-outline', key: 'memoryTitle', descKey: 'memoryMenuDesc', href: '/memorare' },
       { icon: 'bookmark-outline', key: 'favoritesTitle', descKey: 'favoritesMenuDesc', href: '/favorite' },
       { icon: 'search-outline', key: 'searchTitle', descKey: 'searchMenuDesc', href: '/cautare' },
     ],
