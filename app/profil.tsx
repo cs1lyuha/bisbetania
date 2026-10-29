@@ -7,10 +7,13 @@ import { useTheme } from '../lib/theme';
 import { useAuth } from '../lib/auth';
 import { MemberStats, Profile, fullName, supabase } from '../lib/supabase';
 import { formatRef, useBible } from '../lib/bible';
-import { formatDate } from '../lib/format';
+import { countLabel, formatDate } from '../lib/format';
 import { tap } from '../lib/haptics';
 import ScreenHeader from '../components/ScreenHeader';
 import Avatar from '../components/Avatar';
+import FriendButton from '../components/FriendButton';
+import AchievementsGrid from '../components/AchievementsGrid';
+import { useCommunity } from '../lib/community';
 
 export default function ProfileScreen() {
   const { t, language } = useLanguage();
@@ -18,12 +21,14 @@ export default function ProfileScreen() {
   const router = useRouter();
   const params = useLocalSearchParams<{ id?: string }>();
   const { ready, session, profile: me } = useAuth();
+  const { friendships } = useCommunity();
   const id = params.id || session?.user.id;
   const isMe = !!id && id === session?.user.id;
 
   const [other, setOther] = useState<Profile | null>(null);
   const [stats, setStats] = useState<MemberStats | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [missing, setMissing] = useState<'notFound' | 'error' | null>(null);
   const profile = isMe ? me : other;
 
   const load = useCallback(async () => {
@@ -32,9 +37,11 @@ export default function ProfileScreen() {
       isMe ? Promise.resolve(null) : supabase.from('profiles').select('*').eq('id', id).maybeSingle(),
       supabase.from('member_stats').select('*').eq('user_id', id).maybeSingle(),
     ]);
+    if (p) setMissing(p.error ? 'error' : p.data ? null : 'notFound');
     if (p?.data) setOther(p.data as Profile);
     if (s.data) setStats(s.data as MemberStats);
-  }, [id, isMe, session]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, isMe, session, friendships]);
 
   useEffect(() => {
     load();
@@ -54,7 +61,15 @@ export default function ProfileScreen() {
           ) : undefined
         }
       />
-      {!profile ? (
+      {!profile && missing ? (
+        <View className="m-4 bg-card rounded-3xl border border-line p-6 items-center">
+          <Ionicons name={missing === 'error' ? 'cloud-offline-outline' : 'person-remove-outline'} size={32} color={colors.muted} />
+          <Text className="text-muted text-center mt-2 leading-5">{missing === 'error' ? t('auth_error_network') : t('profileNotFound')}</Text>
+          <TouchableOpacity onPress={load} className="mt-4 bg-primary-light rounded-full px-4 py-2">
+            <Text className="text-primary font-bold text-sm">{t('retry')}</Text>
+          </TouchableOpacity>
+        </View>
+      ) : !profile ? (
         <ActivityIndicator color={colors.primary} style={{ marginTop: 48 }} />
       ) : (
         <ScrollView
@@ -75,8 +90,17 @@ export default function ProfileScreen() {
             <Avatar url={profile.avatar_url} name={fullName(profile)} size={104} />
             <Text className="text-ink text-2xl font-bold mt-3 text-center">{fullName(profile)}</Text>
             <Text className="text-primary font-semibold mt-0.5">@{profile.nickname}</Text>
+            <Text className="text-muted text-xs mt-1">
+              {countLabel(language, stats?.friends ?? 0, ['prieten', 'prieteni'], ['друг', 'друга', 'друзей'])}
+            </Text>
             {!!profile.bio && <Text className="text-ink/80 text-[15px] text-center mt-3 leading-6 px-4">{profile.bio}</Text>}
           </View>
+
+          {!isMe && (
+            <View className="flex-row mt-5">
+              <FriendButton userId={profile.id} />
+            </View>
+          )}
 
           <View className="flex-row mt-6" style={{ gap: 10 }}>
             <Stat icon="flame" value={stats?.current_streak ?? 0} label={t('streak')} highlight />
@@ -85,6 +109,8 @@ export default function ProfileScreen() {
           </View>
 
           <FavoriteVerseCard profile={profile} isMe={isMe} />
+
+          <AchievementsGrid stats={stats} />
 
           <Text className="text-muted text-xs text-center mt-6">
             {t('memberSince')} {formatDate(language, new Date(profile.created_at))}

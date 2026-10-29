@@ -22,6 +22,7 @@ import Hero from '../../components/Hero';
 import LessonCard from '../../components/LessonCard';
 import Avatar from '../../components/Avatar';
 import { useAuth } from '../../lib/auth';
+import { useCommunity } from '../../lib/community';
 import { fullName } from '../../lib/supabase';
 import { currentLesson, lessonsFrom } from '../../lib/grupmic';
 
@@ -44,6 +45,8 @@ export default function HomeScreen() {
   const now = useNow();
   const church = useChurch();
   const auth = useAuth();
+  const { stats: memberStats } = useCommunity();
+  const myStreak = auth.session ? memberStats.get(auth.session.user.id)?.current_streak ?? 0 : 0;
   const { highlightOf, setHighlight, activePlan, plans, toggleDay, lastRead } = useUserData();
   const [copied, setCopied] = useState(false);
 
@@ -134,7 +137,7 @@ export default function HomeScreen() {
                   onPress={() => router.push(auth.session ? '/profil' : '/cont')}
                   hitSlop={10}
                   activeOpacity={0.7}
-                  className="ml-2 mr-auto w-10 h-10 rounded-full bg-white/15 items-center justify-center overflow-hidden"
+                  className="ml-2 w-10 h-10 rounded-full bg-white/15 items-center justify-center overflow-hidden"
                 >
                   {auth.profile ? (
                     <Avatar url={auth.profile.avatar_url} name={fullName(auth.profile)} size={40} />
@@ -143,6 +146,17 @@ export default function HomeScreen() {
                   )}
                 </TouchableOpacity>
               )}
+              {myStreak > 0 && (
+                <TouchableOpacity
+                  onPress={() => router.push('/membri')}
+                  activeOpacity={0.8}
+                  className="ml-2 h-10 px-3 rounded-full bg-white/15 flex-row items-center"
+                >
+                  <Ionicons name="flame" size={17} color="#FFB347" />
+                  <Text className="text-white font-bold ml-1">{myStreak}</Text>
+                </TouchableOpacity>
+              )}
+              <View className="flex-1" />
               <LanguageToggle />
             </View>
   

@@ -51,6 +51,10 @@ interface UserData {
   /** Stelele de la jocurile de memorare, pe verset (cheia e „carte:capitol:verset”). */
   memory: Record<string, MemoryScore>;
   saveGameResult: (verseId: string, game: GameId, stars: number) => void;
+  /** Îmbină ce e salvat în cont (de pe alt telefon): cele mai multe stele și toate lecțiile citite. */
+  mergeRemote: (memory: Record<string, MemoryScore>, lessons: string[]) => void;
+  /** Golește datele care se sincronizează cu contul (la schimbarea contului pe același telefon). */
+  resetSynced: () => void;
 
   prayers: Prayer[];
   addPrayer: (text: string) => void;
@@ -106,6 +110,26 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
 
       memory,
       // Păstrăm cel mai bun rezultat al fiecărui joc.
+      resetSynced: () => {
+        setMemory({});
+        setLessonsRead([]);
+      },
+      mergeRemote: (remote, lessons) => {
+        setMemory((prev) => {
+          const next = { ...prev };
+          for (const [id, score] of Object.entries(remote)) {
+            const old = next[id] ?? {};
+            next[id] = {
+              ...old,
+              fill: Math.max(old.fill ?? 0, score.fill ?? 0) || undefined,
+              order: Math.max(old.order ?? 0, score.order ?? 0) || undefined,
+              recall: Math.max(old.recall ?? 0, score.recall ?? 0) || undefined,
+            };
+          }
+          return next;
+        });
+        setLessonsRead((prev) => [...new Set([...prev, ...lessons])]);
+      },
       saveGameResult: (verseId, game, stars) =>
         setMemory((prev) => {
           const old = prev[verseId] ?? {};

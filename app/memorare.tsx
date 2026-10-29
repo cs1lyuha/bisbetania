@@ -10,6 +10,7 @@ import { GAMES, findVerse, getWeeklyVerse, isMastered, previousVerses, totalStar
 import { tap } from '../lib/haptics';
 import ScreenHeader from '../components/ScreenHeader';
 import Stars, { GAME_ICONS } from '../components/Stars';
+import MemoryRanking from '../components/MemoryRanking';
 
 export default function MemoryScreen() {
   const { t, language } = useLanguage();
@@ -93,6 +94,8 @@ export default function MemoryScreen() {
             );
           })}
         </View>
+
+        <MemoryRanking verseId={verse.id} title={isWeekly ? t('memoryRankingWeek') : `${t('memoryRanking')} · ${verse.reference}`} />
 
         {/* Repetare */}
         <Text className="text-muted text-[11px] font-bold uppercase tracking-widest mt-6 mb-2 px-1">{t('review')}</Text>

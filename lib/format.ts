@@ -48,3 +48,17 @@ export function formatDayTitle(lang: Language, date: Date) {
   const dayMonth = date.toLocaleDateString(lang === 'ro' ? 'ro-RO' : 'ru-RU', { day: 'numeric', month: 'long' });
   return `${DAY_NAMES[lang][date.getDay()]}, ${dayMonth}`;
 }
+
+/** „acum 5 min”, „acum 3 h”, „ieri”, „12 octombrie” */
+export function timeAgo(lang: Language, date: Date, now = new Date()) {
+  const minutes = Math.floor((now.getTime() - date.getTime()) / 60_000);
+  const ro = lang === 'ro';
+  if (minutes < 1) return ro ? 'acum' : 'только что';
+  if (minutes < 60) return ro ? `acum ${minutes} min` : `${minutes} мин назад`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return ro ? `acum ${hours} h` : `${hours} ч назад`;
+  const days = Math.floor(hours / 24);
+  if (days === 1) return ro ? 'ieri' : 'вчера';
+  if (days < 7) return ro ? `acum ${days} zile` : plural('ru', days, ['', ''], ['день', 'дня', 'дней']) + ' назад';
+  return date.toLocaleDateString(ro ? 'ro-RO' : 'ru-RU', { day: 'numeric', month: 'long' });
+}

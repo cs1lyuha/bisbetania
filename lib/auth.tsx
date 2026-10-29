@@ -40,6 +40,8 @@ interface Auth {
   ready: boolean;
   session: Session | null;
   profile: Profile | null;
+  /** Crește după fiecare check-in reușit, ca seria să fie reîncărcată. */
+  checkIns: number;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (data: SignUpData) => Promise<void>;
   signOut: () => Promise<void>;
@@ -57,6 +59,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [ready, setReady] = useState(!supabaseConfigured);
   const checkedInDay = useRef<string | null>(null);
+  const [checkIns, setCheckIns] = useState(0);
   const userId = session?.user.id;
 
   useEffect(() => {
@@ -88,6 +91,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       checkedInDay.current = today;
       supabase.rpc('check_in').then(({ error }) => {
         if (error) checkedInDay.current = null;
+        else setCheckIns((n) => n + 1);
       });
     };
     checkIn();
@@ -113,6 +117,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       ready,
       session,
       profile,
+      checkIns,
       refreshProfile,
       updateProfile,
 
@@ -163,7 +168,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setProfile(null);
       },
     };
-  }, [ready, session, profile, userId, refreshProfile]);
+  }, [ready, session, profile, checkIns, userId, refreshProfile]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

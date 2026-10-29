@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, FlatList, TouchableOpacity, Share, KeyboardAvoidingView, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { useLanguage } from '../i18n';
 import { useTheme } from '../lib/theme';
 import { useUserData } from '../lib/user-data';
@@ -11,6 +12,7 @@ import ScreenHeader from '../components/ScreenHeader';
 export default function PrayersScreen() {
   const { t, language } = useLanguage();
   const { colors } = useTheme();
+  const router = useRouter();
   const { prayers, addPrayer, toggleAnswered, removePrayer } = useUserData();
   const [draft, setDraft] = useState('');
   const [filter, setFilter] = useState<'open' | 'answered'>('open');
@@ -31,6 +33,16 @@ export default function PrayersScreen() {
       <ScreenHeader title={t('prayersTitle')} subtitle={t('prayersSubtitle')} />
 
       <View className="px-4 pt-4">
+        <TouchableOpacity
+          onPress={() => router.push('/perete')}
+          activeOpacity={0.85}
+          className="flex-row items-center rounded-2xl px-4 py-3 mb-3"
+          style={{ backgroundColor: colors.primaryDeep }}
+        >
+          <Ionicons name="hand-left-outline" size={18} color="white" />
+          <Text className="flex-1 text-white font-semibold ml-2">{t('openWall')}</Text>
+          <Ionicons name="chevron-forward" size={18} color="white" />
+        </TouchableOpacity>
         <View className="bg-card border border-line rounded-2xl p-3">
           <TextInput
             value={draft}

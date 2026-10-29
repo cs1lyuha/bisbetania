@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -7,8 +7,12 @@ import { useTheme } from '../lib/theme';
 import { useUserData } from '../lib/user-data';
 import { formatRef } from '../lib/bible';
 import { Lesson } from '../lib/grupmic';
-import { formatDayTitle, timeUntil } from '../lib/format';
+import { countLabel, formatDayTitle, timeUntil } from '../lib/format';
 import { success, tap } from '../lib/haptics';
+import { useAuth } from '../lib/auth';
+import { useCommunity } from '../lib/community';
+import { fullName, supabase } from '../lib/supabase';
+import Avatar from './Avatar';
 
 /** Cardul „Pregătire pentru Grup mic”: lecția, capitolul de citit și bifa „Am citit”. */
 export default function LessonCard({ lesson, now = new Date(), showHeader = true }: { lesson: Lesson; now?: Date; showHeader?: boolean }) {
@@ -60,6 +64,51 @@ export default function LessonCard({ lesson, now = new Date(), showHeader = true
           <Text className="text-primary font-bold ml-1.5">{read ? t('done') : t('markDone')}</Text>
         </TouchableOpacity>
       </View>
+      <Readers lessonId={lesson.id} read={read} />
+    </View>
+  );
+}
+
+/** Cine din comunitate a citit deja lecția: întâi prietenii, apoi ceilalți. */
+function Readers({ lessonId, read }: { lessonId: string; read: boolean }) {
+  const { language } = useLanguage();
+  const { colors } = useTheme();
+  const { session } = useAuth();
+  const { byId, friendIds } = useCommunity();
+  const [ids, setIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!session) return;
+    const load = () =>
+      supabase
+        .from('lesson_reads')
+        .select('user_id')
+        .eq('lesson_id', lessonId)
+        .then(({ data }) => data && setIds(data.map((r) => r.user_id as string)));
+    load();
+    // Bifa mea ajunge pe server după sincronizare (~1,5 s).
+    const timer = setTimeout(load, 2500);
+    return () => clearTimeout(timer);
+  }, [session, lessonId, read]);
+
+  const people = ids
+    .map((id) => byId.get(id))
+    .filter((p): p is NonNullable<typeof p> => !!p)
+    .sort((a, b) => Number(friendIds.has(b.id)) - Number(friendIds.has(a.id)));
+  if (!people.length) return null;
+
+  return (
+    <View className="flex-row items-center mt-3 pt-3 border-t border-line">
+      <View className="flex-row">
+        {people.slice(0, 6).map((p, i) => (
+          <View key={p.id} style={{ marginLeft: i ? -8 : 0, borderRadius: 14, borderWidth: 2, borderColor: colors.card }}>
+            <Avatar url={p.avatar_url} name={fullName(p)} size={24} />
+          </View>
+        ))}
+      </View>
+      <Text className="text-muted text-xs ml-2">
+        {countLabel(language, people.length, ['a citit', 'au citit'], ['прочитал(а)', 'прочитали', 'прочитали'])}
+      </Text>
     </View>
   );
 }

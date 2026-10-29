@@ -122,6 +122,10 @@ drop policy if exists "oricare dintre cei doi poate șterge" on public.friendshi
 create policy "oricare dintre cei doi poate șterge" on public.friendships for delete to authenticated
   using (auth.uid() in (requester, addressee));
 
+-- O singură legătură între doi oameni, indiferent cine a trimis cererea.
+create unique index if not exists friendships_pair
+  on public.friendships (least(requester, addressee), greatest(requester, addressee));
+
 create or replace function public.are_friends(a uuid, b uuid) returns boolean
 language sql stable set search_path = public as $$
   select exists (
@@ -212,6 +216,15 @@ create policy "îți bifezi doar lecțiile tale" on public.lesson_reads for all 
 -- ============================================================
 -- Statistici pe membru (seria, realizările se calculează din ele în aplicație)
 -- ============================================================
+-- Câte cereri a postat cineva, numărând și pe cele „doar pentru prieteni” (fără să le arate conținutul),
+-- ca realizarea „Cerere încrezătoare” să arate la fel pentru toți membrii.
+create or replace function public.prayers_posted_count(p_user uuid) returns int
+language sql stable security definer set search_path = public as $$
+  select count(*)::int from wall_prayers where user_id = p_user;
+$$;
+revoke execute on function public.prayers_posted_count(uuid) from public, anon;
+grant execute on function public.prayers_posted_count(uuid) to authenticated;
+
 create or replace view public.member_stats with (security_invoker = true) as
 with days as (
   select user_id, day, day - (row_number() over (partition by user_id order by day))::int as grp
@@ -234,7 +247,7 @@ select
   (select count(*) from public.memory_scores m
      where m.user_id = p.id and m.fill > 0 and m."order" > 0 and m.recall > 0)::int as verses_mastered,
   (select count(*) from public.lesson_reads l where l.user_id = p.id)::int as lessons_read,
-  (select count(*) from public.wall_prayers w where w.user_id = p.id)::int as prayers_posted,
+  public.prayers_posted_count(p.id) as prayers_posted,
   (select count(*) from public.prayer_support ps where ps.user_id = p.id)::int as prayers_supported
 from public.profiles p;
 
@@ -265,7 +278,10 @@ grant usage on schema public to anon, authenticated;
 revoke all on public.invite_codes from anon, authenticated;
 grant select, update on public.profiles to authenticated;
 grant select on public.activity_days to authenticated;
-grant select, insert, update, delete on public.friendships to authenticated;
+grant select, insert, delete on public.friendships to authenticated;
+-- Destinatarul poate schimba doar statusul (vezi migrations/001).
+revoke update on public.friendships from authenticated;
+grant update (status) on public.friendships to authenticated;
 grant select, insert, update, delete on public.wall_prayers to authenticated;
 grant select, insert, delete on public.prayer_support to authenticated;
 grant select, insert, update, delete on public.memory_scores to authenticated;

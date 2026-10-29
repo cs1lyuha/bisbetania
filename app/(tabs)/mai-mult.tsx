@@ -7,6 +7,7 @@ import { TranslationKey } from '../../i18n/translations';
 import { useTheme } from '../../lib/theme';
 import { useUserData } from '../../lib/user-data';
 import { useAuth } from '../../lib/auth';
+import { useCommunity } from '../../lib/community';
 import { fullName } from '../../lib/supabase';
 import Avatar from '../../components/Avatar';
 import { tap } from '../../lib/haptics';
@@ -19,6 +20,7 @@ const SECTIONS: { titleKey: TranslationKey; items: { icon: IconName; key: Transl
     titleKey: 'sectionSpiritual',
     items: [
       { icon: 'trail-sign-outline', key: 'plansTitle', descKey: 'plansMenuDesc', href: '/planuri' },
+      { icon: 'hand-left-outline', key: 'wallTitle', descKey: 'wallMenuDesc', href: '/perete' },
       { icon: 'flame-outline', key: 'prayersTitle', descKey: 'prayersMenuDesc', href: '/rugaciuni' },
       { icon: 'bulb-outline', key: 'memoryTitle', descKey: 'memoryMenuDesc', href: '/memorare' },
       { icon: 'bookmark-outline', key: 'favoritesTitle', descKey: 'favoritesMenuDesc', href: '/favorite' },
@@ -28,6 +30,7 @@ const SECTIONS: { titleKey: TranslationKey; items: { icon: IconName; key: Transl
   {
     titleKey: 'sectionChurch',
     items: [
+      { icon: 'people-circle-outline', key: 'membersTitle', descKey: 'membersMenuDesc', href: '/membri' },
       { icon: 'calendar-number-outline', key: 'calendarTitle', descKey: 'calendarMenuDesc', href: '/calendar' },
       { icon: 'people-outline', key: 'grupMicTitle', descKey: 'grupMicMenuDesc', href: '/grup-mic' },
       { icon: 'time-outline', key: 'scheduleTitle', descKey: 'scheduleMenuDesc', href: '/program' },
@@ -47,9 +50,11 @@ export default function MoreScreen() {
   const router = useRouter();
   const { favorites, prayers } = useUserData();
   const auth = useAuth();
+  const { incoming } = useCommunity();
 
   const badge = (key: TranslationKey) => {
     if (key === 'favoritesTitle' && favorites.length) return favorites.length;
+    if (key === 'membersTitle' && incoming.length) return incoming.length;
     if (key === 'prayersTitle') {
       const open = prayers.filter((p) => !p.answeredAt).length;
       return open || undefined;

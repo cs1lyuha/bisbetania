@@ -8,6 +8,9 @@ import { ThemeProvider, useTheme } from '../lib/theme';
 import { UserDataProvider } from '../lib/user-data';
 import { ChurchProvider } from '../lib/church';
 import { AuthProvider } from '../lib/auth';
+import { CommunityProvider } from '../lib/community';
+import AchievementCelebration from '../components/AchievementCelebration';
+import SyncBridge from '../lib/sync';
 import { scheduleDailyVerse } from '../lib/notifications';
 
 function AppStack() {
@@ -29,6 +32,8 @@ function AppStack() {
           contentStyle: { backgroundColor: colors.bg },
         }}
       />
+      <AchievementCelebration />
+      <SyncBridge />
     </>
   );
 }
@@ -41,7 +46,9 @@ export default function RootLayout() {
           <UserDataProvider>
             <ChurchProvider>
               <AuthProvider>
-                <AppStack />
+                <CommunityProvider>
+                  <AppStack />
+                </CommunityProvider>
               </AuthProvider>
             </ChurchProvider>
           </UserDataProvider>
