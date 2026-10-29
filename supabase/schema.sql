@@ -256,3 +256,19 @@ create policy "avatar: înlocuiești doar poza ta" on storage.objects for update
 drop policy if exists "avatar: ștergi doar poza ta" on storage.objects;
 create policy "avatar: ștergi doar poza ta" on storage.objects for delete to authenticated
   using (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
+
+-- ============================================================
+-- Drepturi explicite (merg și cu „Automatically expose new tables” dezactivat).
+-- Ce rând vede/schimbă fiecare decid tot politicile RLS de mai sus.
+-- ============================================================
+grant usage on schema public to anon, authenticated;
+revoke all on public.invite_codes from anon, authenticated;
+grant select, update on public.profiles to authenticated;
+grant select on public.activity_days to authenticated;
+grant select, insert, update, delete on public.friendships to authenticated;
+grant select, insert, update, delete on public.wall_prayers to authenticated;
+grant select, insert, delete on public.prayer_support to authenticated;
+grant select, insert, update, delete on public.memory_scores to authenticated;
+grant select, insert, delete on public.lesson_reads to authenticated;
+grant select on public.member_stats to authenticated;
+grant execute on function public.are_friends(uuid, uuid) to authenticated;
