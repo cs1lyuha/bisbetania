@@ -1,16 +1,10 @@
-import React, { useState, useRef } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  StatusBar,
-  useWindowDimensions,
-} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, useWindowDimensions } from 'react-native';
 import YoutubeIframe from 'react-native-youtube-iframe';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 import { useLanguage } from '../i18n';
+import { useTheme } from '../lib/theme';
+import ScreenHeader from '../components/ScreenHeader';
 
 const VIDEOS = [
   { id: '6FCaOdwi1rA', titleKey: 'video1Title' as const },
@@ -21,7 +15,7 @@ const VIDEOS = [
 
 export default function IstoriaScreen() {
   const { t } = useLanguage();
-  const router = useRouter();
+  const { colors } = useTheme();
   const { width } = useWindowDimensions();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -29,26 +23,8 @@ export default function IstoriaScreen() {
   const playerHeight = Math.round((width - 40) * 9 / 16);
 
   return (
-    <SafeAreaView className="flex-1 bg-cream" edges={['left', 'right', 'bottom']}>
-      <StatusBar barStyle="light-content" backgroundColor="#1A472A" />
-
-      <View
-        style={{ backgroundColor: '#1A472A', paddingTop: 54, paddingBottom: 20 }}
-        className="px-5 flex-row items-center"
-      >
-        <TouchableOpacity
-          onPress={() => router.back()}
-          activeOpacity={0.7}
-          style={{ marginRight: 12, padding: 4 }}
-        >
-          <Text style={{ color: 'white', fontSize: 22 }}>‹</Text>
-        </TouchableOpacity>
-        <View className="flex-1">
-          <Text className="text-white text-[18px] font-bold" numberOfLines={1}>
-            {t('historyTitle')}
-          </Text>
-        </View>
-      </View>
+    <View className="flex-1 bg-cream">
+      <ScreenHeader title={t('historyTitle')} />
 
       <ScrollView
         className="flex-1"
@@ -77,7 +53,7 @@ export default function IstoriaScreen() {
         </View>
 
         <View className="px-5 mt-5">
-          <Text className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-3">
+          <Text className="text-[11px] font-semibold text-muted uppercase tracking-widest mb-3">
             {t('historyTitle')}
           </Text>
 
@@ -94,48 +70,43 @@ export default function IstoriaScreen() {
                 className={`flex-row items-center rounded-2xl mb-3 border-2 p-4 ${
                   isActive
                     ? 'bg-primary border-primary'
-                    : 'bg-white border-stone-100'
+                    : 'bg-card border-line'
                 }`}
                 style={{ elevation: isActive ? 3 : 1 }}
               >
                 <View
                   className={`w-10 h-10 rounded-full items-center justify-center mr-4 ${
-                    isActive ? 'bg-white/20' : 'bg-primary/10'
+                    isActive ? 'bg-white/20' : 'bg-primary-light'
                   }`}
                 >
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      color: isActive ? 'white' : '#1A472A',
-                    }}
-                  >
-                    {isActive ? '▶' : `${index + 1}`}
-                  </Text>
+                  {isActive ? (
+                    <Ionicons name="play" size={18} color="white" />
+                  ) : (
+                    <Text style={{ fontSize: 16, fontWeight: '700', color: colors.primary }}>{index + 1}</Text>
+                  )}
                 </View>
                 <View className="flex-1">
                   <Text
                     className={`text-[15px] font-bold ${
-                      isActive ? 'text-white' : 'text-gray-800'
+                      isActive ? 'text-white' : 'text-ink'
                     }`}
                   >
                     {t(video.titleKey)}
                   </Text>
                   <Text
                     className={`text-xs mt-0.5 ${
-                      isActive ? 'text-white/70' : 'text-gray-400'
+                      isActive ? 'text-white/70' : 'text-muted'
                     }`}
                   >
                     YouTube Live
                   </Text>
                 </View>
-                {isActive && (
-                  <Text style={{ color: 'white', fontSize: 18 }}>✓</Text>
-                )}
+                {isActive && <Ionicons name="checkmark" size={20} color="white" />}
               </TouchableOpacity>
             );
           })}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

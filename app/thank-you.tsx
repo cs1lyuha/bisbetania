@@ -37,11 +37,11 @@ export default function ThankYouScreen() {
               <Text style={{ fontSize: 56 }}>❤️</Text>
             </View>
 
-            <Text className="text-gray-800 text-[28px] font-bold text-center mb-3">
+            <Text className="text-ink text-[28px] font-bold text-center mb-3">
               {t('thankYouTitle')}
             </Text>
 
-            <Text className="text-gray-500 text-base text-center leading-6 mb-10">
+            <Text className="text-muted text-base text-center leading-6 mb-10">
               {t('thankYouMessage')}
             </Text>
 

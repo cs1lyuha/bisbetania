@@ -1,40 +1,73 @@
 {
-    "expo": {
-        "name": "BisBetania",
-        "slug": "bisbetania",
-        "version": "1.0.0",
-        "orientation": "portrait",
-        "scheme": "betania",
-        "userInterfaceStyle": "light",
-        "icon": "./assets/images/icon.png",
-        "splash": {
-            "image": "./assets/images/church.png",
-            "resizeMode": "cover",
-            "backgroundColor": "#1A472A"
-        },
-        "android": {
-            "adaptiveIcon": {
-                "foregroundImage": "./assets/images/icon.png",
-                "backgroundColor": "#1A472A"
-            },
-            "package": "com.bisbetania",
-            "softwareKeyboardLayoutMode": "pan"
-        },
-        "plugins": [
-            "expo-router", [
-                "expo-web-browser",
-                {}
-            ]
-        ],
-        "experiments": {
-            "typedRoutes": true
-        },
-        "extra": {
-            "router": {},
-            "eas": {
-                "projectId": "a6e103a7-7dd9-4f7d-b589-98a7a7c95807"
-            }
-        },
-        "owner": "bisbetania"
+  "expo": {
+    "name": "BisBetania",
+    "slug": "bisbetania",
+    "version": "1.3.0",
+    "orientation": "portrait",
+    "scheme": "betania",
+    "userInterfaceStyle": "automatic",
+    "icon": "./assets/images/icon.png",
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#1A472A"
+      },
+      "package": "com.bisbetania",
+      "softwareKeyboardLayoutMode": "pan",
+      "permissions": []
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/church.png",
+          "resizeMode": "cover",
+          "backgroundColor": "#1A472A",
+          "enableFullScreenImage_legacy": true
+        }
+      ],
+      [
+        "expo-web-browser",
+        {}
+      ],
+      "expo-asset",
+      [
+        "expo-notifications",
+        {
+          "color": "#1A472A"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Aplicația are nevoie de acces la poze ca să-ți alegi fotografia de profil.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "a6e103a7-7dd9-4f7d-b589-98a7a7c95807"
+      }
+    },
+    "owner": "bisbetania",
+    "ios": {
+      "bundleIdentifier": "app.lavender5893.ocelot8578",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/a6e103a7-7dd9-4f7d-b589-98a7a7c95807"
     }
+  }
 }

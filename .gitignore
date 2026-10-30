@@ -9,3 +9,6 @@ expo-env.d.ts
 /android
 /ios
 node_modules/
+credentials/
+credentials.json
+dist/

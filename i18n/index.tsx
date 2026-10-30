@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext } from 'react';
 import { translations, Language, TranslationKey } from './translations';
+import { usePersistentState } from '../lib/storage';
 
 interface LanguageContextType {
   language: Language;
@@ -10,7 +11,7 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | null>(null);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguage] = useState<Language>('ro');
+  const [language, setLanguage] = usePersistentState<Language>('language', 'ro');
 
   const t = (key: TranslationKey): string => translations[language][key];
 
